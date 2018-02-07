@@ -5,34 +5,45 @@ import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 
-import java.util.Calendar;
-import java.util.HashSet;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class RecentlyInactive {
 
-    private static final int    HOURS_IN_MONTH        = 30 * 24;
-    private static final String CASSANDRA_HOST_NAME   = "localhost";
+    private static final String KEYSPACE            = "bactivity";
+    private static final int    HOURS_IN_MONTH      = 30 * 24;
+    private static final String CASSANDRA_HOST_NAME = "localhost";
+
     private static final String SELECT_QUERY_TEMPLATE =
-            "SELECT device_id from activity.data_collector WHERE year=%d and month=%d and day=%d and hour=%d AND user_bucket='user_bucket' and project_bucket='project_bucket' GROUP BY year,month,day,hour,user_bucket,project_bucket,user_id,project_id,environment,device_id;";
+            "SELECT device_id from data_collector WHERE year=%d and month=%d and day=%d and hour=%d AND user_bucket='user_bucket' and project_bucket='project_bucket' GROUP BY year,month,day,hour,user_bucket,project_bucket,user_id,project_id,environment,minutes,seconds,device_id;";
 
 
     public static void main(String[] args) {
 
         try (Cluster cluster = initCluster()) {
-            Session session = cluster.connect("activity");
+            Session session = cluster.connect(KEYSPACE);
             Calendar cal = Calendar.getInstance();
 
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            dateFormat.setTimeZone(cal.getTimeZone());
+
             //Find devices that were active ib the last 72 hours
-            final HashSet<String> recentlyActive = new HashSet<>();
+            final HashMap<String, String> debugMap = new HashMap<>();
             for (int i = 0; i < 72; i++) {
                 final String cql = formatSelectQuery(cal);
                 final ResultSet resultSet = session.execute(cql);
                 for (Row row : resultSet) {
-                    recentlyActive.add(row.getString(0));
+                    debugMap.put(row.getString(0), dateFormat.format(cal.getTime()) + " ["+cql+"]");
                 }
                 cal.add(Calendar.HOUR_OF_DAY, -1);
             }
+
+            System.out.println(debugMap.entrySet().stream().map(e -> e.getKey() + " => " + e.getValue()).collect(Collectors.joining("\n")));
+
+
+            Set<String> recentlyActive = debugMap.keySet();
             System.out.println("recentlyActive="+recentlyActive.stream().collect(Collectors.joining(", ")));
 
             //find devices that were active before 72 hrs and until 30 days back

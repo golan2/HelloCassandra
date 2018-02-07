@@ -5,108 +5,22 @@ import com.datastax.driver.core.Session;
 
 import java.util.Calendar;
 
-public class FirstCassandraApp {
+public class InsertSmallData {
+    private static final String   KEYSPACE         = "bactivity";
+    private static final String[] ACTIVE_DEVICES   = {"active1", "active2", "active3"      };
+    private static final String[] INACTIVE_DEVICES = {"inactive1", "inactive2", "inactive3"};
 
-    private static final String[] ACTIVE_DEVICES        = {"active1", "active2", "active3"      };
-    private static final String[] INACTIVE_DEVICES      = {"inactive1", "inactive2", "inactive3"};
-    private static final String   INSERT_QUERY_TEMPLATE =
-            "INSERT INTO activity.data_collector " +
+    private static final String SELECT_QUERY_TEMPLATE =
+            "SELECT device_id from activity.data_collector WHERE year=%d and month=%d and day=%d and hour=%d AND user_bucket='user_bucket' and project_bucket='project_bucket' GROUP BY year,month,day,hour,user_bucket,project_bucket,user_id,project_id,environment,device_id;";
+    private static final String INSERT_QUERY_TEMPLATE =
+            "INSERT INTO "+ KEYSPACE +".data_collector " +
                     "(year, month, day, hour, minutes, seconds, user_bucket,   project_bucket,   user_id,   project_id,   environment, device_id, timestamp, device_firmware,   device_type,   user_param) " +
                     "VALUES " +
                     "(%d,   %d,    %d,  %d,   %d,      %d,      'user_bucket', 'project_bucket', 'user_id', 'project_id', 'environment',   '%s',      %d,    'device_firmware', 'device_type', {'eventType': 'Flow','name': 'Calamp'}  );";
 
-    private static final String SELECT_QUERY_TEMPLATE =
-            "SELECT device_id from activity.data_collector WHERE year=%d and month=%d and day=%d and hour=%d AND user_bucket='user_bucket' and project_bucket='project_bucket' GROUP BY year,month,day,hour,user_bucket,project_bucket,user_id,project_id,environment,device_id;";
 
     public static void main(String[] args) {
-        insertTestData();
-
-//        insertSmallData();
-    }
-
-
-
-    //
-
-    /**
-     *  Create one device of each type:
-     *  [1] Always Active - devices that report data all the time
-     *  [2] Recently Active - devices only  report in the last 72 hours
-     *  [3] Recently Inactive - devices that reported in the last month but not in the last 72 hours
-     *  [4] Always Inactive - devices that didn't report at all in the last month
-     */
-    private static void insertTestData() {
-        try (Cluster cluster = initCluster()) {
-
-            Session session = cluster.connect("activity");
-
-            session.execute("truncate table activity.data_collector ;");
-
-            //Always Active
-            Calendar cal = Calendar.getInstance();
-            for (int hour = 0 ; hour<32*24 ; hour++) {
-                String cql = formatInsertQuery(cal, "always_active_1");
-                System.out.println(cql);
-                session.execute(cql);
-                cal.add(Calendar.HOUR_OF_DAY, -1);
-            }
-
-            //Recently Active
-            cal = Calendar.getInstance();
-            for (int hour = 0 ; hour<72 ; hour++) {
-                String cql = formatInsertQuery(cal, "recently_active_1");
-                System.out.println(cql);
-                session.execute(cql);
-                cal.add(Calendar.HOUR_OF_DAY, -1);
-            }
-
-            //Recently Inactive
-            cal = Calendar.getInstance();
-            cal.add(Calendar.HOUR_OF_DAY, -72);
-            for (int hour = 73 ; hour<32*24 ; hour++) {
-                String cql = formatInsertQuery(cal, "recently_inactive_1");
-                System.out.println(cql);
-                session.execute(cql);
-                cal.add(Calendar.HOUR_OF_DAY, -1);
-            }
-
-            //Always Inactive
-            cal = Calendar.getInstance();
-            cal.add(Calendar.HOUR_OF_DAY, -30*24);
-            for (int hour = 30*24 ; hour<32*24 ; hour++) {
-                String cql = formatInsertQuery(cal, "always_inactive_1");
-                System.out.println(cql);
-                session.execute(cql);
-                cal.add(Calendar.HOUR_OF_DAY, -1);
-            }
-
-
-        }
-
-
-    }
-
-    private static void insert3records(Session session, Calendar cal, int day, String devicePrefix) {
-        //avoid overflow to next day
-        if (cal.get(Calendar.HOUR_OF_DAY)>10) {
-            cal.add(Calendar.HOUR_OF_DAY, -6);
-        }
-
-        String cql = formatInsertQuery(cal, devicePrefix + "_1_" + day);
-        System.out.println(cql);
-        session.execute(cql);
-
-        cal.add(Calendar.HOUR_OF_DAY, 2);
-
-        cql = formatInsertQuery(cal, devicePrefix + "_2_" + day);
-        System.out.println(cql);
-        session.execute(cql);
-
-        cal.add(Calendar.HOUR_OF_DAY, 2);
-
-        cql = formatInsertQuery(cal, devicePrefix + "_3_" + day);
-        System.out.println(cql);
-        session.execute(cql);
+        insertSmallData();
     }
 
     private static void insertSmallData() {
@@ -151,8 +65,28 @@ public class FirstCassandraApp {
         }
     }
 
+    private static void insert3records(Session session, Calendar cal, int day, String devicePrefix) {
+        //avoid overflow to next day
+        if (cal.get(Calendar.HOUR_OF_DAY)>10) {
+            cal.add(Calendar.HOUR_OF_DAY, -6);
+        }
 
+        String cql = formatInsertQuery(cal, devicePrefix + "_1_" + day);
+        System.out.println(cql);
+        session.execute(cql);
 
+        cal.add(Calendar.HOUR_OF_DAY, 2);
+
+        cql = formatInsertQuery(cal, devicePrefix + "_2_" + day);
+        System.out.println(cql);
+        session.execute(cql);
+
+        cal.add(Calendar.HOUR_OF_DAY, 2);
+
+        cql = formatInsertQuery(cal, devicePrefix + "_3_" + day);
+        System.out.println(cql);
+        session.execute(cql);
+    }
 
 
     private static String formatInsertQuery(long milliseconds, String deviceId) {
@@ -183,9 +117,9 @@ public class FirstCassandraApp {
         return String.format(SELECT_QUERY_TEMPLATE, mYear, mMonth, mDay, hr);
     }
 
-
     private static Cluster initCluster() {
         return Cluster.builder().addContactPoint("localhost").build();
     }
-
 }
+
+
