@@ -1,7 +1,8 @@
-package golan.izik.log;
+package golan.izik.insert;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
+import golan.izik.CassandraShared;
 
 import java.util.Calendar;
 import java.util.concurrent.ExecutorService;
@@ -13,7 +14,7 @@ public class InsertTonsOfData {
 
     public static void main(String[] args) throws InterruptedException {
         try (Cluster cluster = initCluster()) {
-            Session session = cluster.connect(CassandraConstants.KEYSPACE);
+            Session session = cluster.connect(CassandraShared.KEYSPACE);
 //            session.execute("truncate table data_collector;");
 
             final ExecutorService tpe = Executors.newFixedThreadPool(4);

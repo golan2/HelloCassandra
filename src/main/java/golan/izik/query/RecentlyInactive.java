@@ -1,9 +1,10 @@
-package golan.izik.log;
+package golan.izik.query;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
+import golan.izik.CassandraShared;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -20,7 +21,7 @@ public class RecentlyInactive {
     public static void main(String[] args) {
 
         try (Cluster cluster = initCluster()) {
-            Session session = cluster.connect(CassandraConstants.CASSANDRA_HOST_NAME);
+            Session session = cluster.connect(CassandraShared.CASSANDRA_HOST_NAME);
             Calendar cal = Calendar.getInstance();
 
 
@@ -74,7 +75,7 @@ public class RecentlyInactive {
     }
 
     private static Cluster initCluster() {
-        return Cluster.builder().addContactPoint(CassandraConstants.CASSANDRA_HOST_NAME).build();
+        return Cluster.builder().addContactPoint(CassandraShared.CASSANDRA_HOST_NAME).build();
     }
 
 

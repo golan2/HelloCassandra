@@ -1,4 +1,4 @@
-package golan.izik.log;
+package golan.izik.insert;
 
 import com.datastax.driver.core.Session;
 

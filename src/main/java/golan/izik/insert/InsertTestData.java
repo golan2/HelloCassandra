@@ -1,14 +1,15 @@
-package golan.izik.log;
+package golan.izik.insert;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
+import golan.izik.CassandraShared;
 
 import java.util.Calendar;
 
 public class InsertTestData {
 
     private static final String INSERT_QUERY_TEMPLATE =
-            "INSERT INTO "+ CassandraConstants.KEYSPACE +".data_collector " +
+            "INSERT INTO "+ CassandraShared.KEYSPACE +".data_collector " +
                     "(year, month, day, hour, minutes, seconds, user_bucket,   project_bucket,   user_id,   project_id,   environment, device_id, timestamp, device_firmware,   device_type,   user_param) " +
                     "VALUES " +
                     "(%d,   %d,    %d,  %d,   %d,      %d,      'user_bucket', 'project_bucket', 'user_id', 'project_id', 'environment',   '%s',      %d,    'device_firmware', 'device_type', {'eventType': 'Flow','name': 'Calamp'}  );";
@@ -24,7 +25,7 @@ public class InsertTestData {
      */
     public static void main(String[] args) {
         try (Cluster cluster = initCluster()) {
-            try (Session session = cluster.connect(CassandraConstants.KEYSPACE)) {
+            try (Session session = cluster.connect(CassandraShared.KEYSPACE)) {
                 insertTestData(session);
 //                insertSingleRow(session);
             }
@@ -32,7 +33,7 @@ public class InsertTestData {
     }
 
     private static void insertTestData(Session session) {
-        session.execute("truncate table "+ CassandraConstants.KEYSPACE+".data_collector ;");
+        session.execute("truncate table "+ CassandraShared.KEYSPACE+".data_collector ;");
 
         //Always Active
         Calendar cal = Calendar.getInstance();
