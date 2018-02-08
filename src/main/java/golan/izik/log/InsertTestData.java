@@ -6,10 +6,9 @@ import com.datastax.driver.core.Session;
 import java.util.Calendar;
 
 public class InsertTestData {
-    private static final String   KEYSPACE         = "bactivity";
 
     private static final String INSERT_QUERY_TEMPLATE =
-            "INSERT INTO "+ KEYSPACE +".data_collector " +
+            "INSERT INTO "+ CassandraConstants.KEYSPACE +".data_collector " +
                     "(year, month, day, hour, minutes, seconds, user_bucket,   project_bucket,   user_id,   project_id,   environment, device_id, timestamp, device_firmware,   device_type,   user_param) " +
                     "VALUES " +
                     "(%d,   %d,    %d,  %d,   %d,      %d,      'user_bucket', 'project_bucket', 'user_id', 'project_id', 'environment',   '%s',      %d,    'device_firmware', 'device_type', {'eventType': 'Flow','name': 'Calamp'}  );";
@@ -25,44 +24,48 @@ public class InsertTestData {
      */
     public static void main(String[] args) {
         try (Cluster cluster = initCluster()) {
-
-            Session session = cluster.connect(KEYSPACE);
-
-            session.execute("truncate table "+KEYSPACE+".data_collector ;");
-
-            //Always Active
-            Calendar cal = Calendar.getInstance();
-            for (int hour = 0 ; hour<32*24 ; hour++) {
-                String cql = formatInsertQuery(cal, "always_active_1");
-                session.execute(cql);
-                cal.add(Calendar.HOUR_OF_DAY, -1);
+            try (Session session = cluster.connect(CassandraConstants.KEYSPACE)) {
+                insertTestData(session);
+//                insertSingleRow(session);
             }
+        }
+    }
 
-            //Recently Active
-            cal = Calendar.getInstance();
-            for (int hour = 0 ; hour<72 ; hour++) {
-                String cql = formatInsertQuery(cal, "recently_active_1");
-                session.execute(cql);
-                cal.add(Calendar.HOUR_OF_DAY, -1);
-            }
+    private static void insertTestData(Session session) {
+        session.execute("truncate table "+ CassandraConstants.KEYSPACE+".data_collector ;");
 
-            //Recently Inactive
-            cal = Calendar.getInstance();
-            cal.add(Calendar.HOUR_OF_DAY, -72);
-            for (int hour = 73 ; hour<32*24 ; hour++) {
-                String cql = formatInsertQuery(cal, "recently_inactive_1");
-                session.execute(cql);
-                cal.add(Calendar.HOUR_OF_DAY, -1);
-            }
+        //Always Active
+        Calendar cal = Calendar.getInstance();
+        for (int hour = 0 ; hour<32*24 ; hour++) {
+            String cql = formatInsertQuery(cal, "always_active_1");
+            session.execute(cql);
+            cal.add(Calendar.HOUR_OF_DAY, -1);
+        }
 
-            //Always Inactive
-            cal = Calendar.getInstance();
-            cal.add(Calendar.HOUR_OF_DAY, -30*24);
-            for (int hour = 30*24 ; hour<32*24 ; hour++) {
-                String cql = formatInsertQuery(cal, "always_inactive_1");
-                session.execute(cql);
-                cal.add(Calendar.HOUR_OF_DAY, -1);
-            }
+        //Recently Active
+        cal = Calendar.getInstance();
+        for (int hour = 0 ; hour<72 ; hour++) {
+            String cql = formatInsertQuery(cal, "recently_active_1");
+            session.execute(cql);
+            cal.add(Calendar.HOUR_OF_DAY, -1);
+        }
+
+        //Recently Inactive
+        cal = Calendar.getInstance();
+        cal.add(Calendar.HOUR_OF_DAY, -72);
+        for (int hour = 73 ; hour<32*24 ; hour++) {
+            String cql = formatInsertQuery(cal, "recently_inactive_1");
+            session.execute(cql);
+            cal.add(Calendar.HOUR_OF_DAY, -1);
+        }
+
+        //Always Inactive
+        cal = Calendar.getInstance();
+        cal.add(Calendar.HOUR_OF_DAY, -30*24);
+        for (int hour = 30*24 ; hour<32*24 ; hour++) {
+            String cql = formatInsertQuery(cal, "always_inactive_1");
+            session.execute(cql);
+            cal.add(Calendar.HOUR_OF_DAY, -1);
         }
     }
 
@@ -80,6 +83,15 @@ public class InsertTestData {
 
     private static Cluster initCluster() {
         return Cluster.builder().addContactPoint("localhost").build();
+    }
+
+    private static void insertSingleRow(Session session) {
+        Calendar cal2 = Calendar.getInstance();
+        cal2.set(2018, Calendar.JANUARY, 27, 12, 12, 1);
+        System.out.println(cal2.toInstant().toString());
+        final String cql = formatInsertQuery(cal2, "Punto_2");
+        System.out.println(cql);
+        session.execute(cql);
     }
 
 

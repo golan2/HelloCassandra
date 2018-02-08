@@ -11,9 +11,7 @@ import java.util.stream.Collectors;
 
 public class RecentlyInactive {
 
-    private static final String KEYSPACE            = "bactivity";
     private static final int    HOURS_IN_MONTH      = 30 * 24;
-    private static final String CASSANDRA_HOST_NAME = "localhost";
 
     private static final String SELECT_QUERY_TEMPLATE =
             "SELECT device_id from data_collector WHERE year=%d and month=%d and day=%d and hour=%d AND user_bucket='user_bucket' and project_bucket='project_bucket' GROUP BY year,month,day,hour,user_bucket,project_bucket,user_id,project_id,environment,minutes,seconds,device_id;";
@@ -22,7 +20,7 @@ public class RecentlyInactive {
     public static void main(String[] args) {
 
         try (Cluster cluster = initCluster()) {
-            Session session = cluster.connect(KEYSPACE);
+            Session session = cluster.connect(CassandraConstants.CASSANDRA_HOST_NAME);
             Calendar cal = Calendar.getInstance();
 
 
@@ -76,7 +74,7 @@ public class RecentlyInactive {
     }
 
     private static Cluster initCluster() {
-        return Cluster.builder().addContactPoint(CASSANDRA_HOST_NAME).build();
+        return Cluster.builder().addContactPoint(CassandraConstants.CASSANDRA_HOST_NAME).build();
     }
 
 

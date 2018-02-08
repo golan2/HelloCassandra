@@ -10,9 +10,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class FilesInFolder {
 
-    static final String HOST = "iot-toolbox";
-    static final String KEYSPACE = "mykeyspace";
-
 
     public static void main(String[] args) throws IOException {
 
@@ -31,8 +28,8 @@ public class FilesInFolder {
 
         CassandraSinkVisitor(int maxFiles) {
             this.maxFiles = new AtomicInteger(maxFiles);
-            this.cluster = Cluster.builder().addContactPoint(HOST).build();
-            this.session = cluster.connect(KEYSPACE);
+            this.cluster = Cluster.builder().addContactPoint(CassandraConstants.HOST).build();
+            this.session = cluster.connect(CassandraConstants.KEYSPACE);
         }
 
         @Override
