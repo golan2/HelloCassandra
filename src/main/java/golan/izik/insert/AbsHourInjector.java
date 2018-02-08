@@ -1,10 +1,11 @@
-package golan.izik.log;
+package golan.izik.insert;
 
 import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.RegularStatement;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.querybuilder.Batch;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
+import golan.izik.CassandraConstants;
 
 import java.util.Calendar;
 import java.util.HashSet;
