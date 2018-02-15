@@ -20,7 +20,7 @@ public class RecentlyInactive {
 
     public static void main(String[] args) {
 
-        try (Cluster cluster = initCluster()) {
+        try (Cluster cluster = CassandraShared.initCluster()) {
             Session session = cluster.connect(CassandraShared.CASSANDRA_HOST_NAME);
             Calendar cal = Calendar.getInstance();
 
@@ -72,10 +72,6 @@ public class RecentlyInactive {
         int mDay   = c.get(Calendar.DAY_OF_MONTH);
         int hr     = c.get(Calendar.HOUR_OF_DAY);
         return String.format(SELECT_QUERY_TEMPLATE, mYear, mMonth, mDay, hr);
-    }
-
-    private static Cluster initCluster() {
-        return Cluster.builder().addContactPoint(CassandraShared.CASSANDRA_HOST_NAME).build();
     }
 
 

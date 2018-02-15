@@ -26,7 +26,7 @@ public class InsertSmallData {
     private static void insertSmallData() {
         long startTime = System.nanoTime();
 
-        try (Cluster cluster = initCluster()) {
+        try (Cluster cluster = CassandraShared.initCluster()) {
 
             Session session = cluster.connect("activity");
             Calendar now = Calendar.getInstance();
@@ -117,9 +117,6 @@ public class InsertSmallData {
         return String.format(SELECT_QUERY_TEMPLATE, mYear, mMonth, mDay, hr);
     }
 
-    private static Cluster initCluster() {
-        return Cluster.builder().addContactPoint("localhost").build();
-    }
 }
 
 

@@ -24,7 +24,7 @@ public class InsertTestData {
      *  [4] Always Inactive - devices that didn't report at all in the last month
      */
     public static void main(String[] args) {
-        try (Cluster cluster = initCluster()) {
+        try (Cluster cluster = CassandraShared.initCluster()) {
             try (Session session = cluster.connect(CassandraShared.KEYSPACE)) {
                 insertTestData(session);
 //                insertSingleRow(session);
@@ -80,10 +80,6 @@ public class InsertTestData {
         int second = c.get(Calendar.SECOND      );
 
         return String.format(INSERT_QUERY_TEMPLATE, year, month, day, hour, minute, second, deviceId, c.getTimeInMillis());
-    }
-
-    private static Cluster initCluster() {
-        return Cluster.builder().addContactPoint("localhost").build();
     }
 
     private static void insertSingleRow(Session session) {

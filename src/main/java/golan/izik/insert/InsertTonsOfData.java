@@ -13,14 +13,20 @@ import java.util.concurrent.TimeUnit;
 public class InsertTonsOfData {
 
     public static void main(String[] args) throws InterruptedException {
-        try (Cluster cluster = initCluster()) {
+        try (Cluster cluster = CassandraShared.initCluster()) {
             Session session = cluster.connect(CassandraShared.KEYSPACE);
 //            session.execute("truncate table data_collector;");
 
             final ExecutorService tpe = Executors.newFixedThreadPool(4);
+
+
             Calendar cal = Calendar.getInstance();
-            for (int hour = 0 ; hour<2                                     /*32*24*/ ; hour++) {
-                for (int i=0 ; i<25 ; i++) {
+            cal.set(2018, Calendar.JANUARY, 27, 12, 12, 1);
+
+
+
+            for (int hour = 0 ; hour<1                                     /*32*24*/ ; hour++) {
+                for (int i=0 ; i<250 ; i++) {
                     tpe.submit(new PartialMinuteFullHourInjector(session, "hr_"+i+"_"+hour, cal, ThreadLocalRandom.current().nextInt(1,60)));
                 }
                 cal.add(Calendar.HOUR_OF_DAY, -1);
@@ -30,12 +36,4 @@ public class InsertTonsOfData {
             tpe.awaitTermination(30, TimeUnit.MINUTES);
         }
     }
-
-    private static Cluster initCluster() {
-        return Cluster.builder()
-                .addContactPoint("localhost")
-                .build();
-    }
-
-
 }
