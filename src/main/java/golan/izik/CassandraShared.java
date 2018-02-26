@@ -1,15 +1,23 @@
 package golan.izik;
 
 import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.SocketOptions;
 
 public class CassandraShared {
-    public static final String HOST                = "iot-toolbox";
-    public static final String KEYSPACE            = "activity";
-    public static final String CASSANDRA_HOST_NAME = "localhost";
-    public static final String TABLE               = "data_collector2";
-    public static final String AGGR_TABLE          = "data_aggregator";
+    public static final String HOST                      = "iot-toolbox";
+    public static final String KEYSPACE                  = "bactivity";
+    public static final String CASSANDRA_HOST_NAME       = "localhost";
+    public static final String RAW_DATA_TABLE            = "data_collector2";
+    public static final String DAILY_AGGREGATE_TABLE     = "data_aggregator";
+    public static final int    MAX_BATCH_SIZE            =    5000;
+    public static final int    MAX_PARALLELISM_CASSANDRA =      10;
+    private static final int    CLIENT_TIMEOUT           = 300_000;
 
     public static Cluster initCluster() {
-        return Cluster.builder().addContactPoint(CASSANDRA_HOST_NAME).build();
+        return Cluster.builder()
+                .withSocketOptions( new SocketOptions().setConnectTimeoutMillis(CLIENT_TIMEOUT) )
+                .withSocketOptions( new SocketOptions().setReadTimeoutMillis(CLIENT_TIMEOUT) )
+                .withSocketOptions( new SocketOptions().setTcpNoDelay(true) )
+                .addContactPoint(CASSANDRA_HOST_NAME).build();
     }
 }

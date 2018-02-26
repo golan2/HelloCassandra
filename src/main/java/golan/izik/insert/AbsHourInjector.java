@@ -52,7 +52,7 @@ public abstract class AbsHourInjector implements Runnable {
                 if (lastOne!=-1) {
                     timestamp += Math.abs(seconds-lastOne)*1000;    //change the timestamp according to the diff in seconds between rounds
                 }
-                RegularStatement insert = QueryBuilder.insertInto(CassandraShared.KEYSPACE, CassandraShared.TABLE)
+                RegularStatement insert = QueryBuilder.insertInto(CassandraShared.KEYSPACE, CassandraShared.RAW_DATA_TABLE)
                         .values(
                                 new String[]{"year", "month", "day", "hour", "minutes", "seconds", "user_bucket", "project_bucket", "user_id", "project_id", "environment", "device_id", "timestamp", "device_firmware", "device_type"},
                                 new Object[]{year, month, day, hour, minutes, seconds, "user_bucket", "project_bucket", "user_id", "project_id", "environment", deviceId, timestamp, "device_firmware", "device_type"}

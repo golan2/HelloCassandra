@@ -33,7 +33,7 @@ public class InsertSmallData {
 
             long milliseconds;
 
-            session.execute("truncate table activity.data_collector ;");
+            session.execute("truncate table data_collector ;");
 
             //Events for current time
             milliseconds = now.getTimeInMillis();
