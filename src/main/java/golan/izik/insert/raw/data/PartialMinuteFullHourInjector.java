@@ -1,4 +1,4 @@
-package golan.izik.insert;
+package golan.izik.insert.raw.data;
 
 import com.datastax.driver.core.Session;
 
@@ -20,12 +20,12 @@ public class PartialMinuteFullHourInjector extends AbsHourInjector {
     }
 
     @Override
-    protected Set<Integer> getMinutesArray(int hour) {
+    protected Set<Integer> getMinutesArray() {
         return generateFullRange();
     }
 
     @Override
-    protected Set<Integer> getSecondsArray(int minutes) {
+    protected Set<Integer> getSecondsArray() {
         final HashSet<Integer> result = new HashSet<>();
         for (int i = 0; i < tpm%60; i++) {      //%60 is to be on the safe side we should never get TPM higher than 60
             result.add(i);

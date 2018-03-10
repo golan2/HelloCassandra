@@ -3,8 +3,6 @@ package golan.izik;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.SocketOptions;
 
-import java.text.SimpleDateFormat;
-
 public class CassandraShared {
 
     public  static final String HOST                      = "iot-toolbox";

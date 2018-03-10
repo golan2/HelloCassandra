@@ -1,4 +1,6 @@
-package golan.izik.insert;
+package golan.izik.insert.strategy.hourly;
+
+import golan.izik.insert.strategy.AbsInsertAggregated;
 
 public abstract class AbsInsertHourlyAggregated extends AbsInsertAggregated {
 

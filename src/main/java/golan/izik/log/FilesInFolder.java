@@ -9,56 +9,48 @@ import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class FilesInFolder {
-
+class FilesInFolder {
+    private static final int MAX_FILES = 30;
 
     public static void main(String[] args) throws IOException {
-
-        Path rootFolder = Paths.get("C:\\Users\\golaniz\\Desktop\\DuplicateFiles");
-        CassandraSinkVisitor visitor = new CassandraSinkVisitor(30);
+        if (args[0]==null || args[0].length()==0) throw new IllegalArgumentException("Missing first parameter representing the path to scan.");
+        Path rootFolder = Paths.get(args[0]);
+        CassandraSinkVisitor visitor = new CassandraSinkVisitor();
         Files.walkFileTree(rootFolder, visitor);
         visitor.close();
-
     }
 
     private static class CassandraSinkVisitor implements FileVisitor<Path> {
-
         private final AtomicInteger maxFiles;
         private final Cluster cluster;
         private final Session session;
 
-        CassandraSinkVisitor(int maxFiles) {
-            this.maxFiles = new AtomicInteger(maxFiles);
+        CassandraSinkVisitor() {
+            this.maxFiles = new AtomicInteger(MAX_FILES);
             this.cluster = Cluster.builder().addContactPoint(CassandraShared.HOST).build();
             this.session = cluster.connect(CassandraShared.KEYSPACE);
         }
 
         @Override
-        public FileVisitResult preVisitDirectory(Path path, BasicFileAttributes basicFileAttributes) throws IOException {
+        public FileVisitResult preVisitDirectory(Path path, BasicFileAttributes basicFileAttributes) {
             return FileVisitResult.CONTINUE;
         }
 
         @Override
-        public FileVisitResult visitFile(Path path, BasicFileAttributes basicFileAttributes) throws IOException {
+        public FileVisitResult visitFile(Path path, BasicFileAttributes basicFileAttributes) {
             if (maxFiles.getAndDecrement()==0) {
                 return FileVisitResult.TERMINATE;
             }
-
-            long eventtimestamp = System.currentTimeMillis();
-
-
-
             throw new RuntimeException("UNIMPLEMENTED - Need2Write2Cassandra");
-//            return FileVisitResult.CONTINUE;
         }
 
         @Override
-        public FileVisitResult visitFileFailed(Path path, IOException e) throws IOException {
+        public FileVisitResult visitFileFailed(Path path, IOException e) {
             return FileVisitResult.CONTINUE;
         }
 
         @Override
-        public FileVisitResult postVisitDirectory(Path path, IOException e) throws IOException {
+        public FileVisitResult postVisitDirectory(Path path, IOException e) {
             return FileVisitResult.CONTINUE;
         }
 

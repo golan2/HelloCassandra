@@ -1,4 +1,6 @@
-package golan.izik.insert;
+package golan.izik.insert.strategy;
+
+import golan.izik.insert.strategy.InsertStrategy;
 
 import java.util.Calendar;
 

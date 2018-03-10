@@ -1,4 +1,6 @@
-package golan.izik.insert;
+package golan.izik.insert.strategy.daily;
+
+import golan.izik.insert.strategy.AbsInsertAggregated;
 
 public abstract class AbsInsertDailyAggregated extends AbsInsertAggregated {
 

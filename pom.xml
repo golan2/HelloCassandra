@@ -33,7 +33,7 @@
             <configuration>
                 <archive>
                     <manifest>
-                        <mainClass>golan.izik.insert.PartialMinuteFullHourInjector</mainClass>
+                        <mainClass>golan.izik.insert.strategy.daily.InsertDailyAggregated1969</mainClass>
                     </manifest>
                 </archive>
                 <descriptorRefs>

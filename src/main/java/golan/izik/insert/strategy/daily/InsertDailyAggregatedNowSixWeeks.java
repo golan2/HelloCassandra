@@ -1,4 +1,6 @@
-package golan.izik.insert;
+package golan.izik.insert.strategy.daily;
+
+import golan.izik.insert.aggregated.InsertToAggregatedTable;
 
 import java.util.Calendar;
 import java.util.concurrent.ThreadLocalRandom;
@@ -9,7 +11,7 @@ public class InsertDailyAggregatedNowSixWeeks extends AbsInsertDailyAggregated {
     private final Boolean truncateTableBeforeStart;
     private final Integer deviceCountPerDay;
 
-    public InsertDailyAggregatedNowSixWeeks(Boolean truncateTableBeforeStart, Integer deviceCountPerDay) {
+    private InsertDailyAggregatedNowSixWeeks(Boolean truncateTableBeforeStart, Integer deviceCountPerDay) {
         this.truncateTableBeforeStart = truncateTableBeforeStart;
         this.deviceCountPerDay = deviceCountPerDay;
     }
@@ -61,7 +63,7 @@ public class InsertDailyAggregatedNowSixWeeks extends AbsInsertDailyAggregated {
     }
 
     @Override
-    public int getDailyRowsCountPerDevice(Calendar cal) {
+    public int getDailyRowsCountPerDevice() {
         return 1;
     }
 

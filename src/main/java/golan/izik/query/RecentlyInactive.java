@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class RecentlyInactive {
+class RecentlyInactive {
 
     private static final int    HOURS_IN_MONTH      = 30 * 24;
 
@@ -25,6 +25,7 @@ public class RecentlyInactive {
             Calendar cal = Calendar.getInstance();
 
 
+            //noinspection SpellCheckingInspection
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             dateFormat.setTimeZone(cal.getTimeZone());
 

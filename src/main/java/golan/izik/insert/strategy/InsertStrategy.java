@@ -1,4 +1,4 @@
-package golan.izik.insert;
+package golan.izik.insert.strategy;
 
 import java.util.Calendar;
 
@@ -43,7 +43,7 @@ public interface InsertStrategy {
      * Value should be between 1 and 24 (including both)
      * (the table holds one row per hour)
      */
-    int getDailyRowsCountPerDevice(Calendar cal);
+    int getDailyRowsCountPerDevice();
 
     /**
      * If we are in daily aggregation then there is no hour but for the hourly aggregation the returned value is true

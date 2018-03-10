@@ -1,4 +1,4 @@
-package golan.izik.insert;
+package golan.izik.insert.aggregated;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.ResultSetFuture;
@@ -7,6 +7,7 @@ import com.datastax.driver.core.querybuilder.Batch;
 import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import golan.izik.CassandraShared;
+import golan.izik.insert.strategy.InsertStrategy;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,20 +16,22 @@ import java.util.List;
 import java.util.concurrent.Future;
 
 public class InsertToAggregatedTable {
-    private static final SimpleDateFormat DF_DATE = new SimpleDateFormat("YYYY-MM-dd"             );
+    @SuppressWarnings("SpellCheckingInspection")
+    private static final SimpleDateFormat DF_DATE = new SimpleDateFormat("YYYY-MM-dd");
+    @SuppressWarnings("SpellCheckingInspection")
     private static final SimpleDateFormat DF_LOG  = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss,sss");
 
     private final InsertStrategy strategy;
 
-    InsertToAggregatedTable(InsertStrategy insertStrategy) {
+    public InsertToAggregatedTable(InsertStrategy insertStrategy) {
         this.strategy = insertStrategy;
     }
 
-    static String logTimestamp() {
+    private static String logTimestamp() {
         return DF_LOG.format(System.currentTimeMillis());
     }
 
-    protected void insert() throws InterruptedException{
+    public void insert() throws InterruptedException{
         List<ResultSetFuture> futures = new ArrayList<>();
 
         try (Cluster cluster = CassandraShared.initCluster()) {
@@ -48,7 +51,7 @@ public class InsertToAggregatedTable {
                 final int   month         = cal.get(Calendar.MONTH) + 1;
                 final int   day           = cal.get(Calendar.DAY_OF_MONTH);
                 final int   deviceCount   = strategy.getDeviceCountPerDay(cal);
-                final int   rowsPerDay    = strategy.getDailyRowsCountPerDevice(cal);
+                final int   rowsPerDay    = strategy.getDailyRowsCountPerDevice();
 
                 if ((strategy.isHourExist()) && (rowsPerDay  <=0 || rowsPerDay  >24)) throw new IllegalArgumentException("The value of [getDailyRowsCountPerDevice] is ["+rowsPerDay  +"] and should be between 1 and 24 (including both)");
 
@@ -99,7 +102,7 @@ public class InsertToAggregatedTable {
         System.out.println(logTimestamp() + " - Done=["+futures.stream().filter(Future::isDone).count()+"] Cancelled=["+futures.stream().filter(Future::isCancelled).count()+"]");
     }
 
-    String getDeviceId(int month, int day, int deviceIndex) {
+    private String getDeviceId(int month, int day, int deviceIndex) {
         return strategy.getDeviceId(month, day, deviceIndex);
     }
 

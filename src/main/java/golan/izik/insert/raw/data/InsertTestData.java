@@ -1,4 +1,4 @@
-package golan.izik.insert;
+package golan.izik.insert.raw.data;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
@@ -6,8 +6,9 @@ import golan.izik.CassandraShared;
 
 import java.util.Calendar;
 
-public class InsertTestData {
+class InsertTestData {
 
+    @SuppressWarnings("SpellCheckingInspection")
     private static final String INSERT_QUERY_TEMPLATE =
             "INSERT INTO "+ CassandraShared.KEYSPACE +".data_collector " +
                     "(year, month, day, hour, minutes, seconds, user_bucket,   project_bucket,   user_id,   project_id,   environment, device_id, timestamp, device_firmware,   device_type,   user_param) " +
@@ -82,6 +83,7 @@ public class InsertTestData {
         return String.format(INSERT_QUERY_TEMPLATE, year, month, day, hour, minute, second, deviceId, c.getTimeInMillis());
     }
 
+    @SuppressWarnings({"unused", "SpellCheckingInspection"})
     private static void insertSingleRow(Session session) {
         Calendar cal2 = Calendar.getInstance();
         cal2.set(2018, Calendar.JANUARY, 27, 12, 12, 1);

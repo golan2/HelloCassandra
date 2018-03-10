@@ -1,4 +1,6 @@
-package golan.izik.insert;
+package golan.izik.insert.strategy.daily;
+
+import golan.izik.insert.aggregated.InsertToAggregatedTable;
 
 import java.util.Calendar;
 import java.util.concurrent.ThreadLocalRandom;
@@ -57,7 +59,7 @@ public class InsertDailyAggregated1969 extends AbsInsertDailyAggregated {
     }
 
     @Override
-    public int getDailyRowsCountPerDevice(Calendar cal) {
+    public int getDailyRowsCountPerDevice() {
         return 1;
     }
 }

@@ -1,4 +1,4 @@
-package golan.izik.insert;
+package golan.izik.insert.raw.data;
 
 import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.RegularStatement;
@@ -11,7 +11,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class AbsHourInjector implements Runnable {
+abstract class AbsHourInjector implements Runnable {
     private final Session session;
     private final String  deviceId;
     private final int     year;
@@ -36,6 +36,7 @@ public abstract class AbsHourInjector implements Runnable {
         try {
             long ts = System.nanoTime();
             insertHourlyData();
+            //noinspection SpellCheckingInspection
             System.out.println(deviceId + String.format(" - OK - deviceId=[%s] time=[%d-%d-%d %d] perf=[%d]", deviceId, year, month, day, hour, (System.nanoTime()-ts)/ 1_000_000_000));
         } catch (Exception e) {
             System.out.println(deviceId + " - ERR - " + e.getMessage());
@@ -46,9 +47,9 @@ public abstract class AbsHourInjector implements Runnable {
         Batch batch = QueryBuilder.unloggedBatch();
         long timestamp = this.beginOfHour;
 
-        for (int minutes : getMinutesArray(this.hour)) {
+        for (int minutes : getMinutesArray()) {
             int lastOne = -1;
-            for (int seconds : getSecondsArray(minutes)) {
+            for (int seconds : getSecondsArray()) {
                 if (lastOne!=-1) {
                     timestamp += Math.abs(seconds-lastOne)*1000;    //change the timestamp according to the diff in seconds between rounds
                 }
@@ -66,9 +67,9 @@ public abstract class AbsHourInjector implements Runnable {
         session.execute(batch);
     }
 
-    protected abstract Set<Integer> getMinutesArray(int hour);
+    protected abstract Set<Integer> getMinutesArray();
 
-    protected abstract Set<Integer> getSecondsArray(int minutes);
+    protected abstract Set<Integer> getSecondsArray();
 
     static Set<Integer> generateFullRange() {
         final HashSet<Integer> result = new HashSet<>();

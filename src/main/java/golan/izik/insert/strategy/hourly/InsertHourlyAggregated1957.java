@@ -1,4 +1,6 @@
-package golan.izik.insert;
+package golan.izik.insert.strategy.hourly;
+
+import golan.izik.insert.aggregated.InsertToAggregatedTable;
 
 import java.util.Calendar;
 
@@ -41,7 +43,7 @@ public class InsertHourlyAggregated1957 extends AbsInsertHourlyAggregated {
     }
 
     @Override
-    public int getDailyRowsCountPerDevice(Calendar cal) {
+    public int getDailyRowsCountPerDevice() {
         return 3;
     }
 

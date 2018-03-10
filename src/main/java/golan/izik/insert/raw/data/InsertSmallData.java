@@ -1,4 +1,4 @@
-package golan.izik.insert;
+package golan.izik.insert.raw.data;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
@@ -6,12 +6,13 @@ import golan.izik.CassandraShared;
 
 import java.util.Calendar;
 
-public class InsertSmallData {
+class InsertSmallData {
     private static final String[] ACTIVE_DEVICES   = {"active1", "active2", "active3"      };
     private static final String[] INACTIVE_DEVICES = {"inactive1", "inactive2", "inactive3"};
 
     private static final String SELECT_QUERY_TEMPLATE =
             "SELECT device_id from activity.data_collector WHERE year=%d and month=%d and day=%d and hour=%d AND user_bucket='user_bucket' and project_bucket='project_bucket' GROUP BY year,month,day,hour,user_bucket,project_bucket,user_id,project_id,environment,device_id;";
+    @SuppressWarnings("SpellCheckingInspection")
     private static final String INSERT_QUERY_TEMPLATE =
             "INSERT INTO "+ CassandraShared.KEYSPACE +".data_collector " +
                     "(year, month, day, hour, minutes, seconds, user_bucket,   project_bucket,   user_id,   project_id,   environment, device_id, timestamp, device_firmware,   device_type,   user_param) " +
@@ -64,30 +65,6 @@ public class InsertSmallData {
 
         }
     }
-
-    private static void insert3records(Session session, Calendar cal, int day, String devicePrefix) {
-        //avoid overflow to next day
-        if (cal.get(Calendar.HOUR_OF_DAY)>10) {
-            cal.add(Calendar.HOUR_OF_DAY, -6);
-        }
-
-        String cql = formatInsertQuery(cal, devicePrefix + "_1_" + day);
-        System.out.println(cql);
-        session.execute(cql);
-
-        cal.add(Calendar.HOUR_OF_DAY, 2);
-
-        cql = formatInsertQuery(cal, devicePrefix + "_2_" + day);
-        System.out.println(cql);
-        session.execute(cql);
-
-        cal.add(Calendar.HOUR_OF_DAY, 2);
-
-        cql = formatInsertQuery(cal, devicePrefix + "_3_" + day);
-        System.out.println(cql);
-        session.execute(cql);
-    }
-
 
     private static String formatInsertQuery(long milliseconds, String deviceId) {
         Calendar c = Calendar.getInstance();

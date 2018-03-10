@@ -1,4 +1,4 @@
-package golan.izik.insert;
+package golan.izik.insert.raw.data;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
@@ -10,13 +10,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
-public class InsertTonsOfData {
+class InsertTonsOfData {
 
     public static void main(String[] args) throws InterruptedException {
         try (Cluster cluster = CassandraShared.initCluster()) {
             Session session = cluster.connect(CassandraShared.KEYSPACE);
-//            session.execute("truncate table data_collector;");
-
             final ExecutorService tpe = Executors.newFixedThreadPool(4);
 
 
