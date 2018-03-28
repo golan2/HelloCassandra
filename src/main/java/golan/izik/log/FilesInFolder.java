@@ -2,7 +2,7 @@ package golan.izik.log;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
-import golan.izik.CassandraShared;
+import com.atnt.neo.insert.generator.CassandraShared;
 
 import java.io.IOException;
 import java.nio.file.*;

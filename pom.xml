@@ -33,7 +33,7 @@
             <configuration>
                 <archive>
                     <manifest>
-                        <mainClass>golan.izik.insert.strategy.daily.InsertDailyAggregated1969</mainClass>
+                        <mainClass>com.atnt.neo.insert.strategy.daily.InsertDailyAggregated1969</mainClass>
                     </manifest>
                 </archive>
                 <descriptorRefs>

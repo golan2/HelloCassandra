@@ -4,7 +4,7 @@ import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
-import golan.izik.CassandraShared;
+import com.atnt.neo.insert.generator.CassandraShared;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
