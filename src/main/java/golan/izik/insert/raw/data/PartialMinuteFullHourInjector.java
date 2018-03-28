@@ -9,9 +9,11 @@ import java.util.Set;
 
 /**
  * Inserts partial hour data for a single device (device_id)
- * Partial hour data ==> We insert "tpm" transaction per minute for all 60 minutes in hour
+ * Partial Hour Full Minute =>
+ *      We insert data for all 60 minutes in the given hour.
+ *      For each minute we insert only partial info; only "tpm" transaction per minute (parameter)
  */
-public class PartialMinuteFullHourInjector extends AbsHourInjector {
+public class PartialMinuteFullHourInjector extends AbsSingleDeviceInjector {
     private final int tpm;  //transactions per minute
 
     PartialMinuteFullHourInjector(Session session, String deviceId, Calendar c, int tpm) {

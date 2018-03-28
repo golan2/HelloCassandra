@@ -3,6 +3,8 @@ package golan.izik.insert.strategy.hourly;
 import golan.izik.insert.aggregated.InsertToAggregatedTable;
 
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Insert aggregated data for the year 1959. All days.
@@ -28,8 +30,11 @@ public class InsertHourlyAggregated1959 extends AbsInsertHourlyAggregated {
     }
 
     @Override
-    public int getDailyRowsCountPerDevice() {
-        return 2;
+    public Set<Integer> getHoursArray() {
+        Set<Integer> set = new HashSet<>();
+        set.add(1);
+        set.add(2);
+        return set;
     }
 
 }

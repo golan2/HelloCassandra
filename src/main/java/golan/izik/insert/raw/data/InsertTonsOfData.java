@@ -17,13 +17,13 @@ class InsertTonsOfData {
             Session session = cluster.connect(CassandraShared.KEYSPACE);
             final ExecutorService tpe = Executors.newFixedThreadPool(4);
 
+            session.execute("truncate table "+ CassandraShared.KEYSPACE+".data_collector ;");
 
             Calendar cal = Calendar.getInstance();
             cal.set(2018, Calendar.JANUARY, 27, 12, 12, 1);
 
 
-
-            for (int hour = 0 ; hour<1                                     /*32*24*/ ; hour++) {
+            for (int hour = 0 ; hour<132*24 ; hour++) {
                 for (int i=0 ; i<250 ; i++) {
                     tpe.submit(new PartialMinuteFullHourInjector(session, "hr_"+i+"_"+hour, cal, ThreadLocalRandom.current().nextInt(1,60)));
                 }

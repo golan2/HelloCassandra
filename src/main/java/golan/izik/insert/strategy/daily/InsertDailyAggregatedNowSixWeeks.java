@@ -3,6 +3,8 @@ package golan.izik.insert.strategy.daily;
 import golan.izik.insert.aggregated.InsertToAggregatedTable;
 
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class InsertDailyAggregatedNowSixWeeks extends AbsInsertDailyAggregated {
@@ -58,13 +60,8 @@ public class InsertDailyAggregatedNowSixWeeks extends AbsInsertDailyAggregated {
     }
 
     @Override
-    public String getDeviceId(int month, int day, int deviceIndex) {
+    public String getDeviceId(int year, int month, int day, int deviceIndex) {
         return "device_"+deviceIndex+"_"+ SUFFIX;
-    }
-
-    @Override
-    public int getDailyRowsCountPerDevice() {
-        return 1;
     }
 
 

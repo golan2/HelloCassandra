@@ -3,7 +3,10 @@ package golan.izik.insert.strategy.hourly;
 import golan.izik.insert.aggregated.InsertToAggregatedTable;
 
 import java.util.Calendar;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Insert data for the first 6 weeks in 1955
@@ -57,12 +60,12 @@ public class InsertHourlyAggregated1955 extends AbsInsertHourlyAggregated {
     }
 
     @Override
-    public int getDailyRowsCountPerDevice() {
-        return 24;
+    public Set<Integer> getHoursArray() {
+        return IntStream.range(0,24).boxed().collect(Collectors.toSet());   //[0,1,2.., 23]
     }
 
     @Override
-    public String getDeviceId(int month, int day, int deviceIndex) {
+    public String getDeviceId(int year, int month, int day, int deviceIndex) {
         return "device_"+deviceIndex+"_"+ SUFFIX;
     }
 

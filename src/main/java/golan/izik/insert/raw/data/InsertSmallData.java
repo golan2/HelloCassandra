@@ -29,7 +29,7 @@ class InsertSmallData {
 
         try (Cluster cluster = CassandraShared.initCluster()) {
 
-            Session session = cluster.connect("activity");
+            Session session = cluster.connect(CassandraShared.KEYSPACE);
             Calendar now = Calendar.getInstance();
 
             long milliseconds;
@@ -61,7 +61,7 @@ class InsertSmallData {
             System.out.println(formatSelectQuery(milliseconds));
 
 
-            System.out.println("insertion took "+((System.nanoTime() - startTime)/ 1_000_000_000) + " seconds ...");
+                System.out.println("insertion took "+((System.nanoTime() - startTime)/ 1_000_000_000) + " seconds ...");
 
         }
     }

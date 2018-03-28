@@ -11,7 +11,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
-abstract class AbsHourInjector implements Runnable {
+abstract class AbsSingleDeviceInjector implements Runnable {
     private final Session session;
     private final String  deviceId;
     private final int     year;
@@ -20,7 +20,7 @@ abstract class AbsHourInjector implements Runnable {
     private final int     hour;
     private final long    beginOfHour;
 
-    AbsHourInjector(Session session, String deviceId, Calendar c) {
+    AbsSingleDeviceInjector(Session session, String deviceId, Calendar c) {
         this.day         = c.get(Calendar.DAY_OF_MONTH);
         this.session     = session;
         this.deviceId    = deviceId;

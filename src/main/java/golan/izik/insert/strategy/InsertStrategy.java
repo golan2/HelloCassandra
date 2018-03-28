@@ -1,6 +1,7 @@
 package golan.izik.insert.strategy;
 
 import java.util.Calendar;
+import java.util.Set;
 
 public interface InsertStrategy {
     boolean shouldTruncateTableBeforeStart();
@@ -31,7 +32,7 @@ public interface InsertStrategy {
     /**
      * Generate device id
      */
-    String getDeviceId(int month, int day, int deviceIndex);
+    String getDeviceId(int year, int month, int day, int deviceIndex);
 
     /**
      * How many devices reporting in the given day
@@ -43,10 +44,11 @@ public interface InsertStrategy {
      * Value should be between 1 and 24 (including both)
      * (the table holds one row per hour)
      */
-    int getDailyRowsCountPerDevice();
+    Set<Integer> getHoursArray();
 
     /**
-     * If we are in daily aggregation then there is no hour but for the hourly aggregation the returned value is true
+     * Do we want to insert data to hours as well or only for day.
+     * For the high aggregation we probably return false; for raw data and low aggregation we will probably want hours
      */
     boolean isHourExist();
 
@@ -54,4 +56,14 @@ public interface InsertStrategy {
      * The name of the table to which we insert data
      */
     String getTableName();
+
+    abstract String getDeviceType(int year, int month, int day, int deviceIndex);
+
+    int getBillingPoints(int month, int day, int hour);
+
+    int getCounter(int month, int day, int hour);
+
+    int getDataPoints(int month, int day, int hour);
+
+    long getVolumeSize(int month, int day, int hour);
 }
