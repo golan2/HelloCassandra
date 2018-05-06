@@ -14,7 +14,7 @@ class InsertSmallData {
             "SELECT device_id from activity.data_collector WHERE year=%d and month=%d and day=%d and hour=%d AND user_bucket='user_bucket' and project_bucket='project_bucket' GROUP BY year,month,day,hour,user_bucket,project_bucket,user_id,project_id,environment,device_id;";
     @SuppressWarnings("SpellCheckingInspection")
     private static final String INSERT_QUERY_TEMPLATE =
-            "INSERT INTO "+ CassandraShared.KEYSPACE +".data_collector " +
+            "INSERT INTO "+ CassandraShared.KEYSPACE +"." + CassandraShared.RAW_DATA_TABLE + " " +
                     "(year, month, day, hour, minutes, seconds, user_bucket,   project_bucket,   user_id,   project_id,   environment, device_id, timestamp, device_firmware,   device_type,   user_param) " +
                     "VALUES " +
                     "(%d,   %d,    %d,  %d,   %d,      %d,      'user_bucket', 'project_bucket', 'user_id', 'project_id', 'environment',   '%s',      %d,    'device_firmware', 'device_type', {'eventType': 'Flow','name': 'Calamp'}  );";
@@ -34,7 +34,7 @@ class InsertSmallData {
 
             long milliseconds;
 
-            session.execute("truncate table data_collector ;");
+            session.execute("truncate table "+CassandraShared.RAW_DATA_TABLE+" ;");
 
             //Events for current time
             milliseconds = now.getTimeInMillis();

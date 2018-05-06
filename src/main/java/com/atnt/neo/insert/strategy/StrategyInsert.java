@@ -3,7 +3,7 @@ package com.atnt.neo.insert.strategy;
 import java.util.Calendar;
 import java.util.Set;
 
-public interface InsertStrategy {
+public interface StrategyInsert {
     boolean shouldTruncateTableBeforeStart();
 
     /**
@@ -57,7 +57,7 @@ public interface InsertStrategy {
      */
     String getTableName();
 
-    abstract String getDeviceType(int year, int month, int day, int deviceIndex);
+    String getDeviceType(int year, int month, int day, int deviceIndex);
 
     int getBillingPoints(int month, int day, int hour);
 

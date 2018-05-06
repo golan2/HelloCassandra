@@ -4,13 +4,13 @@ import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.atnt.neo.insert.generator.CassandraShared;
 import com.atnt.neo.insert.generator.AbsInsertToCassandra;
-import com.atnt.neo.insert.strategy.usage.InsertUsageDailyAggregated1964_65;
+import com.atnt.neo.insert.strategy.usage.StrategyInsertDailyAggregated1964_65;
 
 import java.util.Collections;
 
 public class InsertToUsageDailyTable extends AbsInsertToCassandra {
 
-    public InsertToUsageDailyTable(InsertUsageDailyAggregated1964_65 insertStrategy) {
+    public InsertToUsageDailyTable(StrategyInsertDailyAggregated1964_65 insertStrategy) {
         super(insertStrategy);
     }
 

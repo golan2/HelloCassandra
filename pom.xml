@@ -33,7 +33,7 @@
             <configuration>
                 <archive>
                     <manifest>
-                        <mainClass>com.atnt.neo.insert.strategy.daily.InsertDailyAggregated1969</mainClass>
+                        <mainClass>com.atnt.neo.insert.strategy.raw.data.StrategyInsertRawData1988</mainClass>
                     </manifest>
                 </archive>
                 <descriptorRefs>
@@ -64,5 +64,36 @@
         </plugin>
 
     </plugins></build>
+
+
+    <profiles>
+        <profile>
+            <id>create-lib</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <version>2.10</version>
+                        <executions>
+                            <execution>
+                                <id>copy-dependencies</id>
+                                <goals>
+                                    <goal>copy-dependencies</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                                    <overWriteReleases>false</overWriteReleases>
+                                    <overWriteSnapshots>false</overWriteSnapshots>
+                                    <overWriteIfNewer>true</overWriteIfNewer>
+                                    <includeScope>runtime</includeScope>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

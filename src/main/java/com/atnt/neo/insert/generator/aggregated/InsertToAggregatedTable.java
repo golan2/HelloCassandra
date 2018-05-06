@@ -4,19 +4,19 @@ import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.atnt.neo.insert.generator.CassandraShared;
 import com.atnt.neo.insert.generator.AbsInsertToCassandra;
-import com.atnt.neo.insert.strategy.AbsInsertAggregated;
+import com.atnt.neo.insert.strategy.AbsStrategyInsertAggregated;
 
 import java.util.Collections;
 
 public class InsertToAggregatedTable extends AbsInsertToCassandra {
 
-    public InsertToAggregatedTable(AbsInsertAggregated insertStrategy) {
+    public InsertToAggregatedTable(AbsStrategyInsertAggregated insertStrategy) {
         super(insertStrategy);
     }
 
     @Override
-    protected AbsInsertAggregated getStrategy() {
-        return (AbsInsertAggregated) super.getStrategy();
+    protected AbsStrategyInsertAggregated getStrategy() {
+        return (AbsStrategyInsertAggregated) super.getStrategy();
     }
 
     @Override

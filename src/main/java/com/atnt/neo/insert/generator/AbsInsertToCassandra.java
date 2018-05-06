@@ -4,12 +4,14 @@ import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.ResultSetFuture;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.querybuilder.Insert;
-import com.atnt.neo.insert.strategy.InsertStrategy;
+import com.atnt.neo.insert.strategy.StrategyInsert;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -19,10 +21,10 @@ public abstract class AbsInsertToCassandra {
     private static final SimpleDateFormat DF_DATE = new SimpleDateFormat("YYYY-MM-dd");
     @SuppressWarnings("SpellCheckingInspection")
     private static final SimpleDateFormat DF_LOG  = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss,sss");
-    private final InsertStrategy strategy;
+    private final StrategyInsert strategy;
 
-    protected AbsInsertToCassandra(InsertStrategy insertStrategy) {
-        this.strategy = insertStrategy;
+    protected AbsInsertToCassandra(StrategyInsert strategyInsert) {
+        this.strategy = strategyInsert;
     }
 
     private static String logTimestamp() {
@@ -125,7 +127,14 @@ public abstract class AbsInsertToCassandra {
 
     protected abstract Iterable<Insert> createInsertQueries(int deviceIndex, int year, int month, int day, int hour);
 
-    protected InsertStrategy getStrategy() {
+    protected Date getTimestamp(Calendar cal, int month, int day, int hour, Integer minute, Integer second) {
+        //noinspection MagicConstant
+        cal.set(getStrategy().getYear(), month-1, day, hour, minute, second);
+        cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+        return cal.getTime();
+    }
+
+    protected StrategyInsert getStrategy() {
         return strategy;
     }
 }

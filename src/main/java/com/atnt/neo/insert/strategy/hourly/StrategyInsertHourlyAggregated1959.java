@@ -13,10 +13,10 @@ import java.util.Set;
  * Each device reports "Y" hours that day (first "Y" hours)
  * The values of X and Y are date dependant on day and month and we guarantee a different device count every day
  */
-public class InsertHourlyAggregated1959 extends AbsInsertHourlyAggregated {
+public class StrategyInsertHourlyAggregated1959 extends AbsStrategyInsertHourlyAggregated {
 
     public static void main(String[] args) throws InterruptedException {
-        new InsertToAggregatedTable(new InsertHourlyAggregated1959()).insert();
+        new InsertToAggregatedTable(new StrategyInsertHourlyAggregated1959()).insert();
     }
 
     @Override

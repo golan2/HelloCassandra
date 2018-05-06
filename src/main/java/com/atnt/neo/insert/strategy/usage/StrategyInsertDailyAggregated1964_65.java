@@ -1,6 +1,6 @@
 package com.atnt.neo.insert.strategy.usage;
 
-import com.atnt.neo.insert.strategy.AbsInsertAggregated;
+import com.atnt.neo.insert.strategy.AbsStrategyInsertAggregated;
 import com.atnt.neo.insert.generator.usage.InsertToUsageDailyTable;
 
 import java.util.Calendar;
@@ -9,10 +9,10 @@ import java.util.Set;
 
 
 //1964-1965
-public class InsertUsageDailyAggregated1964_65 extends AbsInsertAggregated {
+public class StrategyInsertDailyAggregated1964_65 extends AbsStrategyInsertAggregated {
 
     public static void main(String[] args) throws InterruptedException {
-        new InsertToUsageDailyTable(new InsertUsageDailyAggregated1964_65()).insert();
+        new InsertToUsageDailyTable(new StrategyInsertDailyAggregated1964_65()).insert();
     }
 
 

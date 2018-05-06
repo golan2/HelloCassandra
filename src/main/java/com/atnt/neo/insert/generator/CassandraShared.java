@@ -8,7 +8,8 @@ public class CassandraShared {
     public  static final String HOST                      = "iot-toolbox";
     public  static final String KEYSPACE                  = "bactivity";
     public  static final String CASSANDRA_HOST_NAME       = "cassandra";
-    public  static final String RAW_DATA_TABLE            = "data_collector2";
+    public  static final String RAW_DATA_TABLE            = "message_info_by_type";
+    public  static final String STREAMS_TABLE             = "streams_data_by_time";
     public  static final int    MAX_BATCH_SIZE            =     100;
     public  static final int    MAX_PARALLELISM_CASSANDRA =      10;
     private static final int    CLIENT_TIMEOUT            = 300_000;

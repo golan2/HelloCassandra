@@ -2,7 +2,7 @@ package com.atnt.neo.insert.strategy;
 
 import java.util.Calendar;
 
-public abstract class AbsInsertStrategy implements InsertStrategy {
+public abstract class AbsStrategyInsert implements StrategyInsert {
     @Override
     public boolean shouldTruncateTableBeforeStart() {
         return true;

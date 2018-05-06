@@ -11,14 +11,14 @@ import java.util.stream.IntStream;
 /**
  * Insert data for the first 6 weeks in 1955
  */
-public class InsertHourlyAggregated1955 extends AbsInsertHourlyAggregated {
+public class StrategyInsertHourlyAggregated1955 extends AbsStrategyInsertHourlyAggregated {
 
     private static final int SUFFIX = ThreadLocalRandom.current().nextInt(0, 99999);
 
     private final Boolean truncateTableBeforeStart;
     private final Integer deviceCountPerDay;
 
-    private InsertHourlyAggregated1955(Boolean truncate, Integer devicesPerDay) {
+    private StrategyInsertHourlyAggregated1955(Boolean truncate, Integer devicesPerDay) {
         this.truncateTableBeforeStart = truncate;
         this.deviceCountPerDay = devicesPerDay;
     }
@@ -34,7 +34,7 @@ public class InsertHourlyAggregated1955 extends AbsInsertHourlyAggregated {
             devicesPerDay = -1;
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertToAggregatedTable(new InsertHourlyAggregated1955(truncate, devicesPerDay)).insert();
+        new InsertToAggregatedTable(new StrategyInsertHourlyAggregated1955(truncate, devicesPerDay)).insert();
     }
 
     @Override

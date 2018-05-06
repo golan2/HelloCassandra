@@ -2,7 +2,7 @@ package com.atnt.neo.insert.strategy;
 
 import java.util.Calendar;
 
-public abstract class AbsInsertAggregated extends AbsInsertStrategy {
+public abstract class AbsStrategyInsertAggregated extends AbsStrategyInsert {
 
     @Override
     public Calendar getLastDay() {

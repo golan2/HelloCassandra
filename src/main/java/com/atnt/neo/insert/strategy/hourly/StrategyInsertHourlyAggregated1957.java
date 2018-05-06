@@ -12,10 +12,10 @@ import java.util.stream.IntStream;
  * Two devices a day.
  * Three transactions per device.
  */
-public class InsertHourlyAggregated1957 extends AbsInsertHourlyAggregated {
+public class StrategyInsertHourlyAggregated1957 extends AbsStrategyInsertHourlyAggregated {
 
     public static void main(String[] args) throws InterruptedException {
-        new InsertToAggregatedTable(new InsertHourlyAggregated1957()).insert();
+        new InsertToAggregatedTable(new StrategyInsertHourlyAggregated1957()).insert();
     }
 
     @Override

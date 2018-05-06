@@ -4,16 +4,14 @@ import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.atnt.neo.insert.generator.CassandraShared;
 import com.atnt.neo.insert.generator.AbsInsertToCassandra;
-import com.atnt.neo.insert.strategy.raw.data.AbsInsertRawDataStrategy;
+import com.atnt.neo.insert.strategy.raw.data.AbsStrategyRawDataInsert;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Set;
-import java.util.TimeZone;
 
 public class InsertToRawDataTable extends AbsInsertToCassandra {
-    public InsertToRawDataTable(AbsInsertRawDataStrategy insertStrategy) {
+    public InsertToRawDataTable(AbsStrategyRawDataInsert insertStrategy) {
         super(insertStrategy);
     }
 
@@ -40,7 +38,7 @@ public class InsertToRawDataTable extends AbsInsertToCassandra {
                 insert.value("minutes", minute);
                 insert.value("seconds", second);
 
-                insert.value("device_id", deviceId);
+                insert.value("device_id", getStrategy().getDeviceId(year, month, day, deviceId));
                 insert.value("device_type", "device_type");
                 insert.value("device_firmware", "device_firmware");
                 insert.value("transaction_id", "transaction_id");
@@ -56,15 +54,8 @@ public class InsertToRawDataTable extends AbsInsertToCassandra {
         return result;
     }
 
-    private Date getTimestamp(Calendar cal, int month, int day, int hour, Integer minute, Integer second) {
-        //noinspection MagicConstant
-        cal.set(getStrategy().getYear(), month-1, day, hour, minute, second);
-        cal.setTimeZone(TimeZone.getTimeZone("GMT"));
-        return cal.getTime();
-    }
-
-    protected AbsInsertRawDataStrategy getStrategy() {
-        return (AbsInsertRawDataStrategy) super.getStrategy();
+    protected AbsStrategyRawDataInsert getStrategy() {
+        return (AbsStrategyRawDataInsert) super.getStrategy();
     }
 
 }

@@ -15,7 +15,7 @@ class RecentlyInactive {
     private static final int    HOURS_IN_MONTH      = 30 * 24;
 
     private static final String SELECT_QUERY_TEMPLATE =
-            "SELECT device_id from data_collector WHERE year=%d and month=%d and day=%d and hour=%d AND user_bucket='user_bucket' and project_bucket='project_bucket' GROUP BY year,month,day,hour,user_bucket,project_bucket,user_id,project_id,environment,minutes,seconds,device_id;";
+            "SELECT device_id from "+CassandraShared.RAW_DATA_TABLE+" WHERE year=%d and month=%d and day=%d and hour=%d AND user_bucket='user_bucket' and project_bucket='project_bucket' GROUP BY year,month,day,hour,user_bucket,project_bucket,user_id,project_id,environment,minutes,seconds,device_id;";
 
 
     public static void main(String[] args) {

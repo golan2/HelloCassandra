@@ -1,5 +1,6 @@
 package com.atnt.neo.insert.strategy.raw.data;
 
+import com.atnt.neo.insert.generator.CassandraShared;
 import com.atnt.neo.insert.generator.data.InsertToRawDataTable;
 
 import java.util.Calendar;
@@ -7,13 +8,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class InsertRawData1989 extends AbsInsertRawDataStrategy {
+public class StrategyInsertRawData1988 extends AbsStrategyRawDataInsert {
 
     private final Boolean truncateTableBeforeStart;
     private final Integer deviceCountPerDay;
 
 
-    private InsertRawData1989(Boolean truncate, Integer devicesPerDay) {
+    private StrategyInsertRawData1988(Boolean truncate, Integer devicesPerDay) {
         this.truncateTableBeforeStart = truncate;
         this.deviceCountPerDay = devicesPerDay;
     }
@@ -30,12 +31,19 @@ public class InsertRawData1989 extends AbsInsertRawDataStrategy {
             System.out.println("Missing command-line-argument. Setting devicesPerDay to ["+devicesPerDay+"]");
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertToRawDataTable(new InsertRawData1989(truncate, devicesPerDay)).insert();
+        new InsertToRawDataTable(new StrategyInsertRawData1988(truncate, devicesPerDay)).insert();
+    }
+
+    @Override
+    public Calendar getFirstDay() {
+        return getLastDay();
     }
 
     @Override
     public Calendar getLastDay() {
-        return getFirstDay();
+        Calendar cal = Calendar.getInstance();
+        cal.set(getYear(), Calendar.DECEMBER, 31);
+        return cal;
     }
 
     @Override
@@ -50,7 +58,7 @@ public class InsertRawData1989 extends AbsInsertRawDataStrategy {
 
     @Override
     public int getYear() {
-        return 1989;
+        return 1988;
     }
 
     @Override
@@ -60,12 +68,12 @@ public class InsertRawData1989 extends AbsInsertRawDataStrategy {
 
     @Override
     public Set<Integer> getHoursArray() {
-        return IntStream.range(0,2).boxed().collect(Collectors.toSet());
+        return IntStream.range(0,24).boxed().collect(Collectors.toSet());
     }
 
     @Override
     public String getTableName() {
-        return "data_collector";
+        return CassandraShared.RAW_DATA_TABLE;
     }
 
     @Override

@@ -5,13 +5,13 @@ import com.atnt.neo.insert.generator.aggregated.InsertToAggregatedTable;
 import java.util.Calendar;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class InsertDailyAggregated1969 extends AbsInsertDailyAggregated {
+public class StrategyInsertDailyAggregated1969 extends AbsStrategyInsertDailyAggregated {
 
     private static final int SUFFIX = ThreadLocalRandom.current().nextInt(0, 99999);
     private final Boolean truncateTableBeforeStart;
     private final Integer deviceCountPerDay;
 
-    private InsertDailyAggregated1969(Boolean truncate, Integer devicesPerDay) {
+    private StrategyInsertDailyAggregated1969(Boolean truncate, Integer devicesPerDay) {
         this.truncateTableBeforeStart = truncate;
         this.deviceCountPerDay = devicesPerDay;
     }
@@ -27,7 +27,7 @@ public class InsertDailyAggregated1969 extends AbsInsertDailyAggregated {
             devicesPerDay = -1;
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertToAggregatedTable(new InsertDailyAggregated1969(truncate, devicesPerDay)).insert();
+        new InsertToAggregatedTable(new StrategyInsertDailyAggregated1969(truncate, devicesPerDay)).insert();
     }
 
     @Override

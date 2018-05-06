@@ -1,11 +1,11 @@
 package com.atnt.neo.insert.strategy.daily;
 
-import com.atnt.neo.insert.strategy.AbsInsertAggregated;
+import com.atnt.neo.insert.strategy.AbsStrategyInsertAggregated;
 
 import java.util.Collections;
 import java.util.Set;
 
-public abstract class AbsInsertDailyAggregated extends AbsInsertAggregated {
+public abstract class AbsStrategyInsertDailyAggregated extends AbsStrategyInsertAggregated {
 
     @Override
     public String getTableName() {
