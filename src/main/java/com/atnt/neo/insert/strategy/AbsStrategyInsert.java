@@ -30,24 +30,5 @@ public abstract class AbsStrategyInsert implements StrategyInsert {
         return String.format("device_type_%2d", day % 10);
     }
 
-    @Override
-    public int getBillingPoints(int month, int day, int hour) {
-        return 10;
-    }
-
-    @Override
-    public int getCounter(int month, int day, int hour) {
-        return 20;
-    }
-
-    @Override
-    public int getDataPoints(int month, int day, int hour) {
-        return 30;
-    }
-
-    @Override
-    public long getVolumeSize(int month, int day, int hour) {
-        return 40;
-    }
 
 }

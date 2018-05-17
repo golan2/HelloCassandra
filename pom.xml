@@ -33,7 +33,7 @@
             <configuration>
                 <archive>
                     <manifest>
-                        <mainClass>com.atnt.neo.insert.strategy.raw.data.StrategyInsertRawData1988</mainClass>
+                        <mainClass>com.atnt.neo.insert.strategy.raw.data.StrategyInsertCounters1988</mainClass>
                     </manifest>
                 </archive>
                 <descriptorRefs>

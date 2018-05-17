@@ -1,15 +1,6 @@
-package com.atnt.neo.insert.strategy;
+package com.atnt.neo.insert.strategy.raw.data;
 
-import java.util.Calendar;
-
-public abstract class AbsStrategyInsertAggregated extends AbsStrategyInsert {
-
-    @Override
-    public Calendar getLastDay() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(getYear(), Calendar.DECEMBER, 31);
-        return cal;
-    }
+public abstract class AbsStrategyInsertCounters extends AbsStrategyInsertRawData {
 
     @Override
     public int getBillingPoints(int month, int day, int hour) {
@@ -30,6 +21,5 @@ public abstract class AbsStrategyInsertAggregated extends AbsStrategyInsert {
     public long getVolumeSize(int month, int day, int hour) {
         return 40;
     }
-
 
 }

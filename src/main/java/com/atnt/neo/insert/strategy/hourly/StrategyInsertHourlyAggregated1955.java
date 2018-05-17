@@ -1,6 +1,7 @@
 package com.atnt.neo.insert.strategy.hourly;
 
 import com.atnt.neo.insert.generator.aggregated.InsertToAggregatedTable;
+import com.atnt.neo.insert.strategy.StrategyUtil;
 
 import java.util.Calendar;
 import java.util.Set;
@@ -61,7 +62,7 @@ public class StrategyInsertHourlyAggregated1955 extends AbsStrategyInsertHourlyA
 
     @Override
     public Set<Integer> getHoursArray() {
-        return IntStream.range(0,24).boxed().collect(Collectors.toSet());   //[0,1,2.., 23]
+        return StrategyUtil.generate24hours();
     }
 
     @Override

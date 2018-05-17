@@ -2,15 +2,9 @@ package com.atnt.neo.insert.strategy.raw.data;
 
 import com.atnt.neo.insert.strategy.AbsStrategyInsert;
 
-import java.util.Calendar;
 import java.util.Set;
 
-public abstract class AbsStrategyRawDataInsert extends AbsStrategyInsert {
-    @Override
-    public Calendar getLastDay() {
-        return null;
-    }
-
+public abstract class AbsStrategyInsertRawData extends AbsStrategyInsert {
     @Override
     public boolean isHourExist() {
         return true;
@@ -20,4 +14,5 @@ public abstract class AbsStrategyRawDataInsert extends AbsStrategyInsert {
 
     public abstract Set<Integer> getSecondsArray();
 
+    public int getPartSelector(int year, int month, int day, int hour, Integer minute, Integer second) { return -1;}
 }

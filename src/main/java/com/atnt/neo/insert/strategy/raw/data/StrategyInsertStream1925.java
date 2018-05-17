@@ -1,22 +1,21 @@
 package com.atnt.neo.insert.strategy.raw.data;
 
-import com.atnt.neo.insert.generator.CassandraShared;
-import com.atnt.neo.insert.generator.data.InsertToRawDataTable;
+import com.atnt.neo.insert.generator.streams.InsertToMiniDc;
+import com.atnt.neo.insert.strategy.StrategyUtil;
 
 import java.util.Calendar;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class StrategyInsertRawData1989 extends AbsStrategyRawDataInsert {
+public class StrategyInsertStream1925 extends AbsStrategyInsertCounters {
 
     private final Boolean truncateTableBeforeStart;
     private final Integer deviceCountPerDay;
 
-
-    private StrategyInsertRawData1989(Boolean truncate, Integer devicesPerDay) {
-        this.truncateTableBeforeStart = truncate;
-        this.deviceCountPerDay = devicesPerDay;
+    private StrategyInsertStream1925(Boolean truncateTableBeforeStart, Integer deviceCountPerDay) {
+        this.truncateTableBeforeStart = truncateTableBeforeStart;
+        this.deviceCountPerDay = deviceCountPerDay;
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -27,31 +26,34 @@ public class StrategyInsertRawData1989 extends AbsStrategyRawDataInsert {
             devicesPerDay = Integer.parseInt(args[1]);
         } catch (Exception e) {
             truncate = false;
-            devicesPerDay = 1;
+            devicesPerDay = 20;
             System.out.println("Missing command-line-argument. Setting devicesPerDay to ["+devicesPerDay+"]");
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertToRawDataTable(new StrategyInsertRawData1989(truncate, devicesPerDay)).insert();
-    }
+        new InsertToMiniDc(new StrategyInsertStream1925(truncate, devicesPerDay)).insert();
 
-    @Override
-    public Calendar getLastDay() {
-        return getFirstDay();
     }
 
     @Override
     public Set<Integer> getMinutesArray() {
-        return IntStream.range(0,60).boxed().collect(Collectors.toSet());
+        return StrategyUtil.generateEveryTwoMinutes();
     }
 
     @Override
     public Set<Integer> getSecondsArray() {
-        return IntStream.range(0,60).filter(x->x%2==0).boxed().collect(Collectors.toSet());         //0,2,4,...58
+        return StrategyUtil.singleValue();
     }
 
     @Override
     public int getYear() {
-        return 1989;
+        return 1925;
+    }
+
+    @Override
+    public Calendar getLastDay() {
+        final Calendar firstDay = getFirstDay();
+        firstDay.add(Calendar.DAY_OF_YEAR, 20);
+        return firstDay;
     }
 
     @Override
@@ -61,12 +63,12 @@ public class StrategyInsertRawData1989 extends AbsStrategyRawDataInsert {
 
     @Override
     public Set<Integer> getHoursArray() {
-        return IntStream.range(0,2).boxed().collect(Collectors.toSet());
+        return StrategyUtil.generate24hours();
     }
 
     @Override
     public String getTableName() {
-        return CassandraShared.RAW_DATA_TABLE;
+        return "mini_dc";
     }
 
     @Override
