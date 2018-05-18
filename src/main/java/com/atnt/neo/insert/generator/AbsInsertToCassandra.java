@@ -161,7 +161,7 @@ public abstract class AbsInsertToCassandra {
 
     protected void appendInsertDeviceInfo(int deviceId, int year, int month, int day, Insert insert) {
         insert.value("device_id", getStrategy().getDeviceId(year, month, day, deviceId));
-        insert.value("device_type", "device_type");
+        insert.value("device_type", getStrategy().getDeviceType(year, month, day, deviceId));
         insert.value("device_firmware", "device_firmware");
     }
 

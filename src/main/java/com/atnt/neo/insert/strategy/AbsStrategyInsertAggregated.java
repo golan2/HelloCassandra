@@ -1,6 +1,7 @@
 package com.atnt.neo.insert.strategy;
 
 import java.util.Calendar;
+import java.util.Set;
 
 public abstract class AbsStrategyInsertAggregated extends AbsStrategyInsert {
 
@@ -31,5 +32,23 @@ public abstract class AbsStrategyInsertAggregated extends AbsStrategyInsert {
         return 40;
     }
 
+    @Override
+    public boolean isHourExist() {
+        return false;
+    }
 
+    @Override
+    public Set<Integer> getHoursArray() {
+        throw new RuntimeException("Aggregated tables do not have hours field");
+    }
+
+    @Override
+    public Set<Integer> getMinutesArray() {
+        throw new RuntimeException("Aggregated tables do not have minutes field");
+    }
+
+    @Override
+    public Set<Integer> getSecondsArray() {
+        throw new RuntimeException("Aggregated tables do not have seconds field");
+    }
 }

@@ -7,12 +7,18 @@ import com.atnt.neo.insert.strategy.StrategyUtil;
 import java.util.Calendar;
 import java.util.Set;
 
+/**
+ * Insert data to {@link CassandraShared#RAW_DATA_TABLE} for several days in 1975
+ * 10,000 Devices
+ * Every 2 minutes
+ * 24 hours a day
+ */
 public class StrategyInsertMessageInfo1975 extends AbsStrategyInsertCounters {
 
     private final Boolean truncateTableBeforeStart;
     private final Integer deviceCountPerDay;
 
-    public StrategyInsertMessageInfo1975(Boolean truncateTableBeforeStart, Integer deviceCountPerDay) {
+    private StrategyInsertMessageInfo1975(Boolean truncateTableBeforeStart, Integer deviceCountPerDay) {
         this.truncateTableBeforeStart = truncateTableBeforeStart;
         this.deviceCountPerDay = deviceCountPerDay;
     }

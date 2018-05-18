@@ -10,9 +10,5 @@ public abstract class AbsStrategyInsertRawData extends AbsStrategyInsert {
         return true;
     }
 
-    public abstract Set<Integer> getMinutesArray();
-
-    public abstract Set<Integer> getSecondsArray();
-
     public int getPartSelector(int year, int month, int day, int hour, Integer minute, Integer second) { return -1;}
 }

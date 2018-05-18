@@ -13,16 +13,16 @@ public interface StrategyInsert {
     int getYear();
 
     /**
-     * The last day for which we want to insert data to.
-     * Should be some day in the year as returned from {@link #getYear()}
-     */
-    Calendar getLastDay();
-
-    /**
      * The first day for which we want to insert data to.
      * Should be some day in the year as returned from {@link #getYear()}
      */
     Calendar getFirstDay();
+
+    /**
+     * The last day for which we want to insert data to.
+     * Should be some day in the year as returned from {@link #getYear()}
+     */
+    Calendar getLastDay();
 
     /**
      * We iterate the  calendar and this is where  we decide if  we jump 1 day every iteration or two or a week...
@@ -39,6 +39,8 @@ public interface StrategyInsert {
      */
     int getDeviceCountPerDay(Calendar cal);
 
+    boolean isHourExist();
+
     /**
      * How many transaction per device in the given day.
      * Value should be between 1 and 24 (including both)
@@ -46,15 +48,6 @@ public interface StrategyInsert {
      */
     Set<Integer> getHoursArray();
 
-    /**
-     * Do we want to insert data to hours as well or only for day.
-     * For the high aggregation we probably return false; for raw data and low aggregation we will probably want hours
-     */
-    boolean isHourExist();
-
-    /**
-     * The name of the table to which we insert data
-     */
     String getTableName();
 
     String getDeviceType(int year, int month, int day, int deviceIndex);
@@ -66,4 +59,8 @@ public interface StrategyInsert {
     int getDataPoints(int month, int day, int hour);
 
     long getVolumeSize(int month, int day, int hour);
+
+    Set<Integer> getMinutesArray();
+
+    Set<Integer> getSecondsArray();
 }

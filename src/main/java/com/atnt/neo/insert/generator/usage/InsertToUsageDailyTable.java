@@ -1,16 +1,16 @@
 package com.atnt.neo.insert.generator.usage;
 
+import com.atnt.neo.insert.generator.AbsInsertToCassandra;
+import com.atnt.neo.insert.generator.CassandraShared;
+import com.atnt.neo.insert.strategy.StrategyInsert;
 import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
-import com.atnt.neo.insert.generator.CassandraShared;
-import com.atnt.neo.insert.generator.AbsInsertToCassandra;
-import com.atnt.neo.insert.strategy.usage.StrategyInsertDailyAggregated1964_65;
 
 import java.util.Collections;
 
 public class InsertToUsageDailyTable extends AbsInsertToCassandra {
 
-    public InsertToUsageDailyTable(StrategyInsertDailyAggregated1964_65 insertStrategy) {
+    public InsertToUsageDailyTable(StrategyInsert insertStrategy) {
         super(insertStrategy);
     }
 
