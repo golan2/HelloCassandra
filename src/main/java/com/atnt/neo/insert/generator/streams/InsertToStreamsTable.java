@@ -3,6 +3,7 @@ package com.atnt.neo.insert.generator.streams;
 import com.atnt.neo.insert.generator.AbsInsertToCassandra;
 import com.atnt.neo.insert.generator.CassandraShared;
 import com.atnt.neo.insert.strategy.streams.AbsStrategyInsertVerticalStreams;
+import com.atnt.neo.insert.strategy.streams.StrategyInsertVerticalStreams;
 import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 
@@ -13,7 +14,7 @@ import java.util.Set;
 public class InsertToStreamsTable<T> extends AbsInsertToCassandra {
 
 
-    public InsertToStreamsTable(AbsStrategyInsertVerticalStreams StrategyInsert) {
+    public InsertToStreamsTable(StrategyInsertVerticalStreams StrategyInsert) {
         super(StrategyInsert);
     }
 
@@ -56,9 +57,9 @@ public class InsertToStreamsTable<T> extends AbsInsertToCassandra {
         return result;
     }
 
-    protected AbsStrategyInsertVerticalStreams<T> getStrategy() {
+    protected StrategyInsertVerticalStreams<T> getStrategy() {
         //noinspection unchecked
-        return (AbsStrategyInsertVerticalStreams<T>) super.getStrategy();
+        return (StrategyInsertVerticalStreams<T>) super.getStrategy();
     }
 
 }

@@ -7,7 +7,7 @@ import com.atnt.neo.insert.strategy.raw.data.AbsStrategyInsertRawData;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-public abstract class AbsStrategyInsertVerticalStreams<T> extends AbsStrategyInsertRawData {
+public abstract class AbsStrategyInsertVerticalStreams<T> extends AbsStrategyInsertRawData implements StrategyInsertVerticalStreams<T> {
 
     private static final int SUFFIX = ThreadLocalRandom.current().nextInt(0, 99999);
 
@@ -56,9 +56,4 @@ public abstract class AbsStrategyInsertVerticalStreams<T> extends AbsStrategyIns
         return -1;
     }
 
-    public abstract String getStreamName();
-
-    public abstract String getStreamColumnName();
-
-    public abstract T getStreamValue(int year, int month, int day, int hour, int deviceIndex);
 }

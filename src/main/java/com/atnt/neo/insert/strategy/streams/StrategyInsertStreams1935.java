@@ -48,7 +48,7 @@ public class StrategyInsertStreams1935 extends AbsStrategyInsertVerticalStreams<
 
     @Override
     public String getStreamColumnName() {
-        return CassandraShared.getNumberStreamFieldName();
+        return CassandraShared.NUMERIC_STREAM_FIELD_NAME;
     }
 
     @Override

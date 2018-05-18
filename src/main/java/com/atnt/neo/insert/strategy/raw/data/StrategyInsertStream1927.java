@@ -11,7 +11,7 @@ public class StrategyInsertStream1927 extends AbsStrategyInsertRawData {
     private final Boolean truncateTableBeforeStart;
     private final Integer deviceCountPerDay;
 
-    StrategyInsertStream1927(Boolean truncateTableBeforeStart, Integer deviceCountPerDay) {
+    private StrategyInsertStream1927(Boolean truncateTableBeforeStart, Integer deviceCountPerDay) {
         this.truncateTableBeforeStart = truncateTableBeforeStart;
         this.deviceCountPerDay = deviceCountPerDay;
     }

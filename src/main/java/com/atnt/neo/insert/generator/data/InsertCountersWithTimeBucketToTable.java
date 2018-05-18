@@ -7,8 +7,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class InsertToMessageInfoTable extends InsertToCountersTable {
-    public InsertToMessageInfoTable(AbsStrategyInsertCounters strategyInsert) {
+public class InsertCountersWithTimeBucketToTable extends InsertToCountersTable {
+    public InsertCountersWithTimeBucketToTable(AbsStrategyInsertCounters strategyInsert) {
         super(strategyInsert);
     }
 

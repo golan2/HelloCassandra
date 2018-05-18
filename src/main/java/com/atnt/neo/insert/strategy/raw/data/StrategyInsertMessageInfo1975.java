@@ -1,7 +1,7 @@
 package com.atnt.neo.insert.strategy.raw.data;
 
 import com.atnt.neo.insert.generator.CassandraShared;
-import com.atnt.neo.insert.generator.data.InsertToMessageInfoTable;
+import com.atnt.neo.insert.generator.data.InsertCountersWithTimeBucketToTable;
 import com.atnt.neo.insert.strategy.StrategyUtil;
 
 import java.util.Calendar;
@@ -35,7 +35,7 @@ public class StrategyInsertMessageInfo1975 extends AbsStrategyInsertCounters {
             System.out.println("Missing command-line-argument. Setting devicesPerDay to ["+devicesPerDay+"]");
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertToMessageInfoTable(new StrategyInsertMessageInfo1975(truncate, devicesPerDay)).insert();
+        new InsertCountersWithTimeBucketToTable(new StrategyInsertMessageInfo1975(truncate, devicesPerDay)).insert();
     }
 
     @Override
