@@ -1,13 +1,11 @@
 package com.atnt.neo.insert.strategy.raw.data;
 
 import com.atnt.neo.insert.generator.CassandraShared;
-import com.atnt.neo.insert.generator.data.InsertToCountersTable;
+import com.atnt.neo.insert.generator.InsertToCountersTable;
 import com.atnt.neo.insert.strategy.StrategyUtil;
 
 import java.util.Calendar;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class StrategyInsertCounters1989 extends AbsStrategyInsertCounters {
 

@@ -1,8 +1,8 @@
 package com.atnt.neo.insert.strategy.daily;
 
 import com.atnt.neo.insert.strategy.AbsStrategyInsertAggregated;
+import com.atnt.neo.insert.strategy.StrategyUtil;
 
-import java.util.Collections;
 import java.util.Set;
 
 public abstract class AbsStrategyInsertDailyAggregated extends AbsStrategyInsertAggregated {
@@ -13,12 +13,7 @@ public abstract class AbsStrategyInsertDailyAggregated extends AbsStrategyInsert
     }
 
     @Override
-    public boolean isHourExist() {
-        return false;
-    }
-
-    @Override
     public Set<Integer> getHoursArray() {
-        return Collections.singleton(1);
+        return StrategyUtil.generateNotApplicable();
     }
 }

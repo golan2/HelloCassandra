@@ -1,6 +1,6 @@
 package com.atnt.neo.insert.strategy.daily;
 
-import com.atnt.neo.insert.generator.aggregated.InsertToAggregatedTable;
+import com.atnt.neo.insert.generator.InsertToCountersTable;
 
 import java.util.Calendar;
 
@@ -22,7 +22,7 @@ public class StrategyInsertDailyAggregated1967_68 extends AbsStrategyInsertDaily
             devicesPerDay = -1;
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertToAggregatedTable(new StrategyInsertDailyAggregated1967_68(devicesPerDay)).insert();
+        new InsertToCountersTable(new StrategyInsertDailyAggregated1967_68(devicesPerDay)).insert();
     }
 
     @Override
@@ -57,11 +57,6 @@ public class StrategyInsertDailyAggregated1967_68 extends AbsStrategyInsertDaily
     @Override
     public int getBillingPoints(int month, int day, int hour) {
         return day;
-    }
-
-    @Override
-    public int getCounter(int month, int day, int hour) {
-        return month;
     }
 
     @Override

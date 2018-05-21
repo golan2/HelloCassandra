@@ -1,7 +1,8 @@
 package com.atnt.neo.insert.strategy.usage;
 
+import com.atnt.neo.insert.generator.CassandraShared;
+import com.atnt.neo.insert.generator.InsertToCountersTable;
 import com.atnt.neo.insert.strategy.AbsStrategyInsertAggregated;
-import com.atnt.neo.insert.generator.usage.InsertToUsageDailyTable;
 
 import java.util.Calendar;
 import java.util.Collections;
@@ -12,13 +13,13 @@ import java.util.Set;
 public class StrategyInsertDailyAggregated1964_65 extends AbsStrategyInsertAggregated {
 
     public static void main(String[] args) throws InterruptedException {
-        new InsertToUsageDailyTable(new StrategyInsertDailyAggregated1964_65()).insert();
+        new InsertToCountersTable(new StrategyInsertDailyAggregated1964_65()).insert();
     }
 
 
     @Override
     public String getTableName() {
-        return "usage_daily";
+        return CassandraShared.RAW_DATA_TABLE;
     }
 
     @Override
@@ -47,16 +48,12 @@ public class StrategyInsertDailyAggregated1964_65 extends AbsStrategyInsertAggre
 
     @Override
     public int getDeviceCountPerDay(Calendar cal) {
-        return 50_000;
+        return 5;
     }
 
     @Override
     public Set<Integer> getHoursArray() {
-        return Collections.singleton(1);
+        return Collections.singleton(1);    //one hour a day
     }
 
-    @Override
-    public boolean isHourExist() {
-        return false;
-    }
 }

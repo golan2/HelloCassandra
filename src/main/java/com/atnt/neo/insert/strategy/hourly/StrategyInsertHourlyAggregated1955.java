@@ -1,13 +1,11 @@
 package com.atnt.neo.insert.strategy.hourly;
 
-import com.atnt.neo.insert.generator.aggregated.InsertToAggregatedTable;
+import com.atnt.neo.insert.generator.InsertToCountersTable;
 import com.atnt.neo.insert.strategy.StrategyUtil;
 
 import java.util.Calendar;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * Insert data for the first 6 weeks in 1955
@@ -35,7 +33,7 @@ public class StrategyInsertHourlyAggregated1955 extends AbsStrategyInsertHourlyA
             devicesPerDay = -1;
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertToAggregatedTable(new StrategyInsertHourlyAggregated1955(truncate, devicesPerDay)).insert();
+        new InsertToCountersTable(new StrategyInsertHourlyAggregated1955(truncate, devicesPerDay)).insert();
     }
 
     @Override

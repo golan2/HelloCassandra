@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class StrategyUtil {
+    public static final int NO_VALUE = -1;
+
     public static Set<Integer> generate24hours() {
         return IntStream.range(0,24).boxed().collect(Collectors.toSet());
     }
@@ -32,5 +34,9 @@ public class StrategyUtil {
 
     public static Set<Integer> generateEveryMinute() {
         return IntStream.range(0,60).boxed().collect(Collectors.toSet());
+    }
+
+    public static Set<Integer> generateNotApplicable() {
+        return Collections.singleton(NO_VALUE);
     }
 }

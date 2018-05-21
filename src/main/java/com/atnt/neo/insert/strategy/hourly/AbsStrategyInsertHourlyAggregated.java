@@ -9,8 +9,4 @@ public abstract class AbsStrategyInsertHourlyAggregated extends AbsStrategyInser
         return "hourly_aggregator";
     }
 
-    @Override
-    public boolean isHourExist() {
-        return true;
-    }
 }

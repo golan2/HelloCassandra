@@ -1,5 +1,6 @@
 package com.atnt.neo.insert.generator.data;
 
+import com.atnt.neo.insert.generator.AbsInsertToCassandra;
 import com.atnt.neo.insert.strategy.raw.data.AbsStrategyInsertCounters;
 import com.datastax.driver.core.querybuilder.Insert;
 
@@ -7,7 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class InsertCountersWithTimeBucketToTable extends InsertToCountersTable {
+public class InsertCountersWithTimeBucketToTable extends AbsInsertToCassandra {
     public InsertCountersWithTimeBucketToTable(AbsStrategyInsertCounters strategyInsert) {
         super(strategyInsert);
     }
@@ -16,6 +17,9 @@ public class InsertCountersWithTimeBucketToTable extends InsertToCountersTable {
         insert.value("time_bucket", getMinuteTimeBucket(cal, month, day, hour, minute));
         insert.value("timestamp", getTimestamp(cal, month, day, hour, minute, second));
     }
+
+    @Override
+    protected void appendAdditionalFields(Insert insert, int year, int month, int day, int hour, int minute, int second, int deviceIndex) { }
 
     private Date getMinuteTimeBucket(Calendar cal, int month, int day, int hour, int minute) {
         //noinspection MagicConstant

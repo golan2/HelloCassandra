@@ -1,6 +1,6 @@
 package com.atnt.neo.insert.strategy.raw.data;
 
-import com.atnt.neo.insert.generator.streams.InsertToDataCollector;
+import com.atnt.neo.insert.generator.streams.InsertToStreamsTable;
 import com.atnt.neo.insert.strategy.StrategyUtil;
 
 import java.util.Calendar;
@@ -28,8 +28,7 @@ public class StrategyInsertStream1927 extends AbsStrategyInsertRawData {
             System.out.println("Missing command-line-argument. Setting devicesPerDay to ["+devicesPerDay+"]");
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertToDataCollector(new StrategyInsertStream1927
-                (truncate, devicesPerDay)).insert();
+        new InsertToStreamsTable(new StrategyInsertStream1927(truncate, devicesPerDay)).insert();
 
     }
 
@@ -72,11 +71,6 @@ public class StrategyInsertStream1927 extends AbsStrategyInsertRawData {
 
     @Override
     public int getBillingPoints(int month, int day, int hour) {
-        return 0;
-    }
-
-    @Override
-    public int getCounter(int month, int day, int hour) {
         return 0;
     }
 

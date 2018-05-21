@@ -1,6 +1,6 @@
 package com.atnt.neo.insert.strategy.daily;
 
-import com.atnt.neo.insert.generator.aggregated.InsertToAggregatedTable;
+import com.atnt.neo.insert.generator.InsertToCountersTable;
 
 import java.util.Calendar;
 import java.util.concurrent.ThreadLocalRandom;
@@ -27,7 +27,7 @@ public class StrategyInsertDailyAggregated1969 extends AbsStrategyInsertDailyAgg
             devicesPerDay = -1;
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertToAggregatedTable(new StrategyInsertDailyAggregated1969(truncate, devicesPerDay)).insert();
+        new InsertToCountersTable(new StrategyInsertDailyAggregated1969(truncate, devicesPerDay)).insert();
     }
 
     @Override

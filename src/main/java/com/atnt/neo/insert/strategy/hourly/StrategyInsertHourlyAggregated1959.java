@@ -1,6 +1,6 @@
 package com.atnt.neo.insert.strategy.hourly;
 
-import com.atnt.neo.insert.generator.aggregated.InsertToAggregatedTable;
+import com.atnt.neo.insert.generator.InsertToCountersTable;
 
 import java.util.Calendar;
 import java.util.HashSet;
@@ -16,7 +16,7 @@ import java.util.Set;
 public class StrategyInsertHourlyAggregated1959 extends AbsStrategyInsertHourlyAggregated {
 
     public static void main(String[] args) throws InterruptedException {
-        new InsertToAggregatedTable(new StrategyInsertHourlyAggregated1959()).insert();
+        new InsertToCountersTable(new StrategyInsertHourlyAggregated1959()).insert();
     }
 
     @Override

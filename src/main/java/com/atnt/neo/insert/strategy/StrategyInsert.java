@@ -39,8 +39,6 @@ public interface StrategyInsert {
      */
     int getDeviceCountPerDay(Calendar cal);
 
-    boolean isHourExist();
-
     /**
      * How many transaction per device in the given day.
      * Value should be between 1 and 24 (including both)
@@ -54,8 +52,6 @@ public interface StrategyInsert {
 
     int getBillingPoints(int month, int day, int hour);
 
-    int getCounter(int month, int day, int hour);
-
     int getDataPoints(int month, int day, int hour);
 
     long getVolumeSize(int month, int day, int hour);
@@ -63,4 +59,8 @@ public interface StrategyInsert {
     Set<Integer> getMinutesArray();
 
     Set<Integer> getSecondsArray();
+
+    boolean includeTimeStamp();
+
+    boolean includeTxnId();
 }

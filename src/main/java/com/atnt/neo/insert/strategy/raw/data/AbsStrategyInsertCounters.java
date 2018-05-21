@@ -8,11 +8,6 @@ public abstract class AbsStrategyInsertCounters extends AbsStrategyInsertRawData
     }
 
     @Override
-    public int getCounter(int month, int day, int hour) {
-        return 20;
-    }
-
-    @Override
     public int getDataPoints(int month, int day, int hour) {
         return 30;
     }

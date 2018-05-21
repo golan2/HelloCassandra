@@ -79,7 +79,7 @@ public class StrategyInsertMessageInfo1975 extends AbsStrategyInsertCounters {
 
     @Override
     public String getTableName() {
-        return CassandraShared.RAW_DATA_TABLE;
+        return CassandraShared.RAW_DATA_TIME_BUCKET;
     }
 
     @Override

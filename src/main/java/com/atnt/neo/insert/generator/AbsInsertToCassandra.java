@@ -1,16 +1,19 @@
 package com.atnt.neo.insert.generator;
 
 import com.atnt.neo.insert.strategy.StrategyInsert;
+import com.atnt.neo.insert.strategy.StrategyUtil;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.ResultSetFuture;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.querybuilder.Insert;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -25,7 +28,7 @@ public abstract class AbsInsertToCassandra {
     private static final SimpleDateFormat DF_LOG  = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss,sss");
     private final StrategyInsert strategy;
 
-    protected AbsInsertToCassandra(StrategyInsert strategyInsert) {
+    public AbsInsertToCassandra(StrategyInsert strategyInsert) {
         this.strategy = strategyInsert;
     }
 
@@ -57,7 +60,7 @@ public abstract class AbsInsertToCassandra {
                 final AtomicLong        doneCount   = new AtomicLong();
 
                 for (Integer hour : getStrategy().getHoursArray()) {
-                    System.out.println(logTimestamp() + " Inserting ["+deviceCount+"] devices to day ["+DF_DATE.format(cal.getTime())+"] hour ["+hour+"]...");
+                    System.out.println(logTimestamp() + " Inserting ["+deviceCount+"] devices to day ["+DF_DATE.format(cal.getTime())+"] "+(hour!= StrategyUtil.NO_VALUE?"hour ["+hour+"]":"")+"...");
 
                     for (int deviceIndex=0 ; deviceIndex<deviceCount ; deviceIndex++) {
 
@@ -98,7 +101,7 @@ public abstract class AbsInsertToCassandra {
         System.out.println(logTimestamp() + " - Done=["+futures.stream().filter(Future::isDone).count()+"] Cancelled=["+futures.stream().filter(Future::isCancelled).count()+"]");
     }
 
-    private void checkFailures(List<ResultSetFuture> futures) throws InterruptedException {
+    private static void checkFailures(List<ResultSetFuture> futures) throws InterruptedException {
         for (ResultSetFuture future : futures) {
             try {
                 future.get();
@@ -132,14 +135,30 @@ public abstract class AbsInsertToCassandra {
     }
 
 
-    protected abstract Iterable<Insert> createInsertQueries(int deviceIndex, int year, int month, int day, int hour);
+    private Iterable<Insert> createInsertQueries(int deviceIndex, int year, int month, int day, int hour){
+        final Calendar          cal     = Calendar.getInstance();
+        final Set<Integer>      minutes = getStrategy().getMinutesArray();
+        final Set<Integer>      seconds = getStrategy().getSecondsArray();
+        final ArrayList<Insert> result  = new ArrayList<>(minutes.size() * seconds.size());
 
-    protected Date getTimestamp(Calendar cal, int month, int day, int hour, Integer minute, Integer second) {
-        //noinspection MagicConstant
-        cal.set(getStrategy().getYear(), month-1, day, hour, minute, second);
-        cal.setTimeZone(TimeZone.getTimeZone("GMT"));
-        return cal.getTime();
+        for (Integer minute : minutes) {
+            for (Integer second : seconds) {
+                final Insert insert = QueryBuilder.insertInto(CassandraShared.KEYSPACE, getStrategy().getTableName());
+
+                appendInsertContextFields(insert);
+
+                appendInsertTimeFields(insert, year, month, day, hour, cal, minute, second);
+
+                appendInsertDeviceInfo(insert, deviceIndex, year, month, day);
+
+                appendAdditionalFields(insert, year, month, day, hour, minute, second, deviceIndex);
+
+                result.add(insert);
+            }
+        }
+        return result;
     }
+
 
     protected void appendInsertContextFields(Insert insert) {
         insert.value("org_bucket", "org_bucket");
@@ -149,28 +168,22 @@ public abstract class AbsInsertToCassandra {
         insert.value("environment", "environment");
     }
 
-    protected void appendInsertTimeFields(Insert insert, int year, int month, int day, int hour, Calendar cal, Integer minute, Integer second) {
-        insert.value("timestamp", getTimestamp(cal, month, day, hour, minute, second));
-        insert.value("year", year);
-        insert.value("month", month);
-        insert.value("day", day);
-        insert.value("hour", hour);
-        insert.value("minutes", minute);
-        insert.value("seconds", second);
+    protected abstract void appendInsertTimeFields(Insert insert, int year, int month, int day, int hour, Calendar cal, Integer minute, Integer second);
+
+    protected Date getTimestamp(Calendar cal, int month, int day, int hour, Integer minute, Integer second) {
+        //noinspection MagicConstant
+        cal.set(getStrategy().getYear(), month-1, day, hour, minute, second);
+        cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+        return cal.getTime();
     }
 
-    protected void appendInsertDeviceInfo(int deviceId, int year, int month, int day, Insert insert) {
+    protected void appendInsertDeviceInfo(Insert insert, int deviceId, int year, int month, int day) {
         insert.value("device_id", getStrategy().getDeviceId(year, month, day, deviceId));
         insert.value("device_type", getStrategy().getDeviceType(year, month, day, deviceId));
-        insert.value("device_firmware", "device_firmware");
     }
 
-    protected void appendInsertUsageFields(int month, int day, int hour, Insert insert) {
-        insert.value("transaction_id", "transaction_id");
-        insert.value("data_points", getStrategy().getDataPoints(month, day, hour));
-        insert.value("volume_size", getStrategy().getVolumeSize(month, day, hour));
-        insert.value("billing_points", getStrategy().getBillingPoints(month, day, hour));
-    }
+    protected abstract void appendAdditionalFields(Insert insert, int year, int month, int day, int hour, int minute, int second, int deviceIndex);
+
 
     protected StrategyInsert getStrategy() {
         return strategy;

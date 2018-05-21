@@ -42,11 +42,6 @@ public abstract class AbsStrategyInsertVerticalStreams<T> extends AbsStrategyIns
     }
 
     @Override
-    public int getCounter(int month, int day, int hour) {
-        return -1;
-    }
-
-    @Override
     public int getDataPoints(int month, int day, int hour) {
         return -1;
     }

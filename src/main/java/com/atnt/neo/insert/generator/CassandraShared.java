@@ -9,6 +9,7 @@ public class CassandraShared {
     public  static final String KEYSPACE                  = "activity";
     public  static final String CASSANDRA_HOST_NAME       = "cassandra";
     public  static final String RAW_DATA_TABLE            = "message_info_by_type";
+    public  static final String RAW_DATA_TIME_BUCKET      = "message_info_time_bucket";
     public  static final String STREAMS_TABLE             = "streams_data_by_time";
     public  static final String NUMERIC_STREAM_FIELD_NAME = "value_number";
     public  static final String TEXT_STREAM_FIELD_NAME    = "value_text";

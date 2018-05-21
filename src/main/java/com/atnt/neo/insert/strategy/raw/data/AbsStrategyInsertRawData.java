@@ -2,13 +2,17 @@ package com.atnt.neo.insert.strategy.raw.data;
 
 import com.atnt.neo.insert.strategy.AbsStrategyInsert;
 
-import java.util.Set;
-
 public abstract class AbsStrategyInsertRawData extends AbsStrategyInsert {
+
+    public int getPartSelector(int year, int month, int day, int hour, Integer minute, Integer second) { return -1;}
+
     @Override
-    public boolean isHourExist() {
+    public boolean includeTimeStamp() {
         return true;
     }
 
-    public int getPartSelector(int year, int month, int day, int hour, Integer minute, Integer second) { return -1;}
+    @Override
+    public boolean includeTxnId() {
+        return true;
+    }
 }

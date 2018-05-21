@@ -1,7 +1,7 @@
 package com.atnt.neo.insert.strategy.raw.data;
 
 import com.atnt.neo.insert.generator.CassandraShared;
-import com.atnt.neo.insert.generator.data.InsertToCountersTable;
+import com.atnt.neo.insert.generator.InsertToCountersTable;
 import com.atnt.neo.insert.strategy.StrategyUtil;
 
 import java.util.Calendar;

@@ -1,65 +1,47 @@
 package com.atnt.neo.insert.generator.streams;
 
 import com.atnt.neo.insert.generator.AbsInsertToCassandra;
-import com.atnt.neo.insert.generator.CassandraShared;
-import com.atnt.neo.insert.strategy.streams.AbsStrategyInsertVerticalStreams;
-import com.atnt.neo.insert.strategy.streams.StrategyInsertVerticalStreams;
+import com.atnt.neo.insert.strategy.raw.data.AbsStrategyInsertRawData;
 import com.datastax.driver.core.querybuilder.Insert;
-import com.datastax.driver.core.querybuilder.QueryBuilder;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
-public class InsertToStreamsTable<T> extends AbsInsertToCassandra {
+public class InsertToStreamsTable extends AbsInsertToCassandra {
 
-
-    public InsertToStreamsTable(StrategyInsertVerticalStreams StrategyInsert) {
-        super(StrategyInsert);
+    public InsertToStreamsTable(AbsStrategyInsertRawData strategyInsert) {
+        super(strategyInsert);
     }
 
     @Override
-    protected Iterable<Insert> createInsertQueries(int deviceIndex, int year, int month, int day, int hour) {
-        final Calendar          cal     = Calendar.getInstance();
-        final Set<Integer>      minutes = getStrategy().getMinutesArray();
-        final Set<Integer>      seconds = getStrategy().getSecondsArray();
-        final ArrayList<Insert> result  = new ArrayList<>(minutes.size() * seconds.size());
+    protected void appendInsertTimeFields(Insert insert, int year, int month, int day, int hour, Calendar cal, Integer minute, Integer second) {
+        insert.value("timestamp", getTimestamp(cal, month, day, hour, minute, second));
+        insert.value("year", year);
+        insert.value("month", month);
+        insert.value("day", day);
+        insert.value("hour", hour);
+        insert.value("minutes", minute);
+        insert.value("seconds", second);
+    }
 
-        for (Integer minute : minutes) {
-            for (Integer second : seconds) {
-                final Insert insert = QueryBuilder.insertInto(CassandraShared.KEYSPACE, getStrategy().getTableName());
+    @Override
+    protected void appendAdditionalFields(Insert insert, int year, int month, int day, int hour, int minute, int second, int deviceIndex) {
+        insert.value("part_selector", getStrategy().getPartSelector(year, month, day, hour, minute, second));
+        insert.value("user_param", createStreamMap(deviceIndex, year, month, day, hour,minute, second));
 
-                insert.value("org_bucket", "org_bucket");
-                insert.value("project_bucket", "project_bucket");
-                insert.value("stream_name", getStrategy().getStreamName());
+    }
 
-                insert.value("year", year);
-                insert.value("month", month);
-                insert.value("day", day);
-                insert.value("hour", hour);
-
-                insert.value("org_id", "org_id");
-                insert.value("project_id", "project_id");
-                insert.value("environment", "environment");
-
-                insert.value("minutes", minute);
-                insert.value("seconds", second);
-                insert.value("timestamp", getTimestamp(cal, month, day, hour, minute, second));
-
-                insert.value("device_id", getStrategy().getDeviceId(year, month, day, deviceIndex));
-                insert.value("device_type", "device_type");
-                insert.value("transaction_id", "transaction_id");
-
-                insert.value(getStrategy().getStreamColumnName(), getStrategy().getStreamValue(year, month, day, hour, deviceIndex));
-                result.add(insert);
-            }
-        }
+    private static Map<String, String> createStreamMap(int deviceIndex, int year, int month, int day, int hour, int minute, int second) {
+        final HashMap<String, String> result = new HashMap<>();
+        result.put("days_level", String.valueOf(year*365*12+month*12+day+deviceIndex));
+        result.put("seconds_level", String.valueOf(hour*60*60+minute*60+second));
         return result;
     }
 
-    protected StrategyInsertVerticalStreams<T> getStrategy() {
-        //noinspection unchecked
-        return (StrategyInsertVerticalStreams<T>) super.getStrategy();
+
+    protected AbsStrategyInsertRawData getStrategy() {
+        return (AbsStrategyInsertRawData) super.getStrategy();
     }
 
 }

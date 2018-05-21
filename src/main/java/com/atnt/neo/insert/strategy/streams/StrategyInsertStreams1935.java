@@ -1,7 +1,7 @@
 package com.atnt.neo.insert.strategy.streams;
 
 import com.atnt.neo.insert.generator.CassandraShared;
-import com.atnt.neo.insert.generator.streams.InsertToStreamsTable;
+import com.atnt.neo.insert.generator.streams.InsertToVerticalStreamsTable;
 
 import java.util.Calendar;
 
@@ -29,10 +29,10 @@ public class StrategyInsertStreams1935 extends AbsStrategyInsertVerticalStreams<
             devicesPerDay = Integer.parseInt(args[1]);
         } catch (Exception e) {
             truncate = false;
-            devicesPerDay = 1_000;
+            devicesPerDay = 1;
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertToStreamsTable<Double>(new StrategyInsertStreams1935(truncate, devicesPerDay)).insert();
+        new InsertToVerticalStreamsTable<Double>(new StrategyInsertStreams1935(truncate, devicesPerDay)).insert();
     }
 
     @Override
