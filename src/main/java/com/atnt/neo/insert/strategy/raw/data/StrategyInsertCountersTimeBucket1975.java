@@ -13,12 +13,12 @@ import java.util.Set;
  * Every 2 minutes
  * 24 hours a day
  */
-public class StrategyInsertMessageInfo1975 extends AbsStrategyInsertCounters {
+public class StrategyInsertCountersTimeBucket1975 extends AbsStrategyInsertCounters {
 
     private final Boolean truncateTableBeforeStart;
     private final Integer deviceCountPerDay;
 
-    private StrategyInsertMessageInfo1975(Boolean truncateTableBeforeStart, Integer deviceCountPerDay) {
+    private StrategyInsertCountersTimeBucket1975(Boolean truncateTableBeforeStart, Integer deviceCountPerDay) {
         this.truncateTableBeforeStart = truncateTableBeforeStart;
         this.deviceCountPerDay = deviceCountPerDay;
     }
@@ -35,7 +35,7 @@ public class StrategyInsertMessageInfo1975 extends AbsStrategyInsertCounters {
             System.out.println("Missing command-line-argument. Setting devicesPerDay to ["+devicesPerDay+"]");
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertCountersWithTimeBucketToTable(new StrategyInsertMessageInfo1975(truncate, devicesPerDay)).insert();
+        new InsertCountersWithTimeBucketToTable(new StrategyInsertCountersTimeBucket1975(truncate, devicesPerDay)).insert();
     }
 
     @Override

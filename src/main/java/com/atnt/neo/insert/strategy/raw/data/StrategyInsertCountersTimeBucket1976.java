@@ -14,11 +14,11 @@ import java.util.Set;
  * Every 2 minutes
  * 24 hours a day
  */
-public class StrategyInsertMessageInfo1976 extends AbsStrategyInsertCounters {
+public class StrategyInsertCountersTimeBucket1976 extends AbsStrategyInsertCounters {
     private final Boolean truncateTableBeforeStart;
     private final Integer deviceCountPerDay;
 
-    private StrategyInsertMessageInfo1976(Boolean truncateTableBeforeStart, Integer deviceCountPerDay) {
+    private StrategyInsertCountersTimeBucket1976(Boolean truncateTableBeforeStart, Integer deviceCountPerDay) {
         this.truncateTableBeforeStart = truncateTableBeforeStart;
         this.deviceCountPerDay = deviceCountPerDay;
     }
@@ -35,7 +35,7 @@ public class StrategyInsertMessageInfo1976 extends AbsStrategyInsertCounters {
             System.out.println("Missing command-line-argument. Setting devicesPerDay to ["+devicesPerDay+"]");
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertCountersWithTimeBucketToTable(new StrategyInsertMessageInfo1976(truncate, devicesPerDay)).insert();
+        new InsertCountersWithTimeBucketToTable(new StrategyInsertCountersTimeBucket1976(truncate, devicesPerDay)).insert();
     }
 
     @Override
@@ -79,7 +79,7 @@ public class StrategyInsertMessageInfo1976 extends AbsStrategyInsertCounters {
 
     @Override
     public String getTableName() {
-        return CassandraShared.RAW_DATA_TABLE;
+        return CassandraShared.RAW_DATA_TIME_BUCKET;
     }
 
     @Override
