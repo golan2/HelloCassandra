@@ -8,9 +8,12 @@ public class CassandraShared {
     public  static final String HOST                      = "iot-toolbox";
     public  static final String KEYSPACE                  = "activity";
     public  static final String CASSANDRA_HOST_NAME       = "cassandra";
-    public  static final String RAW_DATA_TABLE            = "message_info_by_type";
     public  static final String RAW_DATA_TIME_BUCKET      = "message_info_time_bucket";
-    public  static final String STREAMS_TABLE             = "streams_data_by_time";
+    public  static final String VERTICAL_STREAMS          = "streams_data_by_time";
+    public  static final String STREAMS_TABLE             = "data_collector";
+    public  static final String RAW_DATA_TABLE            = "message_info_by_type";
+    public  static final String HOURLY_AGGREGATOR         = "hourly_aggregator";
+    public  static final String DAILY_AGGREGATOR          = "daily_aggregator";
     public  static final String NUMERIC_STREAM_FIELD_NAME = "value_number";
     public  static final String TEXT_STREAM_FIELD_NAME    = "value_text";
     public  static final String BOOLEAN_STREAM_FIELD_NAME = "value_boolean";

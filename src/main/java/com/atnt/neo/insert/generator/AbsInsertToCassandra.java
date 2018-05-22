@@ -47,8 +47,8 @@ public abstract class AbsInsertToCassandra {
                 session.execute("truncate table "+ getStrategy().getTableName()+";");
             }
 
-            final Calendar cal = getStrategy().getFirstDay();
-            final Calendar lastDay = getStrategy().getLastDay();
+            final Calendar cal = getStrategy().getTimePeriod().getFirstDay();
+            final Calendar lastDay = getStrategy().getTimePeriod().getLastDay();
             while ( cal.compareTo(lastDay) <= 0 ) {
 
                 final ArrayList<Insert> statements  = new ArrayList<>(CassandraShared.MAX_BATCH_SIZE);
@@ -59,7 +59,7 @@ public abstract class AbsInsertToCassandra {
                 final int               deviceCount = getStrategy().getDeviceCountPerDay(cal);
                 final AtomicLong        doneCount   = new AtomicLong();
 
-                for (Integer hour : getStrategy().getHoursArray()) {
+                for (Integer hour : getStrategy().getTxnPerDay().getHoursArray()) {
                     System.out.println(logTimestamp() + " Inserting ["+deviceCount+"] devices to day ["+DF_DATE.format(cal.getTime())+"] "+(hour!= StrategyUtil.NO_VALUE?"hour ["+hour+"]":"")+"...");
 
                     for (int deviceIndex=0 ; deviceIndex<deviceCount ; deviceIndex++) {
@@ -93,7 +93,7 @@ public abstract class AbsInsertToCassandra {
                 final long pending = futures.stream().filter(f -> !f.isDone()).count();
                 final long end = System.nanoTime();
                 System.out.println(logTimestamp() + " - date=["+day+"/"+month+"] deviceCount=["+deviceCount+"] time=["+(end-begin)/1000000+"] pending=["+ pending +"]");
-                getStrategy().incrementCalendar(cal);
+                getStrategy().getTimePeriod().incrementCalendar(cal);
             }
 
         }
@@ -137,8 +137,8 @@ public abstract class AbsInsertToCassandra {
 
     private Iterable<Insert> createInsertQueries(int deviceIndex, int year, int month, int day, int hour){
         final Calendar          cal     = Calendar.getInstance();
-        final Set<Integer>      minutes = getStrategy().getMinutesArray();
-        final Set<Integer>      seconds = getStrategy().getSecondsArray();
+        final Set<Integer>      minutes = getStrategy().getTxnPerDay().getMinutesArray();
+        final Set<Integer>      seconds = getStrategy().getTxnPerDay().getSecondsArray();
         final ArrayList<Insert> result  = new ArrayList<>(minutes.size() * seconds.size());
 
         for (Integer minute : minutes) {

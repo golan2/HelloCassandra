@@ -2,10 +2,12 @@ package com.atnt.neo.insert.strategy.raw.data;
 
 import com.atnt.neo.insert.generator.CassandraShared;
 import com.atnt.neo.insert.generator.InsertToCountersTable;
-import com.atnt.neo.insert.strategy.StrategyUtil;
+import com.atnt.neo.insert.strategy.time.TimePeriod;
+import com.atnt.neo.insert.strategy.time.EveryDayTwoWeeksEndOfYear;
+import com.atnt.neo.insert.strategy.time.EveryTwoMinutesEveryHour;
+import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
 import java.util.Calendar;
-import java.util.Set;
 
 public class StrategyInsertCounters1988 extends AbsStrategyInsertCounters {
 
@@ -26,7 +28,7 @@ public class StrategyInsertCounters1988 extends AbsStrategyInsertCounters {
             devicesPerDay = Integer.parseInt(args[1]);
         } catch (Exception e) {
             truncate = false;
-            devicesPerDay = 1_000;
+            devicesPerDay = 1;
             System.out.println("Missing command-line-argument. Setting devicesPerDay to ["+devicesPerDay+"]");
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
@@ -34,27 +36,13 @@ public class StrategyInsertCounters1988 extends AbsStrategyInsertCounters {
     }
 
     @Override
-    public Calendar getFirstDay() {
-        final Calendar result = (Calendar) getLastDay().clone();
-        result.add(Calendar.DAY_OF_YEAR, -15);
-        return result;
+    public TimePeriod getTimePeriod() {
+        return new EveryDayTwoWeeksEndOfYear(getYear());
     }
 
     @Override
-    public Calendar getLastDay() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(getYear(), Calendar.DECEMBER, 31);
-        return cal;
-    }
-
-    @Override
-    public Set<Integer> getMinutesArray() {
-        return StrategyUtil.generateEveryTwoMinutes();
-    }
-
-    @Override
-    public Set<Integer> getSecondsArray() {
-        return StrategyUtil.singleValue();
+    public TxnPerDay getTxnPerDay() {
+        return new EveryTwoMinutesEveryHour();
     }
 
     @Override
@@ -65,11 +53,6 @@ public class StrategyInsertCounters1988 extends AbsStrategyInsertCounters {
     @Override
     public int getDeviceCountPerDay(Calendar cal) {
         return this.deviceCountPerDay;
-    }
-
-    @Override
-    public Set<Integer> getHoursArray() {
-        return StrategyUtil.generate24hours();
     }
 
     @Override

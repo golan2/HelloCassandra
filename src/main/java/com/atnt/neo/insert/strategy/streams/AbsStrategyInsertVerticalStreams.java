@@ -1,10 +1,8 @@
 package com.atnt.neo.insert.strategy.streams;
 
 import com.atnt.neo.insert.generator.CassandraShared;
-import com.atnt.neo.insert.strategy.StrategyUtil;
 import com.atnt.neo.insert.strategy.raw.data.AbsStrategyInsertRawData;
 
-import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class AbsStrategyInsertVerticalStreams<T> extends AbsStrategyInsertRawData implements StrategyInsertVerticalStreams<T> {
@@ -12,23 +10,8 @@ public abstract class AbsStrategyInsertVerticalStreams<T> extends AbsStrategyIns
     private static final int SUFFIX = ThreadLocalRandom.current().nextInt(0, 99999);
 
     @Override
-    public Set<Integer> getHoursArray() {
-        return StrategyUtil.generate24hours();
-    }
-
-    @Override
-    public Set<Integer> getMinutesArray() {
-        return StrategyUtil.generateEveryTwoMinutes();
-    }
-
-    @Override
-    public Set<Integer> getSecondsArray() {
-        return StrategyUtil.singleValue();
-    }
-
-    @Override
     public String getTableName() {
-        return CassandraShared.STREAMS_TABLE;
+        return CassandraShared.VERTICAL_STREAMS;
     }
 
     @Override

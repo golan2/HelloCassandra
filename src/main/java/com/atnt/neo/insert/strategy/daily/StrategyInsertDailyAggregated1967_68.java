@@ -1,6 +1,10 @@
 package com.atnt.neo.insert.strategy.daily;
 
 import com.atnt.neo.insert.generator.InsertToCountersTable;
+import com.atnt.neo.insert.strategy.time.TimePeriod;
+import com.atnt.neo.insert.strategy.time.EveryDayDecJanFeb;
+import com.atnt.neo.insert.strategy.time.SingleTxn;
+import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
 import java.util.Calendar;
 
@@ -26,6 +30,16 @@ public class StrategyInsertDailyAggregated1967_68 extends AbsStrategyInsertDaily
     }
 
     @Override
+    public TimePeriod getTimePeriod() {
+        return new EveryDayDecJanFeb(getYear());
+    }
+
+    @Override
+    public TxnPerDay getTxnPerDay() {
+        return new SingleTxn();
+    }
+
+    @Override
     public boolean shouldTruncateTableBeforeStart() {
         return false;       //we insert the same values so they override
     }
@@ -35,19 +49,6 @@ public class StrategyInsertDailyAggregated1967_68 extends AbsStrategyInsertDaily
         return 1968;
     }
 
-    @Override
-    public Calendar getFirstDay() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(getYear()-1, Calendar.DECEMBER, 15);
-        return cal;
-    }
-
-    @Override
-    public Calendar getLastDay() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(getYear(), Calendar.MARCH, 15);
-        return cal;
-    }
 
     @Override
     public int getDeviceCountPerDay(Calendar cal) {

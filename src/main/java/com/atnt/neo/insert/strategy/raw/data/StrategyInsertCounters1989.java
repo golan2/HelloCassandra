@@ -2,10 +2,12 @@ package com.atnt.neo.insert.strategy.raw.data;
 
 import com.atnt.neo.insert.generator.CassandraShared;
 import com.atnt.neo.insert.generator.InsertToCountersTable;
-import com.atnt.neo.insert.strategy.StrategyUtil;
+import com.atnt.neo.insert.strategy.time.TimePeriod;
+import com.atnt.neo.insert.strategy.time.SingleDay;
+import com.atnt.neo.insert.strategy.time.SeveralHoursEverySecond;
+import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
 import java.util.Calendar;
-import java.util.Set;
 
 public class StrategyInsertCounters1989 extends AbsStrategyInsertCounters {
 
@@ -34,18 +36,13 @@ public class StrategyInsertCounters1989 extends AbsStrategyInsertCounters {
     }
 
     @Override
-    public Calendar getLastDay() {
-        return getFirstDay();
+    public TimePeriod getTimePeriod() {
+        return new SingleDay(getYear());
     }
 
     @Override
-    public Set<Integer> getMinutesArray() {
-        return StrategyUtil.generateEveryTwoMinutes();
-    }
-
-    @Override
-    public Set<Integer> getSecondsArray() {
-        return StrategyUtil.generateEveryTwoSeconds();
+    public TxnPerDay getTxnPerDay() {
+        return new SeveralHoursEverySecond(3);
     }
 
     @Override
@@ -56,11 +53,6 @@ public class StrategyInsertCounters1989 extends AbsStrategyInsertCounters {
     @Override
     public int getDeviceCountPerDay(Calendar cal) {
         return this.deviceCountPerDay;
-    }
-
-    @Override
-    public Set<Integer> getHoursArray() {
-        return StrategyUtil.generateXhours(3);
     }
 
     @Override

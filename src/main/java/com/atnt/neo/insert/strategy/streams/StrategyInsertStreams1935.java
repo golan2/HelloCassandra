@@ -2,6 +2,10 @@ package com.atnt.neo.insert.strategy.streams;
 
 import com.atnt.neo.insert.generator.CassandraShared;
 import com.atnt.neo.insert.generator.streams.InsertToVerticalStreamsTable;
+import com.atnt.neo.insert.strategy.time.TimePeriod;
+import com.atnt.neo.insert.strategy.time.EveryDaySingleMonth;
+import com.atnt.neo.insert.strategy.time.EveryTwoMinutesEveryHour;
+import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
 import java.util.Calendar;
 
@@ -36,6 +40,16 @@ public class StrategyInsertStreams1935 extends AbsStrategyInsertVerticalStreams<
     }
 
     @Override
+    public TimePeriod getTimePeriod() {
+        return new EveryDaySingleMonth(getYear(), Calendar.JANUARY);
+    }
+
+    @Override
+    public TxnPerDay getTxnPerDay() {
+        return new EveryTwoMinutesEveryHour();
+    }
+
+    @Override
     public boolean shouldTruncateTableBeforeStart() {
         return this.truncateTableBeforeStart;
     }
@@ -59,13 +73,6 @@ public class StrategyInsertStreams1935 extends AbsStrategyInsertVerticalStreams<
     @Override
     public int getYear() {
         return 1935;
-    }
-
-    @Override
-    public Calendar getLastDay() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(getYear(), Calendar.FEBRUARY, 1);
-        return cal;
     }
 
     @Override

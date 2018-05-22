@@ -1,10 +1,12 @@
 package com.atnt.neo.insert.strategy.hourly;
 
 import com.atnt.neo.insert.generator.InsertToCountersTable;
-import com.atnt.neo.insert.strategy.StrategyUtil;
+import com.atnt.neo.insert.strategy.time.TimePeriod;
+import com.atnt.neo.insert.strategy.time.EveryDaySeveralMonthsBeginOfYear;
+import com.atnt.neo.insert.strategy.time.EveryHour;
+import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
 import java.util.Calendar;
-import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -30,10 +32,20 @@ public class StrategyInsertHourlyAggregated1955 extends AbsStrategyInsertHourlyA
             devicesPerDay = Integer.parseInt(args[1]);
         } catch (Exception e) {
             truncate = false;
-            devicesPerDay = -1;
+            devicesPerDay = 20_000;
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
         new InsertToCountersTable(new StrategyInsertHourlyAggregated1955(truncate, devicesPerDay)).insert();
+    }
+
+    @Override
+    public TimePeriod getTimePeriod() {
+        return new EveryDaySeveralMonthsBeginOfYear(getYear(), 2);
+    }
+
+    @Override
+    public TxnPerDay getTxnPerDay() {
+        return new EveryHour();
     }
 
     @Override
@@ -47,20 +59,8 @@ public class StrategyInsertHourlyAggregated1955 extends AbsStrategyInsertHourlyA
     }
 
     @Override
-    public Calendar getLastDay() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(getYear(), Calendar.FEBRUARY, 13);
-        return cal;
-    }
-
-    @Override
     public int getDeviceCountPerDay(Calendar cal) {
-        return ( this.deviceCountPerDay==-1 ? 20_000 : this.deviceCountPerDay );
-    }
-
-    @Override
-    public Set<Integer> getHoursArray() {
-        return StrategyUtil.generate24hours();
+        return this.deviceCountPerDay;
     }
 
     @Override

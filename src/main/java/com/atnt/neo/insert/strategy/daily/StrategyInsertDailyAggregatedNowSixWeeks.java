@@ -1,6 +1,10 @@
 package com.atnt.neo.insert.strategy.daily;
 
 import com.atnt.neo.insert.generator.InsertToCountersTable;
+import com.atnt.neo.insert.strategy.time.TimePeriod;
+import com.atnt.neo.insert.strategy.time.EveryDaySeveralDaysEndOfYear;
+import com.atnt.neo.insert.strategy.time.SingleTxn;
+import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
 import java.util.Calendar;
 import java.util.concurrent.ThreadLocalRandom;
@@ -31,6 +35,16 @@ public class StrategyInsertDailyAggregatedNowSixWeeks extends AbsStrategyInsertD
     }
 
     @Override
+    public TimePeriod getTimePeriod() {
+        return new EveryDaySeveralDaysEndOfYear(getYear(), 45);
+    }
+
+    @Override
+    public TxnPerDay getTxnPerDay() {
+        return new SingleTxn();
+    }
+
+    @Override
     public boolean shouldTruncateTableBeforeStart() {
         return truncateTableBeforeStart;
     }
@@ -38,18 +52,6 @@ public class StrategyInsertDailyAggregatedNowSixWeeks extends AbsStrategyInsertD
     @Override
     public int getYear() {
         return Calendar.getInstance().get(Calendar.YEAR);
-    }
-
-    @Override
-    public Calendar getFirstDay() {
-        final Calendar result = (Calendar) getLastDay().clone();
-        result.add(Calendar.DAY_OF_YEAR, -45);
-        return result;
-    }
-
-    @Override
-    public Calendar getLastDay() {
-        return Calendar.getInstance();
     }
 
     @Override

@@ -1,19 +1,13 @@
 package com.atnt.neo.insert.strategy.daily;
 
+import com.atnt.neo.insert.generator.CassandraShared;
 import com.atnt.neo.insert.strategy.AbsStrategyInsertAggregated;
-import com.atnt.neo.insert.strategy.StrategyUtil;
-
-import java.util.Set;
 
 public abstract class AbsStrategyInsertDailyAggregated extends AbsStrategyInsertAggregated {
 
     @Override
     public String getTableName() {
-        return "daily_aggregator";
+        return CassandraShared.DAILY_AGGREGATOR;
     }
 
-    @Override
-    public Set<Integer> getHoursArray() {
-        return StrategyUtil.generateNotApplicable();
-    }
 }

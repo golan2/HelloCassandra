@@ -1,10 +1,12 @@
 package com.atnt.neo.insert.strategy.raw.data;
 
 import com.atnt.neo.insert.generator.streams.InsertToStreamsTable;
-import com.atnt.neo.insert.strategy.StrategyUtil;
+import com.atnt.neo.insert.strategy.time.TimePeriod;
+import com.atnt.neo.insert.strategy.time.EveryTwoMinutesEveryHour;
+import com.atnt.neo.insert.strategy.time.SingleDay;
+import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
 import java.util.Calendar;
-import java.util.Set;
 
 public class StrategyInsertStream1927 extends AbsStrategyInsertRawData {
 
@@ -24,7 +26,7 @@ public class StrategyInsertStream1927 extends AbsStrategyInsertRawData {
             devicesPerDay = Integer.parseInt(args[1]);
         } catch (Exception e) {
             truncate = false;
-            devicesPerDay = 20;
+            devicesPerDay = 1;
             System.out.println("Missing command-line-argument. Setting devicesPerDay to ["+devicesPerDay+"]");
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
@@ -33,13 +35,18 @@ public class StrategyInsertStream1927 extends AbsStrategyInsertRawData {
     }
 
     @Override
-    public Set<Integer> getMinutesArray() {
-        return StrategyUtil.generateEveryTwoMinutes();
+    public TimePeriod getTimePeriod() {
+        return new SingleDay(getYear());
     }
 
     @Override
-    public Set<Integer> getSecondsArray() {
-        return StrategyUtil.singleValue();
+    public TxnPerDay getTxnPerDay() {
+        return new EveryTwoMinutesEveryHour();
+    }
+
+    @Override
+    public boolean shouldTruncateTableBeforeStart() {
+        return truncateTableBeforeStart;
     }
 
     @Override
@@ -48,20 +55,8 @@ public class StrategyInsertStream1927 extends AbsStrategyInsertRawData {
     }
 
     @Override
-    public Calendar getLastDay() {
-        final Calendar firstDay = getFirstDay();
-        firstDay.add(Calendar.DAY_OF_YEAR, 1);
-        return firstDay;
-    }
-
-    @Override
     public int getDeviceCountPerDay(Calendar cal) {
         return this.deviceCountPerDay;
-    }
-
-    @Override
-    public Set<Integer> getHoursArray() {
-        return StrategyUtil.generate24hours();
     }
 
     @Override

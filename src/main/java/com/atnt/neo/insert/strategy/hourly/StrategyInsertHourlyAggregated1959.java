@@ -1,10 +1,12 @@
 package com.atnt.neo.insert.strategy.hourly;
 
 import com.atnt.neo.insert.generator.InsertToCountersTable;
+import com.atnt.neo.insert.strategy.time.TimePeriod;
+import com.atnt.neo.insert.strategy.time.EveryDaySeveralMonthsBeginOfYear;
+import com.atnt.neo.insert.strategy.time.SeveralHours;
+import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
 import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Insert aggregated data for the year 1959. All days.
@@ -20,6 +22,21 @@ public class StrategyInsertHourlyAggregated1959 extends AbsStrategyInsertHourlyA
     }
 
     @Override
+    public TimePeriod getTimePeriod() {
+        return new EveryDaySeveralMonthsBeginOfYear(getYear(), 12);
+    }
+
+    @Override
+    public TxnPerDay getTxnPerDay() {
+        return new SeveralHours(2);
+    }
+
+    @Override
+    public boolean shouldTruncateTableBeforeStart() {
+        return false;
+    }
+
+    @Override
     public int getYear() {
         return 1959;
     }
@@ -28,13 +45,4 @@ public class StrategyInsertHourlyAggregated1959 extends AbsStrategyInsertHourlyA
     public int getDeviceCountPerDay(Calendar cal) {
         return cal.get(Calendar.DAY_OF_YEAR);
     }
-
-    @Override
-    public Set<Integer> getHoursArray() {
-        Set<Integer> set = new HashSet<>();
-        set.add(1);
-        set.add(2);
-        return set;
-    }
-
 }
