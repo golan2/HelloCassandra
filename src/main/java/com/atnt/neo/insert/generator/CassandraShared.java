@@ -15,8 +15,8 @@ public class CassandraShared {
     public  static final String HOURLY_AGGREGATOR         = "hourly_aggregator";
     public  static final String DAILY_AGGREGATOR          = "daily_aggregator";
     public  static final String NUMERIC_STREAM_FIELD_NAME = "value_number";
-    public  static final String TEXT_STREAM_FIELD_NAME    = "value_text";
-    public  static final String BOOLEAN_STREAM_FIELD_NAME = "value_boolean";
+//    public  static final String TEXT_STREAM_FIELD_NAME    = "value_text";
+//    public  static final String BOOLEAN_STREAM_FIELD_NAME = "value_boolean";
     public  static final int    MAX_BATCH_SIZE            =   1_000;
     public  static final int    MAX_PARALLELISM_CASSANDRA =      10;
     private static final int    CLIENT_TIMEOUT            = 300_000;

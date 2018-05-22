@@ -1,5 +1,6 @@
 package com.atnt.neo.insert.strategy.raw.data;
 
+import com.atnt.neo.insert.generator.CassandraShared;
 import com.atnt.neo.insert.generator.streams.InsertToStreamsTable;
 import com.atnt.neo.insert.strategy.time.TimePeriod;
 import com.atnt.neo.insert.strategy.time.EveryTwoMinutesEveryHour;
@@ -61,7 +62,7 @@ public class StrategyInsertStream1927 extends AbsStrategyInsertRawData {
 
     @Override
     public String getTableName() {
-        return "data_collector";
+        return CassandraShared.STREAMS_TABLE;
     }
 
     @Override

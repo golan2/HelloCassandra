@@ -28,7 +28,7 @@ public abstract class AbsInsertToCassandra {
     private static final SimpleDateFormat DF_LOG  = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss,sss");
     private final StrategyInsert strategy;
 
-    public AbsInsertToCassandra(StrategyInsert strategyInsert) {
+    protected AbsInsertToCassandra(StrategyInsert strategyInsert) {
         this.strategy = strategyInsert;
     }
 
@@ -160,7 +160,7 @@ public abstract class AbsInsertToCassandra {
     }
 
 
-    protected void appendInsertContextFields(Insert insert) {
+    private void appendInsertContextFields(Insert insert) {
         insert.value("org_bucket", "org_bucket");
         insert.value("project_bucket", "project_bucket");
         insert.value("org_id", "org_id");
@@ -177,7 +177,7 @@ public abstract class AbsInsertToCassandra {
         return cal.getTime();
     }
 
-    protected void appendInsertDeviceInfo(Insert insert, int deviceId, int year, int month, int day) {
+    private void appendInsertDeviceInfo(Insert insert, int deviceId, int year, int month, int day) {
         insert.value("device_id", getStrategy().getDeviceId(year, month, day, deviceId));
         insert.value("device_type", getStrategy().getDeviceType(year, month, day, deviceId));
     }

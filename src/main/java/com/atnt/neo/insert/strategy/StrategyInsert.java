@@ -20,12 +20,16 @@ public interface StrategyInsert {
 
     String getDeviceId(int year, int month, int day, int deviceIndex);
 
+    @SuppressWarnings("unused")
     String getDeviceType(int year, int month, int day, int deviceIndex);
 
+    @SuppressWarnings("unused")
     int getBillingPoints(int month, int day, int hour);
 
+    @SuppressWarnings("unused")
     int getDataPoints(int month, int day, int hour);
 
+    @SuppressWarnings("unused")
     long getVolumeSize(int month, int day, int hour);
 
     boolean includeTimeStamp();
