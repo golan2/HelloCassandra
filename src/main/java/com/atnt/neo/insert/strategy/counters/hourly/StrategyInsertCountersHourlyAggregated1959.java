@@ -1,4 +1,4 @@
-package com.atnt.neo.insert.strategy.hourly;
+package com.atnt.neo.insert.strategy.counters.hourly;
 
 import com.atnt.neo.insert.generator.InsertToCountersTable;
 import com.atnt.neo.insert.strategy.time.TimePeriod;
@@ -15,10 +15,10 @@ import java.util.Calendar;
  * Each device reports "Y" hours that day (first "Y" hours)
  * The values of X and Y are date dependant on day and month and we guarantee a different device count every day
  */
-public class StrategyInsertHourlyAggregated1959 extends AbsStrategyInsertHourlyAggregated {
+public class StrategyInsertCountersHourlyAggregated1959 extends AbsStrategyInsertCountersHourlyAggregated {
 
     public static void main(String[] args) throws InterruptedException {
-        new InsertToCountersTable(new StrategyInsertHourlyAggregated1959()).insert();
+        new InsertToCountersTable(new StrategyInsertCountersHourlyAggregated1959()).insert();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.atnt.neo.insert.strategy.hourly;
+package com.atnt.neo.insert.strategy.counters.hourly;
 
 import com.atnt.neo.insert.generator.InsertToCountersTable;
 import com.atnt.neo.insert.strategy.time.TimePeriod;
@@ -13,10 +13,10 @@ import java.util.Calendar;
  * Two devices a day.
  * Three transactions per device.
  */
-public class StrategyInsertHourlyAggregated1957 extends AbsStrategyInsertHourlyAggregated {
+public class StrategyInsertCountersHourlyAggregated1957 extends AbsStrategyInsertCountersHourlyAggregated {
 
     public static void main(String[] args) throws InterruptedException {
-        new InsertToCountersTable(new StrategyInsertHourlyAggregated1957()).insert();
+        new InsertToCountersTable(new StrategyInsertCountersHourlyAggregated1957()).insert();
     }
 
     @Override

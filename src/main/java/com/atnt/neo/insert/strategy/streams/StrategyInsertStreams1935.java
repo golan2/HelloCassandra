@@ -1,7 +1,7 @@
 package com.atnt.neo.insert.strategy.streams;
 
 import com.atnt.neo.insert.generator.CassandraShared;
-import com.atnt.neo.insert.generator.streams.InsertToVerticalStreamsTable;
+import com.atnt.neo.insert.generator.InsertToVerticalStreamsTable;
 import com.atnt.neo.insert.strategy.time.TimePeriod;
 import com.atnt.neo.insert.strategy.time.EveryDaySingleMonth;
 import com.atnt.neo.insert.strategy.time.EveryTwoMinutesEveryHour;

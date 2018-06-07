@@ -1,11 +1,11 @@
 package com.atnt.neo.insert.strategy.streams;
 
 import com.atnt.neo.insert.generator.CassandraShared;
-import com.atnt.neo.insert.strategy.raw.data.AbsStrategyInsertRawData;
+import com.atnt.neo.insert.strategy.AbsStrategyInsert;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public abstract class AbsStrategyInsertVerticalStreams<T> extends AbsStrategyInsertRawData implements StrategyInsertVerticalStreams<T> {
+public abstract class AbsStrategyInsertVerticalStreams<T> extends AbsStrategyInsert implements StrategyInsertVerticalStreams<T> {
 
     private static final int SUFFIX = ThreadLocalRandom.current().nextInt(0, 99999);
 
@@ -34,4 +34,13 @@ public abstract class AbsStrategyInsertVerticalStreams<T> extends AbsStrategyIns
         return -1;
     }
 
+    @Override
+    public boolean includeTimeStamp() {
+        return false;
+    }
+
+    @Override
+    public boolean includeTxnId() {
+        return false;
+    }
 }

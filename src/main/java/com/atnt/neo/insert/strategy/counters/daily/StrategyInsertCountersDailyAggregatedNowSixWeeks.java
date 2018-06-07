@@ -1,23 +1,23 @@
-package com.atnt.neo.insert.strategy.daily;
+package com.atnt.neo.insert.strategy.counters.daily;
 
 import com.atnt.neo.insert.generator.InsertToCountersTable;
 import com.atnt.neo.insert.strategy.time.TimePeriod;
-import com.atnt.neo.insert.strategy.time.EveryDaySingleMonth;
+import com.atnt.neo.insert.strategy.time.EveryDaySeveralDaysEndOfYear;
 import com.atnt.neo.insert.strategy.time.SingleTxn;
 import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
 import java.util.Calendar;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class StrategyInsertDailyAggregated1969 extends AbsStrategyInsertDailyAggregated {
+public class StrategyInsertCountersDailyAggregatedNowSixWeeks extends AbsStrategyInsertCountersDailyAggregated {
 
     private static final int SUFFIX = ThreadLocalRandom.current().nextInt(0, 99999);
     private final Boolean truncateTableBeforeStart;
     private final Integer deviceCountPerDay;
 
-    private StrategyInsertDailyAggregated1969(Boolean truncate, Integer devicesPerDay) {
-        this.truncateTableBeforeStart = truncate;
-        this.deviceCountPerDay = devicesPerDay;
+    private StrategyInsertCountersDailyAggregatedNowSixWeeks(Boolean truncateTableBeforeStart, Integer deviceCountPerDay) {
+        this.truncateTableBeforeStart = truncateTableBeforeStart;
+        this.deviceCountPerDay = deviceCountPerDay;
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -31,12 +31,12 @@ public class StrategyInsertDailyAggregated1969 extends AbsStrategyInsertDailyAgg
             devicesPerDay = -1;
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertToCountersTable(new StrategyInsertDailyAggregated1969(truncate, devicesPerDay)).insert();
+        new InsertToCountersTable(new StrategyInsertCountersDailyAggregatedNowSixWeeks(truncate, devicesPerDay)).insert();
     }
 
     @Override
     public TimePeriod getTimePeriod() {
-        return new EveryDaySingleMonth(getYear(), Calendar.JANUARY);
+        return new EveryDaySeveralDaysEndOfYear(getYear(), 45);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class StrategyInsertDailyAggregated1969 extends AbsStrategyInsertDailyAgg
 
     @Override
     public int getYear() {
-        return 1969;
+        return Calendar.getInstance().get(Calendar.YEAR);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class StrategyInsertDailyAggregated1969 extends AbsStrategyInsertDailyAgg
     @Override
     public String getDeviceId(int year, int month, int day, int deviceIndex) {
         return "device_"+deviceIndex+"_"+ SUFFIX;
-//        return super.getDeviceId(month, day, deviceIndex) + "_" + SUFFIX;
     }
+
 
 }

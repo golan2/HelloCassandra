@@ -1,4 +1,4 @@
-package com.atnt.neo.insert.generator.streams;
+package com.atnt.neo.insert.generator;
 
 import com.atnt.neo.insert.generator.AbsInsertToCassandra;
 import com.atnt.neo.insert.strategy.streams.StrategyInsertVerticalStreams;

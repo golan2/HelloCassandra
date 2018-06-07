@@ -1,25 +1,22 @@
-package com.atnt.neo.insert.strategy.raw.data;
-
+package com.atnt.neo.insert.strategy.streams;
 
 import com.atnt.neo.insert.generator.CassandraShared;
-import com.atnt.neo.insert.generator.data.InsertCountersWithTimeBucketToTable;
+import com.atnt.neo.insert.generator.InsertToStreamsTable;
+import com.atnt.neo.insert.strategy.counters.raw.data.AbsStrategyInsertRawData;
+import com.atnt.neo.insert.strategy.streams.raw.data.AbsStrategyInsertStreamsRawData;
 import com.atnt.neo.insert.strategy.time.TimePeriod;
-import com.atnt.neo.insert.strategy.time.EveryDaySeveralDaysEndOfYear;
 import com.atnt.neo.insert.strategy.time.EveryTwoMinutesEveryHour;
+import com.atnt.neo.insert.strategy.time.SingleDay;
 import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
 import java.util.Calendar;
 
-/**
- * Insert data to {@link CassandraShared#RAW_DATA_TABLE} for several days in 1976
- * Diverse data for testing filters
- * Device, DeviceType,
- */
-public class StrategyInsertCountersTimeBucketDiverse1976 extends AbsStrategyInsertCounters {
+public class StrategyInsertStreams1927 extends AbsStrategyInsertStreamsRawData {
+
     private final Boolean truncateTableBeforeStart;
     private final Integer deviceCountPerDay;
 
-    private StrategyInsertCountersTimeBucketDiverse1976(Boolean truncateTableBeforeStart, Integer deviceCountPerDay) {
+    private StrategyInsertStreams1927(Boolean truncateTableBeforeStart, Integer deviceCountPerDay) {
         this.truncateTableBeforeStart = truncateTableBeforeStart;
         this.deviceCountPerDay = deviceCountPerDay;
     }
@@ -31,17 +28,18 @@ public class StrategyInsertCountersTimeBucketDiverse1976 extends AbsStrategyInse
             truncate = Boolean.parseBoolean(args[0]);
             devicesPerDay = Integer.parseInt(args[1]);
         } catch (Exception e) {
-            truncate = true;
-            devicesPerDay = 10;
+            truncate = false;
+            devicesPerDay = 1;
             System.out.println("Missing command-line-argument. Setting devicesPerDay to ["+devicesPerDay+"]");
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertCountersWithTimeBucketToTable(new StrategyInsertCountersTimeBucketDiverse1976(truncate, devicesPerDay)).insert();
+        new InsertToStreamsTable(new StrategyInsertStreams1927(truncate, devicesPerDay)).insert();
+
     }
 
     @Override
     public TimePeriod getTimePeriod() {
-        return new EveryDaySeveralDaysEndOfYear(getYear(), 8);
+        return new SingleDay(getYear());
     }
 
     @Override
@@ -50,8 +48,13 @@ public class StrategyInsertCountersTimeBucketDiverse1976 extends AbsStrategyInse
     }
 
     @Override
+    public boolean shouldTruncateTableBeforeStart() {
+        return truncateTableBeforeStart;
+    }
+
+    @Override
     public int getYear() {
-        return 1976;
+        return 1927;
     }
 
     @Override
@@ -61,16 +64,32 @@ public class StrategyInsertCountersTimeBucketDiverse1976 extends AbsStrategyInse
 
     @Override
     public String getTableName() {
-        return CassandraShared.RAW_DATA_TIME_BUCKET;
+        return CassandraShared.STREAMS_TABLE;
     }
 
     @Override
-    public boolean shouldTruncateTableBeforeStart() {
-        return this.truncateTableBeforeStart;
+    public int getBillingPoints(int month, int day, int hour) {
+        return 0;
     }
 
     @Override
-    public String getOrgId(int year, int month, int day, int hour, int minute, int deviceIndex) {
-        return String.format("org_id_%02d", minute%5);
+    public int getDataPoints(int month, int day, int hour) {
+        return 0;
     }
+
+    @Override
+    public long getVolumeSize(int month, int day, int hour) {
+        return 0;
+    }
+
+    @Override
+    public boolean includeTimeStamp() {
+        return false;
+    }
+
+    @Override
+    public boolean includeTxnId() {
+        return false;
+    }
+
 }

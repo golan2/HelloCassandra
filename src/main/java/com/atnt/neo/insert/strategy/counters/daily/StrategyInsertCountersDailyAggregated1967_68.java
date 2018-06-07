@@ -1,4 +1,4 @@
-package com.atnt.neo.insert.strategy.daily;
+package com.atnt.neo.insert.strategy.counters.daily;
 
 import com.atnt.neo.insert.generator.InsertToCountersTable;
 import com.atnt.neo.insert.strategy.time.TimePeriod;
@@ -8,10 +8,10 @@ import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
 import java.util.Calendar;
 
-public class StrategyInsertDailyAggregated1967_68 extends AbsStrategyInsertDailyAggregated {
+public class StrategyInsertCountersDailyAggregated1967_68 extends AbsStrategyInsertCountersDailyAggregated {
     private final Integer deviceCountPerDay;
 
-    private StrategyInsertDailyAggregated1967_68(Integer devicesPerDay) {
+    private StrategyInsertCountersDailyAggregated1967_68(Integer devicesPerDay) {
         this.deviceCountPerDay = devicesPerDay;
     }
 
@@ -26,7 +26,7 @@ public class StrategyInsertDailyAggregated1967_68 extends AbsStrategyInsertDaily
             devicesPerDay = -1;
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertToCountersTable(new StrategyInsertDailyAggregated1967_68(devicesPerDay)).insert();
+        new InsertToCountersTable(new StrategyInsertCountersDailyAggregated1967_68(devicesPerDay)).insert();
     }
 
     @Override

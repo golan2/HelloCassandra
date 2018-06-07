@@ -1,7 +1,8 @@
-package com.atnt.neo.insert.strategy;
+package com.atnt.neo.insert.strategy.counters;
 
-public abstract class AbsStrategyInsertAggregated extends AbsStrategyInsert {
+import com.atnt.neo.insert.strategy.AbsStrategyInsert;
 
+public abstract class AbsStrategyInsertCounters extends AbsStrategyInsert {
     @Override
     public int getBillingPoints(int month, int day, int hour) {
         return 10;
@@ -15,15 +16,5 @@ public abstract class AbsStrategyInsertAggregated extends AbsStrategyInsert {
     @Override
     public long getVolumeSize(int month, int day, int hour) {
         return 40;
-    }
-
-    @Override
-    public boolean includeTimeStamp() {
-        return false;
-    }
-
-    @Override
-    public boolean includeTxnId() {
-        return false;
     }
 }

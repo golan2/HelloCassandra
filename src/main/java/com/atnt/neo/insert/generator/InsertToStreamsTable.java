@@ -1,7 +1,8 @@
-package com.atnt.neo.insert.generator.streams;
+package com.atnt.neo.insert.generator;
 
 import com.atnt.neo.insert.generator.AbsInsertToCassandra;
-import com.atnt.neo.insert.strategy.raw.data.AbsStrategyInsertRawData;
+import com.atnt.neo.insert.strategy.counters.raw.data.AbsStrategyInsertRawData;
+import com.atnt.neo.insert.strategy.streams.AbStrategyInsertStreams;
 import com.datastax.driver.core.querybuilder.Insert;
 
 import java.util.Calendar;
@@ -10,7 +11,7 @@ import java.util.Map;
 
 public class InsertToStreamsTable extends AbsInsertToCassandra {
 
-    public InsertToStreamsTable(AbsStrategyInsertRawData strategyInsert) {
+    public InsertToStreamsTable(AbStrategyInsertStreams strategyInsert) {
         super(strategyInsert);
     }
 
@@ -29,7 +30,6 @@ public class InsertToStreamsTable extends AbsInsertToCassandra {
     protected void appendAdditionalFields(Insert insert, int year, int month, int day, int hour, int minute, int second, int deviceIndex) {
         insert.value("part_selector", getStrategy().getPartSelector(year, month, day, hour, minute, second));
         insert.value("user_param", createStreamMap(deviceIndex, year, month, day, hour,minute, second));
-
     }
 
     private static Map<String, String> createStreamMap(int deviceIndex, int year, int month, int day, int hour, int minute, int second) {
@@ -40,8 +40,8 @@ public class InsertToStreamsTable extends AbsInsertToCassandra {
     }
 
 
-    protected AbsStrategyInsertRawData getStrategy() {
-        return (AbsStrategyInsertRawData) super.getStrategy();
+    protected AbStrategyInsertStreams getStrategy() {
+        return (AbStrategyInsertStreams) super.getStrategy();
     }
 
 }

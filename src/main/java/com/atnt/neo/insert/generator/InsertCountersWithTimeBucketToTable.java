@@ -1,7 +1,6 @@
-package com.atnt.neo.insert.generator.data;
+package com.atnt.neo.insert.generator;
 
-import com.atnt.neo.insert.generator.AbsInsertToCassandra;
-import com.atnt.neo.insert.strategy.raw.data.AbsStrategyInsertCounters;
+import com.atnt.neo.insert.strategy.counters.raw.data.AbsStrategyInsertCountersRawData;
 import com.datastax.driver.core.querybuilder.Insert;
 
 import java.util.Calendar;
@@ -9,7 +8,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class InsertCountersWithTimeBucketToTable extends AbsInsertToCassandra {
-    public InsertCountersWithTimeBucketToTable(AbsStrategyInsertCounters strategyInsert) {
+    public InsertCountersWithTimeBucketToTable(AbsStrategyInsertCountersRawData strategyInsert) {
         super(strategyInsert);
     }
 

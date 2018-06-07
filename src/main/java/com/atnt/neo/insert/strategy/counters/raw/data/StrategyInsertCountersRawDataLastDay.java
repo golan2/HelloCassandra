@@ -1,4 +1,4 @@
-package com.atnt.neo.insert.strategy.raw.data;
+package com.atnt.neo.insert.strategy.counters.raw.data;
 
 import com.atnt.neo.insert.generator.CassandraShared;
 import com.atnt.neo.insert.generator.InsertToCountersTable;
@@ -9,7 +9,7 @@ import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
 import java.util.Calendar;
 
-public class StrategyInsertCountersLastDay extends AbsStrategyInsertCounters {
+public class StrategyInsertCountersRawDataLastDay extends AbsStrategyInsertCountersRawData {
 
     private static final int THIS_YEAR = Calendar.getInstance().get(Calendar.YEAR);
     private static final String devicePrefix = ""+Math.round(Math.random()*1000);
@@ -17,7 +17,7 @@ public class StrategyInsertCountersLastDay extends AbsStrategyInsertCounters {
     private final Boolean truncateTableBeforeStart;
     private final Integer deviceCountPerDay;
 
-    private StrategyInsertCountersLastDay(Boolean truncateTableBeforeStart, Integer deviceCountPerDay) {
+    private StrategyInsertCountersRawDataLastDay(Boolean truncateTableBeforeStart, Integer deviceCountPerDay) {
         this.truncateTableBeforeStart = truncateTableBeforeStart;
         this.deviceCountPerDay = deviceCountPerDay;
     }
@@ -34,7 +34,7 @@ public class StrategyInsertCountersLastDay extends AbsStrategyInsertCounters {
             System.out.println("Missing command-line-argument. Setting devicesPerDay to ["+devicesPerDay+"]");
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] devicePrefix=["+devicePrefix+"]");
-        new InsertToCountersTable(new StrategyInsertCountersLastDay(truncate, devicesPerDay)).insert();
+        new InsertToCountersTable(new StrategyInsertCountersRawDataLastDay(truncate, devicesPerDay)).insert();
     }
 
     @Override

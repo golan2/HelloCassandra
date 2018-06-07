@@ -1,21 +1,25 @@
-package com.atnt.neo.insert.strategy.raw.data;
+package com.atnt.neo.insert.strategy.counters.hourly;
 
-import com.atnt.neo.insert.generator.CassandraShared;
 import com.atnt.neo.insert.generator.InsertToCountersTable;
 import com.atnt.neo.insert.strategy.time.TimePeriod;
-import com.atnt.neo.insert.strategy.time.SingleDay;
-import com.atnt.neo.insert.strategy.time.SeveralHoursEverySecond;
+import com.atnt.neo.insert.strategy.time.EveryDaySeveralMonthsBeginOfYear;
+import com.atnt.neo.insert.strategy.time.EveryAggregatedHour;
 import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
 import java.util.Calendar;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class StrategyInsertCounters1989 extends AbsStrategyInsertCounters {
+/**
+ * Insert data for the first 6 weeks in 1955
+ */
+public class StrategyInsertCountersHourlyAggregated1955 extends AbsStrategyInsertCountersHourlyAggregated {
+
+    private static final int SUFFIX = ThreadLocalRandom.current().nextInt(0, 99999);
 
     private final Boolean truncateTableBeforeStart;
     private final Integer deviceCountPerDay;
 
-
-    private StrategyInsertCounters1989(Boolean truncate, Integer devicesPerDay) {
+    private StrategyInsertCountersHourlyAggregated1955(Boolean truncate, Integer devicesPerDay) {
         this.truncateTableBeforeStart = truncate;
         this.deviceCountPerDay = devicesPerDay;
     }
@@ -28,26 +32,30 @@ public class StrategyInsertCounters1989 extends AbsStrategyInsertCounters {
             devicesPerDay = Integer.parseInt(args[1]);
         } catch (Exception e) {
             truncate = false;
-            devicesPerDay = 1;
-            System.out.println("Missing command-line-argument. Setting devicesPerDay to ["+devicesPerDay+"]");
+            devicesPerDay = 20_000;
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertToCountersTable(new StrategyInsertCounters1989(truncate, devicesPerDay)).insert();
+        new InsertToCountersTable(new StrategyInsertCountersHourlyAggregated1955(truncate, devicesPerDay)).insert();
     }
 
     @Override
     public TimePeriod getTimePeriod() {
-        return new SingleDay(getYear());
+        return new EveryDaySeveralMonthsBeginOfYear(getYear(), 2);
     }
 
     @Override
     public TxnPerDay getTxnPerDay() {
-        return new SeveralHoursEverySecond(3);
+        return new EveryAggregatedHour();
+    }
+
+    @Override
+    public boolean shouldTruncateTableBeforeStart() {
+        return this.truncateTableBeforeStart;
     }
 
     @Override
     public int getYear() {
-        return 1989;
+        return 1955;
     }
 
     @Override
@@ -56,12 +64,9 @@ public class StrategyInsertCounters1989 extends AbsStrategyInsertCounters {
     }
 
     @Override
-    public String getTableName() {
-        return CassandraShared.RAW_DATA_TABLE;
+    public String getDeviceId(int year, int month, int day, int deviceIndex) {
+        return "device_"+deviceIndex+"_"+ SUFFIX;
     }
 
-    @Override
-    public boolean shouldTruncateTableBeforeStart() {
-        return this.truncateTableBeforeStart;
-    }
+
 }
