@@ -145,7 +145,7 @@ public abstract class AbsInsertToCassandra {
             for (Integer second : seconds) {
                 final Insert insert = QueryBuilder.insertInto(CassandraShared.KEYSPACE, getStrategy().getTableName());
 
-                appendInsertContextFields(insert);
+                appendInsertContextFields(insert, year, month, day, hour, minute, deviceIndex);
 
                 appendInsertTimeFields(insert, year, month, day, hour, cal, minute, second);
 
@@ -160,12 +160,12 @@ public abstract class AbsInsertToCassandra {
     }
 
 
-    private void appendInsertContextFields(Insert insert) {
-        insert.value("org_bucket", "org_bucket");
-        insert.value("project_bucket", "project_bucket");
-        insert.value("org_id", "org_id");
-        insert.value("project_id", "project_id");
-        insert.value("environment", "environment");
+    private void appendInsertContextFields(Insert insert, int year, int month, int day, int hour, int minute, int deviceIndex) {
+        insert.value("org_bucket", getStrategy().getOrgBucket());
+        insert.value("project_bucket", getStrategy().getProjectBucket());
+        insert.value("org_id", getStrategy().getOrgId(year, month, day, hour, minute, deviceIndex));
+        insert.value("project_id", getStrategy().getProjectId());
+        insert.value("environment", getStrategy().getEnvironment());
     }
 
     protected abstract void appendInsertTimeFields(Insert insert, int year, int month, int day, int hour, Calendar cal, Integer minute, Integer second);

@@ -3,7 +3,7 @@ package com.atnt.neo.insert.strategy.hourly;
 import com.atnt.neo.insert.generator.InsertToCountersTable;
 import com.atnt.neo.insert.strategy.time.TimePeriod;
 import com.atnt.neo.insert.strategy.time.EveryDaySeveralMonthsBeginOfYear;
-import com.atnt.neo.insert.strategy.time.EveryHour;
+import com.atnt.neo.insert.strategy.time.EveryAggregatedHour;
 import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
 import java.util.Calendar;
@@ -45,7 +45,7 @@ public class StrategyInsertHourlyAggregated1955 extends AbsStrategyInsertHourlyA
 
     @Override
     public TxnPerDay getTxnPerDay() {
-        return new EveryHour();
+        return new EveryAggregatedHour();
     }
 
     @Override

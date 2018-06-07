@@ -11,7 +11,7 @@ import java.util.Calendar;
 
 /**
  * Insert data to {@link CassandraShared#RAW_DATA_TABLE} for several days in 1975
- * 10,000 Devices
+ * A lot of data for several days
  * Every 2 minutes
  * 24 hours a day
  */
@@ -32,7 +32,7 @@ public class StrategyInsertCountersTimeBucket1975 extends AbsStrategyInsertCount
             truncate = Boolean.parseBoolean(args[0]);
             devicesPerDay = Integer.parseInt(args[1]);
         } catch (Exception e) {
-            truncate = true;
+            truncate = false;
             devicesPerDay = 1;
             System.out.println("Missing command-line-argument. Setting devicesPerDay to ["+devicesPerDay+"]");
         }

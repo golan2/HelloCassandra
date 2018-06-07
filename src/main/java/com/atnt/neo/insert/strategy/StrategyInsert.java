@@ -36,4 +36,13 @@ public interface StrategyInsert {
 
     boolean includeTxnId();
 
+    String getOrgBucket();
+
+    String getProjectBucket();
+
+    String getOrgId(int year, int month, int day, int hour, int minute, int deviceIndex);
+
+    String getProjectId();
+
+    String getEnvironment();
 }

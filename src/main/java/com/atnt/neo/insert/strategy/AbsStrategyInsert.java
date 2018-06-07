@@ -11,5 +11,28 @@ public abstract class AbsStrategyInsert implements StrategyInsert {
         return String.format("device_type_%2d", day % 10);
     }
 
+    @Override
+    public String getOrgBucket() {
+        return "org_bucket";
+    }
 
+    @Override
+    public String getProjectBucket() {
+        return "project_bucket";
+    }
+
+    @Override
+    public String getOrgId(int year, int month, int day, int hour, int minute, int deviceIndex) {
+        return "org_id";
+    }
+
+    @Override
+    public String getProjectId() {
+        return "project_id";
+    }
+
+    @Override
+    public String getEnvironment() {
+        return "environment";
+    }
 }

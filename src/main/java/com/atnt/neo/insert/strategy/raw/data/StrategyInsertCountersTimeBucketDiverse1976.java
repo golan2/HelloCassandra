@@ -12,15 +12,14 @@ import java.util.Calendar;
 
 /**
  * Insert data to {@link CassandraShared#RAW_DATA_TABLE} for several days in 1976
- * 100 Devices from 10 device types (total of 1000 devices)
- * Every 2 minutes
- * 24 hours a day
+ * Diverse data for testing filters
+ * Device, DeviceType,
  */
-public class StrategyInsertCountersTimeBucket1976 extends AbsStrategyInsertCounters {
+public class StrategyInsertCountersTimeBucketDiverse1976 extends AbsStrategyInsertCounters {
     private final Boolean truncateTableBeforeStart;
     private final Integer deviceCountPerDay;
 
-    private StrategyInsertCountersTimeBucket1976(Boolean truncateTableBeforeStart, Integer deviceCountPerDay) {
+    private StrategyInsertCountersTimeBucketDiverse1976(Boolean truncateTableBeforeStart, Integer deviceCountPerDay) {
         this.truncateTableBeforeStart = truncateTableBeforeStart;
         this.deviceCountPerDay = deviceCountPerDay;
     }
@@ -33,11 +32,11 @@ public class StrategyInsertCountersTimeBucket1976 extends AbsStrategyInsertCount
             devicesPerDay = Integer.parseInt(args[1]);
         } catch (Exception e) {
             truncate = true;
-            devicesPerDay = 1;
+            devicesPerDay = 10;
             System.out.println("Missing command-line-argument. Setting devicesPerDay to ["+devicesPerDay+"]");
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertCountersWithTimeBucketToTable(new StrategyInsertCountersTimeBucket1976(truncate, devicesPerDay)).insert();
+        new InsertCountersWithTimeBucketToTable(new StrategyInsertCountersTimeBucketDiverse1976(truncate, devicesPerDay)).insert();
     }
 
     @Override
@@ -70,4 +69,8 @@ public class StrategyInsertCountersTimeBucket1976 extends AbsStrategyInsertCount
         return this.truncateTableBeforeStart;
     }
 
+    @Override
+    public String getOrgId(int year, int month, int day, int hour, int minute, int deviceIndex) {
+        return String.format("org_id_%02d", minute%5);
+    }
 }
