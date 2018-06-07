@@ -1,17 +1,16 @@
 package com.atnt.neo.insert.generator;
 
-import com.atnt.neo.insert.generator.AbsInsertToCassandra;
-import com.atnt.neo.insert.strategy.counters.raw.data.AbsStrategyInsertRawData;
 import com.atnt.neo.insert.strategy.streams.AbStrategyInsertStreams;
+import com.atnt.neo.insert.strategy.streams.map.AbsStrategyInsertStreamsMap;
 import com.datastax.driver.core.querybuilder.Insert;
 
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class InsertToStreamsTable extends AbsInsertToCassandra {
+public class InsertToStreamsMapTable extends AbsInsertToCassandra {
 
-    public InsertToStreamsTable(AbStrategyInsertStreams strategyInsert) {
+    public InsertToStreamsMapTable(AbsStrategyInsertStreamsMap strategyInsert) {
         super(strategyInsert);
     }
 
@@ -40,8 +39,8 @@ public class InsertToStreamsTable extends AbsInsertToCassandra {
     }
 
 
-    protected AbStrategyInsertStreams getStrategy() {
-        return (AbStrategyInsertStreams) super.getStrategy();
+    protected AbsStrategyInsertStreamsMap getStrategy() {
+        return (AbsStrategyInsertStreamsMap) super.getStrategy();
     }
 
 }

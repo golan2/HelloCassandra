@@ -1,15 +1,14 @@
 package com.atnt.neo.insert.generator;
 
-import com.atnt.neo.insert.generator.AbsInsertToCassandra;
-import com.atnt.neo.insert.strategy.streams.StrategyInsertVerticalStreams;
+import com.atnt.neo.insert.strategy.streams.vertical.StrategyInsertVerticalStreams;
 import com.datastax.driver.core.querybuilder.Insert;
 
 import java.util.Calendar;
 
-public class InsertToVerticalStreamsTable<T> extends AbsInsertToCassandra {
+public class InsertToStreamsVerticalTable<T> extends AbsInsertToCassandra {
 
 
-    public InsertToVerticalStreamsTable(StrategyInsertVerticalStreams strategy) {
+    public InsertToStreamsVerticalTable(StrategyInsertVerticalStreams strategy) {
         super(strategy);
     }
 

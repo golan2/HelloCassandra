@@ -23,15 +23,6 @@ public interface StrategyInsert {
     @SuppressWarnings("unused")
     String getDeviceType(int year, int month, int day, int deviceIndex);
 
-    @SuppressWarnings("unused")
-    int getBillingPoints(int month, int day, int hour);
-
-    @SuppressWarnings("unused")
-    int getDataPoints(int month, int day, int hour);
-
-    @SuppressWarnings("unused")
-    long getVolumeSize(int month, int day, int hour);
-
     boolean includeTimeStamp();
 
     boolean includeTxnId();

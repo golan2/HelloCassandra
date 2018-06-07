@@ -1,4 +1,4 @@
-package com.atnt.neo.insert.strategy.streams;
+package com.atnt.neo.insert.strategy.streams.vertical;
 
 import com.atnt.neo.insert.strategy.StrategyInsert;
 

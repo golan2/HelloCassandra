@@ -1,7 +1,7 @@
-package com.atnt.neo.insert.strategy.streams;
+package com.atnt.neo.insert.strategy.streams.vertical;
 
 import com.atnt.neo.insert.generator.CassandraShared;
-import com.atnt.neo.insert.generator.InsertToVerticalStreamsTable;
+import com.atnt.neo.insert.generator.InsertToStreamsVerticalTable;
 import com.atnt.neo.insert.strategy.time.TimePeriod;
 import com.atnt.neo.insert.strategy.time.EveryDaySingleMonth;
 import com.atnt.neo.insert.strategy.time.EveryTwoMinutesEveryHour;
@@ -16,11 +16,11 @@ import java.util.Calendar;
  *  - Single stream: "bogus_stream"
  *
  */
-public class StrategyInsertStreams1935 extends AbsStrategyInsertVerticalStreams<Double> {
+public class StrategyInsertStreamsVertical1935 extends AbsStrategyInsertStreamsVertical<Double> {
     private final Boolean truncateTableBeforeStart;
     private final Integer deviceCountPerDay;
 
-    private StrategyInsertStreams1935(Boolean truncate, Integer devicesPerDay) {
+    private StrategyInsertStreamsVertical1935(Boolean truncate, Integer devicesPerDay) {
         this.truncateTableBeforeStart = truncate;
         this.deviceCountPerDay = devicesPerDay;
     }
@@ -36,7 +36,7 @@ public class StrategyInsertStreams1935 extends AbsStrategyInsertVerticalStreams<
             devicesPerDay = 1;
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertToVerticalStreamsTable<Double>(new StrategyInsertStreams1935(truncate, devicesPerDay)).insert();
+        new InsertToStreamsVerticalTable<Double>(new StrategyInsertStreamsVertical1935(truncate, devicesPerDay)).insert();
     }
 
     @Override

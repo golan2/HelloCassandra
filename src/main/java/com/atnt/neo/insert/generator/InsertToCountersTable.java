@@ -2,12 +2,13 @@ package com.atnt.neo.insert.generator;
 
 import com.atnt.neo.insert.strategy.StrategyInsert;
 import com.atnt.neo.insert.strategy.StrategyUtil;
+import com.atnt.neo.insert.strategy.counters.AbsStrategyInsertCounters;
 import com.datastax.driver.core.querybuilder.Insert;
 
 import java.util.Calendar;
 
 public class InsertToCountersTable extends AbsInsertToCassandra {
-    public InsertToCountersTable(StrategyInsert strategyInsert) {
+    public InsertToCountersTable(AbsStrategyInsertCounters strategyInsert) {
         super(strategyInsert);
     }
 
@@ -34,5 +35,8 @@ public class InsertToCountersTable extends AbsInsertToCassandra {
         if (getStrategy().includeTxnId()) insert.value("transaction_id", "transaction_id");
     }
 
-
+    @Override
+    protected AbsStrategyInsertCounters getStrategy() {
+        return (AbsStrategyInsertCounters) super.getStrategy();
+    }
 }
