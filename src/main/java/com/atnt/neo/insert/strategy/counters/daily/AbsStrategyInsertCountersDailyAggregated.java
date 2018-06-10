@@ -7,7 +7,7 @@ public abstract class AbsStrategyInsertCountersDailyAggregated extends AbsStrate
 
     @Override
     public String getTableName() {
-        return CassandraShared.DAILY_AGGREGATOR;
+        return CassandraShared.T_COUNTERS_DAILY;
     }
 
 }

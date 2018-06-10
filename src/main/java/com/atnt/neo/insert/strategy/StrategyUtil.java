@@ -16,10 +16,12 @@ public class StrategyUtil {
         return Collections.singleton(0);
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     public static Set<Integer> generateXhours(int x) {
         return generateXminutes(x);
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     private static Set<Integer> generateXminutes(int x) {
         return IntStream.range(0,x).boxed().collect(Collectors.toSet());       // //[0,1,2]
     }

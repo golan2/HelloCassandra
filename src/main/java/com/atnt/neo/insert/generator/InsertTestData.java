@@ -2,7 +2,6 @@ package com.atnt.neo.insert.generator;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
-import com.atnt.neo.insert.generator.CassandraShared;
 
 import java.util.Calendar;
 
@@ -10,7 +9,7 @@ class InsertTestData {
 
     @SuppressWarnings("SpellCheckingInspection")
     private static final String INSERT_QUERY_TEMPLATE =
-            "INSERT INTO "+ CassandraShared.KEYSPACE +"." + CassandraShared.RAW_DATA_TABLE + " " +
+            "INSERT INTO "+ CassandraShared.KEYSPACE +"." + CassandraShared.T_COUNTERS_RAW_DATA + " " +
                     "(year, month, day, hour, minutes, seconds, user_bucket,   project_bucket,   user_id,   project_id,   environment, device_id, timestamp, device_firmware,   device_type,   user_param) " +
                     "VALUES " +
                     "(%d,   %d,    %d,  %d,   %d,      %d,      'user_bucket', 'project_bucket', 'user_id', 'project_id', 'environment',   '%s',      %d,    'device_firmware', 'device_type', {'eventType': 'Flow','name': 'Calamp'}  );";
@@ -34,7 +33,7 @@ class InsertTestData {
     }
 
     private static void insertTestData(Session session) {
-        session.execute("truncate table "+ CassandraShared.KEYSPACE+"."+CassandraShared.RAW_DATA_TABLE+";");
+        session.execute("truncate table "+ CassandraShared.KEYSPACE+"."+CassandraShared.T_COUNTERS_RAW_DATA +";");
 
         //Always Active
         Calendar cal = Calendar.getInstance();

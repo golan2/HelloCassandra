@@ -1,17 +1,15 @@
 package com.atnt.neo.insert.strategy.counters.daily;
 
 import com.atnt.neo.insert.generator.InsertToCountersTable;
-import com.atnt.neo.insert.strategy.time.TimePeriod;
 import com.atnt.neo.insert.strategy.time.EveryDaySingleMonth;
 import com.atnt.neo.insert.strategy.time.SingleTxn;
+import com.atnt.neo.insert.strategy.time.TimePeriod;
 import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
 import java.util.Calendar;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class StrategyInsertCountersDailyAggregated1969 extends AbsStrategyInsertCountersDailyAggregated {
 
-    private static final int SUFFIX = ThreadLocalRandom.current().nextInt(0, 99999);
     private final Boolean truncateTableBeforeStart;
     private final Integer deviceCountPerDay;
 
@@ -57,12 +55,6 @@ public class StrategyInsertCountersDailyAggregated1969 extends AbsStrategyInsert
     @Override
     public int getDeviceCountPerDay(Calendar cal) {
         return ( this.deviceCountPerDay==-1 ? 70_000+cal.get(Calendar.DAY_OF_YEAR) : this.deviceCountPerDay );
-    }
-
-    @Override
-    public String getDeviceId(int year, int month, int day, int deviceIndex) {
-        return "device_"+deviceIndex+"_"+ SUFFIX;
-//        return super.getDeviceId(month, day, deviceIndex) + "_" + SUFFIX;
     }
 
 }

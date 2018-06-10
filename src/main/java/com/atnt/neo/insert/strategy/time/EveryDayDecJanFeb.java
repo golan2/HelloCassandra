@@ -12,14 +12,16 @@ public class EveryDayDecJanFeb implements TimePeriod {
     @Override
     public Calendar getFirstDay() {
         Calendar cal = Calendar.getInstance();
-        cal.set(this.year-1, Calendar.DECEMBER, 1);
+        cal.set(this.year-1, Calendar.DECEMBER, 1, 0, 0, 0);
+        cal.set(Calendar.MILLISECOND, 0);
         return cal;
     }
 
     @Override
     public Calendar getLastDay() {
         Calendar cal = Calendar.getInstance();
-        cal.set(this.year, Calendar.FEBRUARY, 28);
+        cal.set(this.year, Calendar.FEBRUARY, 28, 0, 0, 0);
+        cal.set(Calendar.MILLISECOND, 0);
         return cal;
     }
 

@@ -15,6 +15,7 @@ public class EveryDaySingleMonth implements TimePeriod {
     public Calendar getFirstDay() {
         Calendar cal = Calendar.getInstance();
         cal.set(this.year, this.month, 1, 1, 0, 0);
+        cal.set(Calendar.MILLISECOND, 0);
         return cal;
     }
 

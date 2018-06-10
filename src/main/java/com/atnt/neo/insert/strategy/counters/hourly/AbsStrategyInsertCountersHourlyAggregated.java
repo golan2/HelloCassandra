@@ -6,6 +6,6 @@ import com.atnt.neo.insert.strategy.AbsStrategyInsertCountersAggregated;
 public abstract class AbsStrategyInsertCountersHourlyAggregated extends AbsStrategyInsertCountersAggregated {
     @Override
     public String getTableName() {
-        return CassandraShared.HOURLY_AGGREGATOR;
+        return CassandraShared.T_COUNTERS_HOURLY;
     }
 }

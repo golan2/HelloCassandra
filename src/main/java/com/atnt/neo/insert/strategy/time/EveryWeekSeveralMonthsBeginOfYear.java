@@ -15,6 +15,7 @@ public class EveryWeekSeveralMonthsBeginOfYear implements TimePeriod {
     public Calendar getFirstDay() {
         Calendar cal = Calendar.getInstance();
         cal.set(this.year, Calendar.JANUARY, 1, 1, 0, 0);
+        cal.set(Calendar.MILLISECOND, 0);
         return cal;
     }
 

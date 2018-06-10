@@ -30,7 +30,7 @@ public class StrategyInsertDailyAggregated1964_65 extends AbsStrategyInsertCount
 
     @Override
     public String getTableName() {
-        return CassandraShared.DAILY_AGGREGATOR;
+        return CassandraShared.T_COUNTERS_DAILY;
     }
 
     @Override

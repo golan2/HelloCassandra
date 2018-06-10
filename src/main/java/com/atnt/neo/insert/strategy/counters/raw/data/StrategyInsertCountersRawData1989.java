@@ -57,7 +57,7 @@ public class StrategyInsertCountersRawData1989 extends AbsStrategyInsertCounters
 
     @Override
     public String getTableName() {
-        return CassandraShared.RAW_DATA_TABLE;
+        return CassandraShared.T_COUNTERS_RAW_DATA;
     }
 
     @Override

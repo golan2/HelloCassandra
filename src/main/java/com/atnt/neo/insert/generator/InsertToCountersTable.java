@@ -1,6 +1,5 @@
 package com.atnt.neo.insert.generator;
 
-import com.atnt.neo.insert.strategy.StrategyInsert;
 import com.atnt.neo.insert.strategy.StrategyUtil;
 import com.atnt.neo.insert.strategy.counters.AbsStrategyInsertCounters;
 import com.datastax.driver.core.querybuilder.Insert;

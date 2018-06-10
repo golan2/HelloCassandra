@@ -25,7 +25,7 @@ public class StrategyInsertCountersDailyAggregated1967_68 extends AbsStrategyIns
             truncate = false;
             devicesPerDay = -1;
         }
-        System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
+        System.out.println("truncate=[" + truncate + "] devicesPerDay=[" + devicesPerDay + "] ");
         new InsertToCountersTable(new StrategyInsertCountersDailyAggregated1967_68(devicesPerDay)).insert();
     }
 
@@ -52,7 +52,7 @@ public class StrategyInsertCountersDailyAggregated1967_68 extends AbsStrategyIns
 
     @Override
     public int getDeviceCountPerDay(Calendar cal) {
-        return ( this.deviceCountPerDay==-1 ? 50_000+cal.get(Calendar.MONTH)*100 : this.deviceCountPerDay );
+        return (this.deviceCountPerDay == -1 ? 50_000 + cal.get(Calendar.MONTH) * 100 : this.deviceCountPerDay);
     }
 
     @Override
@@ -60,8 +60,4 @@ public class StrategyInsertCountersDailyAggregated1967_68 extends AbsStrategyIns
         return day;
     }
 
-    @Override
-    public String getDeviceId(int year, int month, int day, int deviceIndex) {
-        return "device_"+deviceIndex;
-    }
 }

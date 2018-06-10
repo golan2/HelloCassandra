@@ -1,12 +1,9 @@
 package com.atnt.neo.insert.generator;
 
-import com.atnt.neo.insert.strategy.streams.AbStrategyInsertStreams;
 import com.atnt.neo.insert.strategy.streams.map.AbsStrategyInsertStreamsMap;
 import com.datastax.driver.core.querybuilder.Insert;
 
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 public class InsertToStreamsMapTable extends AbsInsertToCassandra {
 
@@ -28,16 +25,8 @@ public class InsertToStreamsMapTable extends AbsInsertToCassandra {
     @Override
     protected void appendAdditionalFields(Insert insert, int year, int month, int day, int hour, int minute, int second, int deviceIndex) {
         insert.value("part_selector", getStrategy().getPartSelector(year, month, day, hour, minute, second));
-        insert.value("user_param", createStreamMap(deviceIndex, year, month, day, hour,minute, second));
+        insert.value("user_param", getStrategy().createDoubleStreamMap(deviceIndex, year, month, day, hour));
     }
-
-    private static Map<String, String> createStreamMap(int deviceIndex, int year, int month, int day, int hour, int minute, int second) {
-        final HashMap<String, String> result = new HashMap<>();
-        result.put("days_level", String.valueOf(year*365*12+month*12+day+deviceIndex));
-        result.put("seconds_level", String.valueOf(hour*60*60+minute*60+second));
-        return result;
-    }
-
 
     protected AbsStrategyInsertStreamsMap getStrategy() {
         return (AbsStrategyInsertStreamsMap) super.getStrategy();

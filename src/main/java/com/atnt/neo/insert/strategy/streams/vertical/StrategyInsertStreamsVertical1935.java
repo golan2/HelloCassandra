@@ -1,10 +1,9 @@
 package com.atnt.neo.insert.strategy.streams.vertical;
 
-import com.atnt.neo.insert.generator.CassandraShared;
 import com.atnt.neo.insert.generator.InsertToStreamsVerticalTable;
-import com.atnt.neo.insert.strategy.time.TimePeriod;
-import com.atnt.neo.insert.strategy.time.EveryDaySingleMonth;
+import com.atnt.neo.insert.strategy.time.EveryDaySeveralMonthsBeginOfYear;
 import com.atnt.neo.insert.strategy.time.EveryTwoMinutesEveryHour;
+import com.atnt.neo.insert.strategy.time.TimePeriod;
 import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
 import java.util.Calendar;
@@ -16,7 +15,7 @@ import java.util.Calendar;
  *  - Single stream: "bogus_stream"
  *
  */
-public class StrategyInsertStreamsVertical1935 extends AbsStrategyInsertStreamsVertical<Double> {
+public class StrategyInsertStreamsVertical1935 extends AbsStrategyInsertStreamsVertical {
     private final Boolean truncateTableBeforeStart;
     private final Integer deviceCountPerDay;
 
@@ -36,12 +35,12 @@ public class StrategyInsertStreamsVertical1935 extends AbsStrategyInsertStreamsV
             devicesPerDay = 1;
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertToStreamsVerticalTable<Double>(new StrategyInsertStreamsVertical1935(truncate, devicesPerDay)).insert();
+        new InsertToStreamsVerticalTable(new StrategyInsertStreamsVertical1935(truncate, devicesPerDay)).insert();
     }
 
     @Override
     public TimePeriod getTimePeriod() {
-        return new EveryDaySingleMonth(getYear(), Calendar.JANUARY);
+        return new EveryDaySeveralMonthsBeginOfYear(getYear(), 2);
     }
 
     @Override
@@ -54,21 +53,6 @@ public class StrategyInsertStreamsVertical1935 extends AbsStrategyInsertStreamsV
         return this.truncateTableBeforeStart;
     }
 
-
-    @Override
-    public String getStreamName() {
-        return "bogus_stream";
-    }
-
-    @Override
-    public String getStreamColumnName() {
-        return CassandraShared.NUMERIC_STREAM_FIELD_NAME;
-    }
-
-    @Override
-    public Double getStreamValue(int year, int month, int day, int hour, int deviceIndex) {
-        return (double) ((month * 31 + day) * 24 + hour + deviceIndex);
-    }
 
     @Override
     public int getYear() {

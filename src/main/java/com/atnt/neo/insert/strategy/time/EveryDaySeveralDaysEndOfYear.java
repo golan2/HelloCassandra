@@ -21,7 +21,8 @@ public class EveryDaySeveralDaysEndOfYear implements TimePeriod {
     @Override
     public Calendar getLastDay() {
         Calendar cal = Calendar.getInstance();
-        cal.set(this.year, Calendar.DECEMBER, 31);
+        cal.set(this.year, Calendar.DECEMBER, 31, 0, 0, 0);
+        cal.set(Calendar.MILLISECOND, 0);
         return cal;
     }
 

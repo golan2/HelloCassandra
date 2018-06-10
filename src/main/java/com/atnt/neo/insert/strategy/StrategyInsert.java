@@ -18,6 +18,7 @@ public interface StrategyInsert {
 
     int getDeviceCountPerDay(Calendar cal);
 
+    @SuppressWarnings("unused")
     String getDeviceId(int year, int month, int day, int deviceIndex);
 
     @SuppressWarnings("unused")
@@ -31,6 +32,7 @@ public interface StrategyInsert {
 
     String getProjectBucket();
 
+    @SuppressWarnings("unused")
     String getOrgId(int year, int month, int day, int hour, int minute, int deviceIndex);
 
     String getProjectId();

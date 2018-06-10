@@ -12,7 +12,6 @@ import java.util.Calendar;
 public class StrategyInsertCountersRawDataLastDay extends AbsStrategyInsertCountersRawData {
 
     private static final int THIS_YEAR = Calendar.getInstance().get(Calendar.YEAR);
-    private static final String devicePrefix = ""+Math.round(Math.random()*1000);
 
     private final Boolean truncateTableBeforeStart;
     private final Integer deviceCountPerDay;
@@ -33,15 +32,17 @@ public class StrategyInsertCountersRawDataLastDay extends AbsStrategyInsertCount
             devicesPerDay = 1;
             System.out.println("Missing command-line-argument. Setting devicesPerDay to ["+devicesPerDay+"]");
         }
-        System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] devicePrefix=["+devicePrefix+"]");
+        System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
         new InsertToCountersTable(new StrategyInsertCountersRawDataLastDay(truncate, devicesPerDay)).insert();
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     @Override
     public String getOrgBucket() {
         return "yairu";
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     @Override
     public String getProjectBucket() {
         return "quickstart";
@@ -52,6 +53,7 @@ public class StrategyInsertCountersRawDataLastDay extends AbsStrategyInsertCount
         return "yairu";
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     @Override
     public String getProjectId() {
         return "quickstart";
@@ -89,11 +91,7 @@ public class StrategyInsertCountersRawDataLastDay extends AbsStrategyInsertCount
 
     @Override
     public String getTableName() {
-        return CassandraShared.RAW_DATA_TABLE;
+        return CassandraShared.T_COUNTERS_RAW_DATA;
     }
 
-    @Override
-    public String getDeviceId(int year, int month, int day, int deviceIndex) {
-        return String.format("device_%s", devicePrefix);
-    }
 }

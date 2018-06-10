@@ -1,9 +1,14 @@
 package com.atnt.neo.insert.strategy;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public abstract class AbsStrategyInsert implements StrategyInsert {
+
+    private static final String DEVICE_PREFIX = "device_"+ ThreadLocalRandom.current().nextInt(0, 99999);
+
     @Override
     public String getDeviceId(int year, int month, int day, int deviceIndex) {
-        return String.format("device_%4d_%2d_%2d_%d", year, month, day, deviceIndex);
+        return DEVICE_PREFIX + deviceIndex;
     }
 
     @Override

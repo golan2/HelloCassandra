@@ -10,7 +10,7 @@ import com.atnt.neo.insert.strategy.time.TxnPerDay;
 import java.util.Calendar;
 
 /**
- * Insert data to {@link CassandraShared#RAW_DATA_TABLE} for several days in 1975
+ * Insert data to {@link CassandraShared#T_COUNTERS_RAW_DATA} for several days in 1975
  * A lot of data for several days
  * Every 2 minutes
  * 24 hours a day
