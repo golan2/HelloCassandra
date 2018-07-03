@@ -185,9 +185,9 @@ public abstract class AbsInsertToCassandra {
         return cal.getTime();
     }
 
-    void appendInsertDeviceInfo(Insert insert, int deviceId, int year, int month, int day) {
-        insert.value("device_id", getStrategy().getDeviceId(year, month, day, deviceId));
-        insert.value("device_type", getStrategy().getDeviceType(year, month, day, deviceId));
+    void appendInsertDeviceInfo(Insert insert, int deviceIndex, int year, int month, int day) {
+        insert.value("device_id", getStrategy().getDeviceId(year, month, day, deviceIndex));
+        insert.value("device_type", getStrategy().getDeviceType(year, month, day, deviceIndex));
     }
 
     protected abstract void appendAdditionalFields(Insert insert, int year, int month, int day, int hour, int minute, int second, int deviceIndex);

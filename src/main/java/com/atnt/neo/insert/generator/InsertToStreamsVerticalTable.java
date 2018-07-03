@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class InsertToStreamsVerticalTable extends AbsInsertToCassandra {
 
@@ -20,13 +22,22 @@ public class InsertToStreamsVerticalTable extends AbsInsertToCassandra {
     @Override
     protected Iterable<Insert> createInsertQueries(int deviceIndex, int year, int month, int day, int hour) {
         final Calendar          cal     = Calendar.getInstance();
-        final Set<Integer> minutes = getStrategy().getTxnPerDay().getMinutesArray();
+        final Set<Integer>      minutes = getStrategy().getTxnPerDay().getMinutesArray();
         final Set<Integer>      seconds = getStrategy().getTxnPerDay().getSecondsArray();
-        final ArrayList<Insert> result  = new ArrayList<>(minutes.size() * seconds.size());
 
         final Map<String, Double> doubleStreamMap = getStrategy().createDoubleStreamMap(deviceIndex, year, month, day, hour);
+        final ArrayList<Insert> result1 = createInsertStreamsQuery(deviceIndex, year, month, day, hour, cal, minutes, seconds, doubleStreamMap);
 
-        for (Map.Entry<String, Double> entry : doubleStreamMap.entrySet()) {
+        final Map<String, String> geoStreamMap = getStrategy().createGeoLocationStreamMap(deviceIndex, year, month, day, hour);
+        final ArrayList<Insert> result2 = createInsertStreamsQuery(deviceIndex, year, month, day, hour, cal, minutes, seconds, geoStreamMap);
+
+        return Stream.concat(result1.stream(), result2.stream()).collect(Collectors.toList());
+
+    }
+
+    private <T> ArrayList<Insert> createInsertStreamsQuery(int deviceIndex, int year, int month, int day, int hour, Calendar cal, Set<Integer> minutes, Set<Integer> seconds, Map<String, T> doubleStreamMap) {
+        final ArrayList<Insert> result  = new ArrayList<>(minutes.size() * seconds.size());
+        for (Map.Entry<String, T> entry : doubleStreamMap.entrySet()) {
             for (Integer minute : minutes) {
                 for (Integer second : seconds) {
 
@@ -46,12 +57,16 @@ public class InsertToStreamsVerticalTable extends AbsInsertToCassandra {
             }
         }
         return result;
-
     }
 
-    private void appendInsertStreamFields(Insert insert, String streamName, Double streamValue) {
+    private <T> void appendInsertStreamFields(Insert insert, String streamName, T streamValue) {
         insert.value(CassandraShared.F_VERTICAL_STREAM_NAME, streamName);
-        insert.value(CassandraShared.F_VERTICAL_STREAM_NUMBER, streamValue);
+        if (streamValue instanceof Double) {
+            insert.value(CassandraShared.F_VERTICAL_STREAM_DOUBLE, streamValue);
+        }
+        else if (streamValue instanceof String) {
+            insert.value(CassandraShared.F_VERTICAL_STREAM_TEXT, streamValue);
+        }
     }
 
 

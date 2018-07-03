@@ -4,7 +4,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class AbsStrategyInsert implements StrategyInsert {
 
-    private static final String DEVICE_PREFIX = "device_"+ ThreadLocalRandom.current().nextInt(0, 99999);
+    private static final String DEVICE_PREFIX = "device_"+ ThreadLocalRandom.current().nextInt(0, 99999) + "_";
 
     @Override
     public String getDeviceId(int year, int month, int day, int deviceIndex) {
