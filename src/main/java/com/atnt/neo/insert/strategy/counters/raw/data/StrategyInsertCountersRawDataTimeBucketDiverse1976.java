@@ -61,7 +61,7 @@ public class StrategyInsertCountersRawDataTimeBucketDiverse1976 extends AbsStrat
 
     @Override
     public String getTableName() {
-        return CassandraShared.RAW_DATA_TIME_BUCKET;
+        return CassandraShared.T_RAW_DATA_TIME_BUCKET;
     }
 
     @Override

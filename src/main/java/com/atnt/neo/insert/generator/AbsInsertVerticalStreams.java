@@ -1,7 +1,7 @@
 package com.atnt.neo.insert.generator;
 
+import com.atnt.neo.insert.strategy.StrategyInsert;
 import com.atnt.neo.insert.strategy.streams.AbStrategyInsertStreams;
-import com.atnt.neo.insert.strategy.streams.vertical.AbsStrategyInsertStreamsVertical;
 import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 
@@ -12,18 +12,16 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class InsertToStreamsVerticalTable extends AbsInsertToCassandra {
-
-
-    public InsertToStreamsVerticalTable(AbsStrategyInsertStreamsVertical strategy) {
-        super(strategy);
+public abstract class AbsInsertVerticalStreams extends AbsInsertToCassandra {
+    AbsInsertVerticalStreams(StrategyInsert strategyInsert) {
+        super(strategyInsert);
     }
 
     @Override
     protected Iterable<Insert> createInsertQueries(int deviceIndex, int year, int month, int day, int hour) {
-        final Calendar          cal     = Calendar.getInstance();
-        final Set<Integer>      minutes = getStrategy().getTxnPerDay().getMinutesArray();
-        final Set<Integer>      seconds = getStrategy().getTxnPerDay().getSecondsArray();
+        final Calendar     cal     = Calendar.getInstance();
+        final Set<Integer> minutes = getStrategy().getTxnPerDay().getMinutesArray();
+        final Set<Integer> seconds = getStrategy().getTxnPerDay().getSecondsArray();
 
         final Map<String, Double> doubleStreamMap = getStrategy().createDoubleStreamMap(deviceIndex, year, month, day, hour);
         final ArrayList<Insert> result1 = createInsertStreamsQuery(deviceIndex, year, month, day, hour, cal, minutes, seconds, doubleStreamMap);
@@ -69,17 +67,8 @@ public class InsertToStreamsVerticalTable extends AbsInsertToCassandra {
         }
     }
 
-
     @Override
-    protected void appendInsertTimeFields(Insert insert, int year, int month, int day, int hour, Calendar cal, Integer minute, Integer second) {
-        insert.value("timestamp", getTimestamp(cal, month, day, hour, minute, second));
-        insert.value("year", year);
-        insert.value("month", month);
-        insert.value("day", day);
-        insert.value("hour", hour);
-        insert.value("minutes", minute);
-        insert.value("seconds", second);
-    }
+    protected abstract void appendInsertTimeFields(Insert insert, int year, int month, int day, int hour, Calendar cal, Integer minute, Integer second);
 
     @Override
     protected void appendAdditionalFields(Insert insert, int year, int month, int day, int hour, int minute, int second, int deviceIndex) {}
@@ -88,5 +77,4 @@ public class InsertToStreamsVerticalTable extends AbsInsertToCassandra {
         //noinspection unchecked
         return (AbStrategyInsertStreams) super.getStrategy();
     }
-
 }

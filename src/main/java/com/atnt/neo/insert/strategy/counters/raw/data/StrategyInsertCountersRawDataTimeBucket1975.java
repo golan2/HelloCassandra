@@ -62,7 +62,7 @@ public class StrategyInsertCountersRawDataTimeBucket1975 extends AbsStrategyInse
 
     @Override
     public String getTableName() {
-        return CassandraShared.RAW_DATA_TIME_BUCKET;
+        return CassandraShared.T_RAW_DATA_TIME_BUCKET;
     }
 
     @Override

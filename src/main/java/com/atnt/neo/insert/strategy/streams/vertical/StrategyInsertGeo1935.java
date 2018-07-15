@@ -1,6 +1,7 @@
 package com.atnt.neo.insert.strategy.streams.vertical;
 
-import com.atnt.neo.insert.generator.InsertToStreamsVerticalTable;
+import com.atnt.neo.insert.generator.CassandraShared;
+import com.atnt.neo.insert.generator.InsertVerticalStreamsByTime;
 import com.atnt.neo.insert.strategy.time.EveryDaySeveralDaysEndOfYear;
 import com.atnt.neo.insert.strategy.time.EveryTwoMinutesEveryHour;
 import com.atnt.neo.insert.strategy.time.TimePeriod;
@@ -12,11 +13,11 @@ import java.util.Map;
 
 /**
  */
-public class StrategyInsertGeoStreamsVertical_1935 extends AbsStrategyInsertStreamsVertical {
+public class StrategyInsertGeo1935 extends AbsStrategyInsertStreamsVertical {
     private final Boolean truncateTableBeforeStart;
     private final Integer deviceCountPerDay;
 
-    private StrategyInsertGeoStreamsVertical_1935(Boolean truncate, Integer devicesPerDay) {
+    private StrategyInsertGeo1935(Boolean truncate, Integer devicesPerDay) {
         this.truncateTableBeforeStart = truncate;
         this.deviceCountPerDay = devicesPerDay;
     }
@@ -32,7 +33,7 @@ public class StrategyInsertGeoStreamsVertical_1935 extends AbsStrategyInsertStre
             devicesPerDay = 1;
         }
         System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertToStreamsVerticalTable(new StrategyInsertGeoStreamsVertical_1935(truncate, devicesPerDay)).insert();
+        new InsertVerticalStreamsByTime(new StrategyInsertGeo1935(truncate, devicesPerDay)).insert();
     }
 
     @Override
@@ -54,6 +55,11 @@ public class StrategyInsertGeoStreamsVertical_1935 extends AbsStrategyInsertStre
     @Override
     public int getYear() {
         return 1935;
+    }
+
+    @Override
+    public String getTableName() {
+        return CassandraShared.T_STREAMS_BY_TIME;
     }
 
     @Override

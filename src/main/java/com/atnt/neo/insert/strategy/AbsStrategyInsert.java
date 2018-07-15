@@ -18,12 +18,12 @@ public abstract class AbsStrategyInsert implements StrategyInsert {
 
     @Override
     public String getOrgBucket() {
-        return "org_bucket";
+        return "org_id";
     }
 
     @Override
     public String getProjectBucket() {
-        return "project_bucket";
+        return "project_id";
     }
 
     @Override
