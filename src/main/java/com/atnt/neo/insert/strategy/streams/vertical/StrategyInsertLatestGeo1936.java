@@ -16,7 +16,7 @@ public class StrategyInsertLatestGeo1936 extends AbsStrategyInsertStreamsVertica
     private final String project_id;
     private final String environment;
 
-    private StrategyInsertLatestGeo1936(Boolean truncateTableBeforeStart, Integer deviceCount, String org_id, String project_id, String environment) {
+    public StrategyInsertLatestGeo1936(Boolean truncateTableBeforeStart, Integer deviceCount, String org_id, String project_id, String environment) {
         this.truncateTableBeforeStart = truncateTableBeforeStart;
         this.deviceCount = deviceCount;
         this.org_id = org_id;
