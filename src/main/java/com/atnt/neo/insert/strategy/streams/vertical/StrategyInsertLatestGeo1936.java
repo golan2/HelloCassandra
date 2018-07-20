@@ -1,22 +1,17 @@
 package com.atnt.neo.insert.strategy.streams.vertical;
 
-import com.atnt.neo.insert.generator.CassandraShared;
 import com.atnt.neo.insert.generator.InsertVerticalStreamsLatestValue;
-import com.atnt.neo.insert.strategy.time.SingleDay;
-import com.atnt.neo.insert.strategy.time.SingleTxn;
-import com.atnt.neo.insert.strategy.time.TimePeriod;
-import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
 import java.util.Calendar;
 
-public class StrategyInsertLatestGeo1936 extends AbsStrategyInsertStreamsVertical {
+public class StrategyInsertLatestGeo1936 extends AbsStrategyInsertStreamsVerticalLatest {
     private final Boolean truncateTableBeforeStart;
     private final Integer deviceCount;
-    private final String org_id;
-    private final String project_id;
-    private final String environment;
+    private final String  org_id;
+    private final String  project_id;
+    private final String  environment;
 
-    public StrategyInsertLatestGeo1936(Boolean truncateTableBeforeStart, Integer deviceCount, String org_id, String project_id, String environment) {
+    private StrategyInsertLatestGeo1936(Boolean truncateTableBeforeStart, Integer deviceCount, String org_id, String project_id, String environment) {
         this.truncateTableBeforeStart = truncateTableBeforeStart;
         this.deviceCount = deviceCount;
         this.org_id = org_id;
@@ -59,23 +54,8 @@ public class StrategyInsertLatestGeo1936 extends AbsStrategyInsertStreamsVertica
     }
 
     @Override
-    public TimePeriod getTimePeriod() {
-        return new SingleDay(getYear());
-    }
-
-    @Override
-    public TxnPerDay getTxnPerDay() {
-        return new SingleTxn();
-    }
-
-    @Override
     public int getDeviceCountPerDay(Calendar cal) {
         return this.deviceCount;
-    }
-
-    @Override
-    public String getTableName() {
-        return CassandraShared.T_STREAMS_LATEST;
     }
 
     @Override
