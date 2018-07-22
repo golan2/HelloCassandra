@@ -7,39 +7,27 @@ import com.atnt.neo.insert.strategy.time.EveryTwoMinutesEveryHour;
 import com.atnt.neo.insert.strategy.time.TimePeriod;
 import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
-import java.util.Calendar;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 
 public class StrategyInsertStreamsMapRawData1925 extends AbsStrategyInsertStreamsMapRawData {
 
-
-    private final Boolean truncateTableBeforeStart;
-    private final Integer deviceCountPerDay;
-
-    private StrategyInsertStreamsMapRawData1925(Boolean truncateTableBeforeStart, Integer deviceCountPerDay) {
-        this.truncateTableBeforeStart = truncateTableBeforeStart;
-        this.deviceCountPerDay = deviceCountPerDay;
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        Boolean truncate;
-        Integer devicesPerDay;
-        try {
-            truncate = Boolean.parseBoolean(args[0]);
-            devicesPerDay = Integer.parseInt(args[1]);
-        } catch (Exception e) {
-            truncate = false;
-            devicesPerDay = 1;
-            System.out.println("Missing command-line-argument. Setting devicesPerDay to ["+devicesPerDay+"]");
-        }
-        System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertToStreamsMapTable(new StrategyInsertStreamsMapRawData1925(truncate, devicesPerDay)).insert();
+    private StrategyInsertStreamsMapRawData1925(String[] args) {
+        super(args);
     }
 
     @Override
-    public boolean shouldTruncateTableBeforeStart() {
-        return this.truncateTableBeforeStart;
+    public Map<String, Double> createDoubleStreamMap(int deviceIndex, int year, int month, int day, int hour) {
+        return generateDoubleStreamMap(80, deviceIndex, year, month, day);
+    }
+
+    @Override
+    public Map<String, String> createGeoLocationStreamMap(int deviceIndex, int year, int month, int day, int hour) {
+        return Collections.emptyMap();
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        new InsertToStreamsMapTable(new StrategyInsertStreamsMapRawData1925(args)).insert();
     }
 
     @Override
@@ -60,11 +48,6 @@ public class StrategyInsertStreamsMapRawData1925 extends AbsStrategyInsertStream
     @Override
     public TxnPerDay getTxnPerDay() {
         return new EveryTwoMinutesEveryHour();
-    }
-
-    @Override
-    public int getDeviceCountPerDay(Calendar cal) {
-        return this.deviceCountPerDay;
     }
 
 }

@@ -7,33 +7,27 @@ import com.atnt.neo.insert.strategy.time.EveryTwoMinutesEveryHour;
 import com.atnt.neo.insert.strategy.time.TimePeriod;
 import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Map;
 
-/**
- */
 public class StrategyInsertGeo1935 extends AbsStrategyInsertStreamsVertical {
-    private final Boolean truncateTableBeforeStart;
-    private final Integer deviceCountPerDay;
 
-    private StrategyInsertGeo1935(Boolean truncate, Integer devicesPerDay) {
-        this.truncateTableBeforeStart = truncate;
-        this.deviceCountPerDay = devicesPerDay;
+    private StrategyInsertGeo1935(String[] args) {
+        super(args);
+    }
+
+    @Override
+    public Map<String, Double> createDoubleStreamMap(int deviceIndex, int year, int month, int day, int hour) {
+        return Collections.emptyMap();
+    }
+
+    @Override
+    public Map<String, String> createGeoLocationStreamMap(int deviceIndex, int year, int month, int day, int hour) {
+        return generateGeoStreamMap(deviceIndex, year, month, day, hour);
     }
 
     public static void main(String[] args) throws InterruptedException {
-        Boolean truncate;
-        Integer devicesPerDay;
-        try {
-            truncate = Boolean.parseBoolean(args[0]);
-            devicesPerDay = Integer.parseInt(args[1]);
-        } catch (Exception e) {
-            truncate = false;
-            devicesPerDay = 1;
-        }
-        System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertVerticalStreamsByTime(new StrategyInsertGeo1935(truncate, devicesPerDay)).insert();
+        new InsertVerticalStreamsByTime(new StrategyInsertGeo1935(args)).insert();
     }
 
     @Override
@@ -47,12 +41,6 @@ public class StrategyInsertGeo1935 extends AbsStrategyInsertStreamsVertical {
     }
 
     @Override
-    public boolean shouldTruncateTableBeforeStart() {
-        return this.truncateTableBeforeStart;
-    }
-
-
-    @Override
     public int getYear() {
         return 1935;
     }
@@ -62,13 +50,4 @@ public class StrategyInsertGeo1935 extends AbsStrategyInsertStreamsVertical {
         return CassandraShared.T_STREAMS_BY_TIME;
     }
 
-    @Override
-    public int getDeviceCountPerDay(Calendar cal) {
-        return this.deviceCountPerDay;
-    }
-
-    @Override
-    public Map<String, Double> createDoubleStreamMap(int deviceIndex, int year, int month, int day, int hour) {
-        return Collections.emptyMap();
-    }
 }

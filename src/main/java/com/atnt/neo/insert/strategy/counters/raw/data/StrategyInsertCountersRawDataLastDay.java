@@ -13,55 +13,12 @@ public class StrategyInsertCountersRawDataLastDay extends AbsStrategyInsertCount
 
     private static final int THIS_YEAR = Calendar.getInstance().get(Calendar.YEAR);
 
-    private final Boolean truncateTableBeforeStart;
-    private final Integer deviceCountPerDay;
-
-    private StrategyInsertCountersRawDataLastDay(Boolean truncateTableBeforeStart, Integer deviceCountPerDay) {
-        this.truncateTableBeforeStart = truncateTableBeforeStart;
-        this.deviceCountPerDay = deviceCountPerDay;
+    private StrategyInsertCountersRawDataLastDay(String[] args) {
+        super(args);
     }
 
     public static void main(String[] args) throws InterruptedException {
-        Boolean truncate;
-        Integer devicesPerDay;
-        try {
-            truncate = Boolean.parseBoolean(args[0]);
-            devicesPerDay = Integer.parseInt(args[1]);
-        } catch (Exception e) {
-            truncate = false;
-            devicesPerDay = 1;
-            System.out.println("Missing command-line-argument. Setting devicesPerDay to ["+devicesPerDay+"]");
-        }
-        System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertToCountersTable(new StrategyInsertCountersRawDataLastDay(truncate, devicesPerDay)).insert();
-    }
-
-    @SuppressWarnings("SpellCheckingInspection")
-    @Override
-    public String getOrgBucket() {
-        return "yairu";
-    }
-
-    @SuppressWarnings("SpellCheckingInspection")
-    @Override
-    public String getProjectBucket() {
-        return "quickstart";
-    }
-
-    @Override
-    public String getOrgId(int year, int month, int day, int hour, int minute, int deviceIndex) {
-        return "yairu";
-    }
-
-    @SuppressWarnings("SpellCheckingInspection")
-    @Override
-    public String getProjectId() {
-        return "quickstart";
-    }
-
-    @Override
-    public String getEnvironment() {
-        return "dev";
+        new InsertToCountersTable(new StrategyInsertCountersRawDataLastDay(args)).insert();
     }
 
     @Override
@@ -77,16 +34,6 @@ public class StrategyInsertCountersRawDataLastDay extends AbsStrategyInsertCount
     @Override
     public TxnPerDay getTxnPerDay() {
         return new EveryTwoMinutesEveryHour();
-    }
-
-    @Override
-    public int getDeviceCountPerDay(Calendar cal) {
-        return this.deviceCountPerDay;
-    }
-
-    @Override
-    public boolean shouldTruncateTableBeforeStart() {
-        return this.truncateTableBeforeStart;
     }
 
     @Override

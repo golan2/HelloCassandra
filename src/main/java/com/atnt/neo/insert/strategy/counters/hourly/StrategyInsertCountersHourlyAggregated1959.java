@@ -17,8 +17,12 @@ import java.util.Calendar;
  */
 public class StrategyInsertCountersHourlyAggregated1959 extends AbsStrategyInsertCountersHourlyAggregated {
 
+    private StrategyInsertCountersHourlyAggregated1959(String[] args) {
+        super(args);
+    }
+
     public static void main(String[] args) throws InterruptedException {
-        new InsertToCountersTable(new StrategyInsertCountersHourlyAggregated1959()).insert();
+        new InsertToCountersTable(new StrategyInsertCountersHourlyAggregated1959(args)).insert();
     }
 
     @Override
@@ -29,11 +33,6 @@ public class StrategyInsertCountersHourlyAggregated1959 extends AbsStrategyInser
     @Override
     public TxnPerDay getTxnPerDay() {
         return new SeveralHours(2);
-    }
-
-    @Override
-    public boolean shouldTruncateTableBeforeStart() {
-        return false;
     }
 
     @Override

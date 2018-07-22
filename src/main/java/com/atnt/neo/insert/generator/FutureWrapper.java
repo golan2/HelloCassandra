@@ -5,7 +5,7 @@ import com.datastax.driver.core.ResultSetFuture;
 
 import java.util.concurrent.ExecutionException;
 
-public class FutureWrapper {
+class FutureWrapper {
     private final ResultSetFuture future;
     private final String query;
 
@@ -23,6 +23,7 @@ public class FutureWrapper {
         return future.isCancelled();
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public ResultSet get() throws ExecutionException, InterruptedException {
         return future.get();
     }

@@ -4,6 +4,10 @@ import com.atnt.neo.insert.strategy.AbsStrategyInsert;
 
 public abstract class AbsStrategyInsertCounters extends AbsStrategyInsert {
 
+    protected AbsStrategyInsertCounters(String[] args) {
+        super(args);
+    }
+
     @SuppressWarnings("unused")
     public int getBillingPoints(int month, int day, int hour) {
         return 10;

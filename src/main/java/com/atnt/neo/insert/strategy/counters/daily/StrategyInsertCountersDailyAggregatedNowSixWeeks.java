@@ -10,52 +10,14 @@ import java.util.Calendar;
 
 public class StrategyInsertCountersDailyAggregatedNowSixWeeks extends AbsStrategyInsertCountersDailyAggregated {
 
-    private final Boolean truncateTableBeforeStart;
-    private final Integer deviceCountPerDay;
+    private static final int YEAR = Calendar.getInstance().get(Calendar.YEAR);
 
-    private StrategyInsertCountersDailyAggregatedNowSixWeeks(Boolean truncateTableBeforeStart, Integer deviceCountPerDay) {
-        this.truncateTableBeforeStart = truncateTableBeforeStart;
-        this.deviceCountPerDay = deviceCountPerDay;
+    private StrategyInsertCountersDailyAggregatedNowSixWeeks(String[] args) {
+        super(args);
     }
 
     public static void main(String[] args) throws InterruptedException {
-        Boolean truncate;
-        Integer devicesPerDay;
-        try {
-            truncate = Boolean.parseBoolean(args[0]);
-            devicesPerDay = Integer.parseInt(args[1]);
-        } catch (Exception e) {
-            truncate = false;
-            devicesPerDay = -1;
-        }
-        System.out.println("truncate=[" + truncate + "] devicesPerDay=[" + devicesPerDay + "] ");
-        new InsertToCountersTable(new StrategyInsertCountersDailyAggregatedNowSixWeeks(truncate, devicesPerDay)).insert();
-    }
-
-
-    @Override
-    public String getOrgBucket() {
-        return "yairu";
-    }
-
-    @Override
-    public String getProjectBucket() {
-        return "test";
-    }
-
-    @Override
-    public String getOrgId(int year, int month, int day, int hour, int minute, int deviceIndex) {
-        return "yairu";
-    }
-
-    @Override
-    public String getProjectId() {
-        return "test";
-    }
-
-    @Override
-    public String getEnvironment() {
-        return "dev";
+        new InsertToCountersTable(new StrategyInsertCountersDailyAggregatedNowSixWeeks(args)).insert();
     }
 
     @Override
@@ -69,17 +31,12 @@ public class StrategyInsertCountersDailyAggregatedNowSixWeeks extends AbsStrateg
     }
 
     @Override
-    public boolean shouldTruncateTableBeforeStart() {
-        return truncateTableBeforeStart;
-    }
-
-    @Override
     public int getYear() {
-        return Calendar.getInstance().get(Calendar.YEAR);
+        return YEAR;
     }
 
     @Override
     public int getDeviceCountPerDay(Calendar cal) {
-        return (this.deviceCountPerDay == -1 ? 500 + 5*cal.get(Calendar.DAY_OF_MONTH) : this.deviceCountPerDay);
+        return (super.getDeviceCountPerDay() == -1 ? 500 + 5*cal.get(Calendar.DAY_OF_MONTH) : super.getDeviceCountPerDay());
     }
 }

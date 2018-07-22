@@ -7,6 +7,10 @@ import com.atnt.neo.insert.strategy.time.TimePeriod;
 import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
 public abstract class AbsStrategyInsertStreamsVerticalLatest extends AbsStrategyInsertStreamsVertical {
+    AbsStrategyInsertStreamsVerticalLatest(String[] args) {
+        super(args);
+    }
+
     @Override
     public TimePeriod getTimePeriod() {
         return new SingleDay(getYear());

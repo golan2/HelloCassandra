@@ -4,6 +4,10 @@ import com.atnt.neo.insert.strategy.streams.AbStrategyInsertStreams;
 
 public abstract class AbsStrategyInsertStreamsVertical extends AbStrategyInsertStreams {
 
+    AbsStrategyInsertStreamsVertical(String[] args) {
+        super(args);
+    }
+
     @Override
     public boolean includeTimeStamp() {
         return false;

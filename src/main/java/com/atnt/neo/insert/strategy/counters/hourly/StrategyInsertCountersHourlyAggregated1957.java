@@ -1,12 +1,10 @@
 package com.atnt.neo.insert.strategy.counters.hourly;
 
 import com.atnt.neo.insert.generator.InsertToCountersTable;
-import com.atnt.neo.insert.strategy.time.TimePeriod;
 import com.atnt.neo.insert.strategy.time.EveryWeekSeveralMonthsBeginOfYear;
 import com.atnt.neo.insert.strategy.time.SeveralHours;
+import com.atnt.neo.insert.strategy.time.TimePeriod;
 import com.atnt.neo.insert.strategy.time.TxnPerDay;
-
-import java.util.Calendar;
 
 /**
  * Insert aggregated data for the year 1957. 6 weeks.
@@ -15,8 +13,12 @@ import java.util.Calendar;
  */
 public class StrategyInsertCountersHourlyAggregated1957 extends AbsStrategyInsertCountersHourlyAggregated {
 
+    private StrategyInsertCountersHourlyAggregated1957(String[] args) {
+        super(args);
+    }
+
     public static void main(String[] args) throws InterruptedException {
-        new InsertToCountersTable(new StrategyInsertCountersHourlyAggregated1957()).insert();
+        new InsertToCountersTable(new StrategyInsertCountersHourlyAggregated1957(args)).insert();
     }
 
     @Override
@@ -30,18 +32,8 @@ public class StrategyInsertCountersHourlyAggregated1957 extends AbsStrategyInser
     }
 
     @Override
-    public boolean shouldTruncateTableBeforeStart() {
-        return true;
-    }
-
-    @Override
     public int getYear() {
         return 1957;
-    }
-
-    @Override
-    public int getDeviceCountPerDay(Calendar cal) {
-        return 2;
     }
 
 }

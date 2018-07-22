@@ -10,26 +10,12 @@ import java.util.Calendar;
 
 public class StrategyInsertCountersDailyAggregated1969 extends AbsStrategyInsertCountersDailyAggregated {
 
-    private final Boolean truncateTableBeforeStart;
-    private final Integer deviceCountPerDay;
-
-    private StrategyInsertCountersDailyAggregated1969(Boolean truncate, Integer devicesPerDay) {
-        this.truncateTableBeforeStart = truncate;
-        this.deviceCountPerDay = devicesPerDay;
+    private StrategyInsertCountersDailyAggregated1969(String[] args) {
+        super(args);
     }
 
     public static void main(String[] args) throws InterruptedException {
-        Boolean truncate;
-        Integer devicesPerDay;
-        try {
-            truncate = Boolean.parseBoolean(args[0]);
-            devicesPerDay = Integer.parseInt(args[1]);
-        } catch (Exception e) {
-            truncate = false;
-            devicesPerDay = -1;
-        }
-        System.out.println("truncate=["+truncate+"] devicesPerDay=["+devicesPerDay+"] ");
-        new InsertToCountersTable(new StrategyInsertCountersDailyAggregated1969(truncate, devicesPerDay)).insert();
+        new InsertToCountersTable(new StrategyInsertCountersDailyAggregated1969(args)).insert();
     }
 
     @Override
@@ -43,18 +29,8 @@ public class StrategyInsertCountersDailyAggregated1969 extends AbsStrategyInsert
     }
 
     @Override
-    public boolean shouldTruncateTableBeforeStart() {
-        return truncateTableBeforeStart;
-    }
-
-    @Override
     public int getYear() {
         return 1969;
-    }
-
-    @Override
-    public int getDeviceCountPerDay(Calendar cal) {
-        return ( this.deviceCountPerDay==-1 ? 70_000+cal.get(Calendar.DAY_OF_YEAR) : this.deviceCountPerDay );
     }
 
 }

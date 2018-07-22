@@ -5,6 +5,10 @@ import com.atnt.neo.insert.strategy.AbsStrategyInsertCountersAggregated;
 
 public abstract class AbsStrategyInsertCountersDailyAggregated extends AbsStrategyInsertCountersAggregated {
 
+    AbsStrategyInsertCountersDailyAggregated(String[] args) {
+        super(args);
+    }
+
     @Override
     public String getTableName() {
         return CassandraShared.T_COUNTERS_DAILY;

@@ -73,7 +73,7 @@ public abstract class AbsInsertVerticalStreams extends AbsInsertToCassandra {
     @Override
     protected void appendAdditionalFields(Insert insert, int year, int month, int day, int hour, int minute, int second, int deviceIndex) {}
 
-    protected AbStrategyInsertStreams getStrategy() {
+    AbStrategyInsertStreams getStrategy() {
         //noinspection unchecked
         return (AbStrategyInsertStreams) super.getStrategy();
     }

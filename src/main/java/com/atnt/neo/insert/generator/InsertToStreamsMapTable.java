@@ -28,7 +28,7 @@ public class InsertToStreamsMapTable extends AbsInsertToCassandra {
         insert.value("user_param", getStrategy().createDoubleStreamMap(deviceIndex, year, month, day, hour));
     }
 
-    protected AbsStrategyInsertStreamsMap getStrategy() {
+    AbsStrategyInsertStreamsMap getStrategy() {
         return (AbsStrategyInsertStreamsMap) super.getStrategy();
     }
 
