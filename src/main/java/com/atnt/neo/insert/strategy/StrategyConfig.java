@@ -16,8 +16,9 @@ public class StrategyConfig {
     private final String  orgId;
     private final String  projectId;
     private final String  environment;
+    private final String  cql;
 
-    StrategyConfig(String[] args) throws ParseException {
+    public StrategyConfig(String[] args) throws ParseException {
         Options options = new Options();
         options.addOption("k", "keyspace", true, "");
         options.addOption("h", "hosts", true, "Comma separated list of cassandra hosts");
@@ -26,6 +27,7 @@ public class StrategyConfig {
         options.addOption("o", "org_id", true, "Organization id");
         options.addOption("p", "project_id", true, "Project id");
         options.addOption("e", "environment", true, "Environment name");
+        options.addOption("c", "cql", true, "CQL statement to invoke");
 
 
         CommandLineParser parser = new BasicParser();
@@ -37,6 +39,7 @@ public class StrategyConfig {
         this.orgId = commandLine.getOptionValue("org_id", "org_id");
         this.projectId = commandLine.getOptionValue("project_id", "project_id");
         this.environment = commandLine.getOptionValue("environment", "environment");
+        this.cql  = commandLine.getOptionValue("cql", "N/A");
 
     }
 
@@ -69,6 +72,10 @@ public class StrategyConfig {
         return environment;
     }
 
+    public String getCql() {
+        return cql;
+    }
+
     @Override
     public String toString() {
         return "StrategyConfig{" +
@@ -79,6 +86,7 @@ public class StrategyConfig {
                 ", orgId='" + orgId + '\'' +
                 ", projectId='" + projectId + '\'' +
                 ", environment='" + environment + '\'' +
+                ", cql='" + cql + '\'' +
                 '}';
     }
 }
