@@ -20,8 +20,8 @@ class RecentlyInactive {
 
     public static void main(String[] args) {
 
-        try (Cluster cluster = CassandraShared.initCluster()) {
-            Session session = cluster.connect(CassandraShared.CASSANDRA_HOST_NAME);
+        try (Cluster cluster = CassandraShared.initCluster("cassandra")) {
+            Session session = cluster.connect("activity");
             Calendar cal = Calendar.getInstance();
 
 

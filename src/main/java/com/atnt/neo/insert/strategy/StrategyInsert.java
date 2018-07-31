@@ -38,4 +38,6 @@ public interface StrategyInsert {
     String getProjectId();
 
     String getEnvironment();
+
+    StrategyConfig getConfig();
 }

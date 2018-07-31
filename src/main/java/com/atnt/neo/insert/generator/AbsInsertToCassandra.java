@@ -37,9 +37,9 @@ public abstract class AbsInsertToCassandra {
     public void insert() throws InterruptedException {
         List<FutureWrapper> futures = new ArrayList<>();
 
-        try (Cluster cluster = CassandraShared.initCluster()) {
-            System.out.println(logTimestamp() + " Working on ["+CassandraShared.KEYSPACE+"] ["+ getStrategy().getTableName()+"]");
-            Session session = cluster.connect(CassandraShared.KEYSPACE);
+        try (Cluster cluster = CassandraShared.initCluster(getStrategy().getConfig().getHosts())) {
+            System.out.println(logTimestamp() + " Working on ["+getStrategy().getConfig().getKeyspace()+"] ["+ getStrategy().getTableName()+"]");
+            Session session = cluster.connect(getStrategy().getConfig().getKeyspace());
 
             if (getStrategy().shouldTruncateTableBeforeStart()) {
                 session.execute("truncate table "+ getStrategy().getTableName()+";");
@@ -148,7 +148,7 @@ public abstract class AbsInsertToCassandra {
 
         for (Integer minute : minutes) {
             for (Integer second : seconds) {
-                final Insert insert = QueryBuilder.insertInto(CassandraShared.KEYSPACE, getStrategy().getTableName());
+                final Insert insert = QueryBuilder.insertInto(getStrategy().getConfig().getKeyspace(), getStrategy().getTableName());
 
                 appendInsertContextFields(insert, year, month, day, hour, minute, deviceIndex);
 

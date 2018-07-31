@@ -39,7 +39,7 @@ public abstract class AbsInsertVerticalStreams extends AbsInsertToCassandra {
             for (Integer minute : minutes) {
                 for (Integer second : seconds) {
 
-                    final Insert insert = QueryBuilder.insertInto(CassandraShared.KEYSPACE, getStrategy().getTableName());
+                    final Insert insert = QueryBuilder.insertInto(getStrategy().getConfig().getKeyspace(), getStrategy().getTableName());
 
                     appendInsertContextFields(insert, year, month, day, hour, minute, deviceIndex);
 

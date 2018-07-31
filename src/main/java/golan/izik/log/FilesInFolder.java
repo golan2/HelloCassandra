@@ -2,10 +2,13 @@ package golan.izik.log;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
-import com.atnt.neo.insert.generator.CassandraShared;
 
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -27,8 +30,8 @@ class FilesInFolder {
 
         CassandraSinkVisitor() {
             this.maxFiles = new AtomicInteger(MAX_FILES);
-            this.cluster = Cluster.builder().addContactPoint(CassandraShared.HOST).build();
-            this.session = cluster.connect(CassandraShared.KEYSPACE);
+            this.cluster = Cluster.builder().addContactPoint("cassandra").build();
+            this.session = cluster.connect("activity");
         }
 
         @Override

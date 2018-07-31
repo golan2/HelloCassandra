@@ -1,5 +1,12 @@
 package com.atnt.neo.insert.strategy;
 
+import com.atnt.neo.insert.generator.CassandraShared;
+import org.apache.commons.cli.BasicParser;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+
 import java.util.Calendar;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -7,39 +14,20 @@ public abstract class AbsStrategyInsert implements StrategyInsert {
 
     private static final String DEVICE_PREFIX = "device_"+ ThreadLocalRandom.current().nextInt(0, 99999) + "_";
 
-    private static final String DEFAULT_ORG_ID         = "org_id";
-    private static final String DEFAULT_PROJECT_ID     = "project_id";
-    private static final String DEFAULT_ENVIRONMENT    = "environment";
-
-
-    private final Boolean truncateTableBeforeStart;
-    private final Integer deviceCount;
-    private final String  org_id;
-    private final String  project_id;
-    private final String  environment;
+    private final StrategyConfig config;
 
     protected AbsStrategyInsert(String[] args) {
-        Boolean truncate;
-        Integer deviceCount;
-        String org_id = DEFAULT_ORG_ID;
-        String project_id = DEFAULT_PROJECT_ID;
-        String environment = DEFAULT_ENVIRONMENT;
 
-        truncate = Boolean.parseBoolean(args[0]);
-        deviceCount = Integer.parseInt(args[1]);
-        if (args.length>2) {
-            org_id = args[2];
-            project_id = args[3];
-            environment = args[4];
+        try {
+            this.config = new StrategyConfig(args);
+            System.out.println(config);
+        } catch (ParseException e) {
+            throw new RuntimeException("Error " + e.getMessage(), e);
         }
 
-        System.out.println("truncate=["+truncate+"] deviceCount=["+deviceCount+"] org_id=["+org_id+"] project_id=["+project_id+"] environment=["+environment+"]");
 
-        this.truncateTableBeforeStart = truncate;
-        this.deviceCount = deviceCount;
-        this.org_id = org_id;
-        this.project_id = project_id;
-        this.environment = environment;
+
+
     }
 
     @Override
@@ -54,40 +42,45 @@ public abstract class AbsStrategyInsert implements StrategyInsert {
 
     @Override
     public final boolean shouldTruncateTableBeforeStart() {
-        return this.truncateTableBeforeStart;
+        return this.config.getTruncate();
     }
 
     @Override
     public int getDeviceCountPerDay(Calendar cal) {
-        return this.deviceCount;
+        return this.config.getDeviceCount();
     }
 
-    public final int getDeviceCountPerDay() {
-        return this.deviceCount;
+    protected final int getDeviceCountPerDay() {
+        return this.config.getDeviceCount();
     }
 
     @Override
     public final String getOrgBucket() {
-        return this.org_id;
+        return this.config.getOrgId();
     }
 
     @Override
     public final String getProjectBucket() {
-        return this.project_id;
+        return this.config.getProjectId();
     }
 
     @Override
     public String getOrgId(int year, int month, int day, int hour, int minute, int deviceIndex) {
-        return this.org_id;
+        return this.config.getOrgId();
     }
 
     @Override
     public final String getProjectId() {
-        return this.project_id;
+        return this.config.getProjectId();
     }
 
     @Override
     public final String getEnvironment() {
-        return this.environment;
+        return this.config.getEnvironment();
+    }
+
+    @Override
+    public StrategyConfig getConfig() {
+        return this.config;
     }
 }

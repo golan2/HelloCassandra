@@ -5,9 +5,9 @@ import com.datastax.driver.core.SocketOptions;
 
 public class CassandraShared {
 
-    public  static final String HOST                      = "iot-toolbox";
-    public  static final String KEYSPACE                  = "activity";
-    public  static final String CASSANDRA_HOST_NAME       = "cassandra";
+//    public  static final String HOST                      = "iot-toolbox";
+    public  static final String KEYSPACE_                  = "activity";
+    public  static final String CASSANDRA_HOST_NAME_       = "cassandra";
     public  static final String T_RAW_DATA_TIME_BUCKET    = "message_info_time_bucket";
     public  static final String T_STREAMS_BY_TIME         = "streams";
     public  static final String T_STREAMS_LATEST          = "latest_streams_value";
@@ -22,11 +22,13 @@ public class CassandraShared {
     public  static final int    MAX_PARALLELISM_CASSANDRA =      10;
     private static final int    CLIENT_TIMEOUT            = 300_000;
 
-    public static Cluster initCluster() {
+    public static Cluster initCluster(String hostName) {
         return Cluster.builder()
                 .withSocketOptions( new SocketOptions().setConnectTimeoutMillis(CLIENT_TIMEOUT) )
                 .withSocketOptions( new SocketOptions().setReadTimeoutMillis(CLIENT_TIMEOUT) )
                 .withSocketOptions( new SocketOptions().setTcpNoDelay(true) )
-                .addContactPoint(CASSANDRA_HOST_NAME).build();
+                .addContactPoint(hostName).build();
     }
+
+
 }
