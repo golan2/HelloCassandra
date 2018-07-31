@@ -1,5 +1,6 @@
-package com.atnt.neo.insert.generator;
+package golan.izik.query.recently.inactive;
 
+import com.atnt.neo.insert.generator.CassandraShared;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
 
@@ -10,9 +11,9 @@ class InsertTestData {
     @SuppressWarnings("SpellCheckingInspection")
     private static final String INSERT_QUERY_TEMPLATE =
             "INSERT INTO activity." + CassandraShared.T_COUNTERS_RAW_DATA + " " +
-                    "(year, month, day, hour, minutes, seconds, user_bucket,   project_bucket,   user_id,   project_id,   environment, device_id, timestamp, device_firmware,   device_type,   user_param) " +
+                    "(year, month, day, hour, minutes, seconds, org_bucket,   project_bucket,   org_id,   project_id,   environment, device_id, timestamp, device_firmware,   device_type,   user_param) " +
                     "VALUES " +
-                    "(%d,   %d,    %d,  %d,   %d,      %d,      'user_bucket', 'project_bucket', 'user_id', 'project_id', 'environment',   '%s',      %d,    'device_firmware', 'device_type', {'eventType': 'Flow','name': 'Calamp'}  );";
+                    "(%d,   %d,    %d,  %d,   %d,      %d,      'org_bucket', 'project_bucket', 'org_id', 'project_id', 'environment',   '%s',      %d,    'device_firmware', 'device_type', {'eventType': 'Flow','name': 'Calamp'}  );";
 
 
 

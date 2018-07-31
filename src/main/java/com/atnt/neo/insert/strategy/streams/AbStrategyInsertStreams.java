@@ -13,6 +13,7 @@ public abstract class AbStrategyInsertStreams extends AbsStrategyInsert {
 
     public abstract Map<String, Double> createDoubleStreamMap(int deviceIndex, int year, int month, int day, int hour);
 
+    @SuppressWarnings("SameParameterValue")
     protected static Map<String, Double> generateDoubleStreamMap(int howManyStreams, int deviceIndex, int year, int month, int day) {
         final HashMap<String, Double> result = new HashMap<>();
         for (int i = 0; i < howManyStreams ; i++) {

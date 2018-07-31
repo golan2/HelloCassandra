@@ -4,13 +4,10 @@ import com.atnt.neo.insert.generator.CassandraShared;
 import com.atnt.neo.insert.strategy.StrategyConfig;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.ColumnDefinitions;
-import com.datastax.driver.core.DataType;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 import org.apache.commons.cli.ParseException;
-
-import java.util.Iterator;
 
 public class InvokeCql {
 

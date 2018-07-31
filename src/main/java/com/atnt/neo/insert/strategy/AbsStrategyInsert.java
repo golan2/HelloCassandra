@@ -1,10 +1,5 @@
 package com.atnt.neo.insert.strategy;
 
-import com.atnt.neo.insert.generator.CassandraShared;
-import org.apache.commons.cli.BasicParser;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import java.util.Calendar;
