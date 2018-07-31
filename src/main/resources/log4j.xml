@@ -1,0 +1,32 @@
+<log4j:configuration>
+
+    <!-- log INFO or higher messages to the console -->
+    <appender name="console" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="|%p|Y|%X{uuid}||%X{user}|%X{project}|%X{environment}|HelloCassandra|%d{yyyy-MM-dd HH:mm:ss,sss}  [%t] %c{1.}:%L - %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="cassandra_driver" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="|%p|Y|%X{uuid}||%X{user}|%X{project}|%X{environment}|cassandra_driver|%d{yyyy-MM-dd HH:mm:ss,sss}  [%t] %c{1.}:%L - %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- use AsyncAppender for lower latencies -->
+    <appender name="async" class="org.apache.log4j.AsyncAppender">
+        <param name="BufferSize" value="500"/>
+        <appender-ref ref="console"/>
+    </appender>
+
+    <logger name="com.datastax.driver">
+        <AppenderRef ref="cassandra_driver"/>
+        <level value="DEBUG"/>
+    </logger>
+
+    <root>
+        <priority value="INFO"/>
+        <appender-ref ref="async"/>
+    </root>
+
+</log4j:configuration>
