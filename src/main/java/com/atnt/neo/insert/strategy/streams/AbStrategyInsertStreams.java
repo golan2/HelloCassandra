@@ -17,7 +17,12 @@ public abstract class AbStrategyInsertStreams extends AbsStrategyInsert {
     protected static Map<String, Double> generateDoubleStreamMap(int howManyStreams, int deviceIndex, int year, int month, int day) {
         final HashMap<String, Double> result = new HashMap<>();
         for (int i = 0; i < howManyStreams ; i++) {
-            result.put("stream_"+i, (double) (year * 365 + month * 30 + day + deviceIndex + i));
+            if (deviceIndex%10==0) {
+                result.put("stream_" + i, null);
+            }
+            else {
+                result.put("stream_"+i, (double) (year * 365 + month * 30 + day + deviceIndex + i));
+            }
         }
         return result;
     }

@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public class StrategyInsertStreamsMapRawData1927 extends AbsStrategyInsertStreamsMapRawData {
 
     private StrategyInsertStreamsMapRawData1927(String[] args) {

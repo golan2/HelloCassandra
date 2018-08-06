@@ -5,6 +5,7 @@ import com.datastax.driver.core.querybuilder.Insert;
 
 import java.util.Calendar;
 
+@Deprecated
 public class InsertToStreamsMapTable extends AbsInsertToCassandra {
 
     public InsertToStreamsMapTable(AbsStrategyInsertStreamsMap strategyInsert) {

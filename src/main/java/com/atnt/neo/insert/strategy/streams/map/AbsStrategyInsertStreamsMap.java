@@ -2,6 +2,7 @@ package com.atnt.neo.insert.strategy.streams.map;
 
 import com.atnt.neo.insert.strategy.streams.AbStrategyInsertStreams;
 
+@Deprecated
 public abstract class AbsStrategyInsertStreamsMap extends AbStrategyInsertStreams {
     protected AbsStrategyInsertStreamsMap(String[] args) {
         super(args);

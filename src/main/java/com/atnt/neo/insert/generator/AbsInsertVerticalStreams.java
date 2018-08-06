@@ -59,6 +59,9 @@ public abstract class AbsInsertVerticalStreams extends AbsInsertToCassandra {
 
     private <T> void appendInsertStreamFields(Insert insert, String streamName, T streamValue) {
         insert.value(CassandraShared.F_VERTICAL_STREAM_NAME, streamName);
+
+        if (streamValue==null) return;  //in Cassandra we don't insert null; we simply don't set value to this column
+
         if (streamValue instanceof Double) {
             insert.value(CassandraShared.F_VERTICAL_STREAM_DOUBLE, streamValue);
         }

@@ -10,6 +10,7 @@ import com.atnt.neo.insert.strategy.time.TxnPerDay;
 import java.util.Collections;
 import java.util.Map;
 
+@Deprecated
 public class StrategyInsertStreamsMapRawData1925 extends AbsStrategyInsertStreamsMapRawData {
 
     private StrategyInsertStreamsMapRawData1925(String[] args) {

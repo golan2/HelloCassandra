@@ -1,4 +1,4 @@
-package golan.izik.query;
+package com.atnt.neo.admin;
 
 import com.atnt.neo.insert.generator.CassandraShared;
 import com.atnt.neo.insert.strategy.StrategyConfig;
