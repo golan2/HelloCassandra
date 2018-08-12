@@ -12,17 +12,12 @@ public abstract class AbsStrategyInsert implements StrategyInsert {
     private final StrategyConfig config;
 
     protected AbsStrategyInsert(String[] args) {
-
         try {
             this.config = new StrategyConfig(args);
             System.out.println(config);
         } catch (ParseException e) {
             throw new RuntimeException("Error " + e.getMessage(), e);
         }
-
-
-
-
     }
 
     @Override

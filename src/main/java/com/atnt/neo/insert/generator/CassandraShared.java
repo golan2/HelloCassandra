@@ -11,6 +11,7 @@ public class CassandraShared {
     public  static final String T_RAW_DATA_TIME_BUCKET    = "message_info_time_bucket";
     public  static final String T_STREAMS_BY_TIME         = "streams";
     public  static final String T_STREAMS_LATEST          = "latest_streams_value";
+    public  static final String T_STREAMS_OVER_TIME       = "object_streams_by_time";
     public  static final String T_STREAMS_MAP_RAW_DATA    = "data_collector";
     public  static final String T_COUNTERS_RAW_DATA       = "message_info_by_type";
     public  static final String T_COUNTERS_HOURLY         = "hourly_aggregator";

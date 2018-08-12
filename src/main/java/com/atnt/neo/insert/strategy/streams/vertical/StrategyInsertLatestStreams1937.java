@@ -5,7 +5,7 @@ import com.atnt.neo.insert.generator.InsertVerticalStreamsLatestValue;
 import java.util.Collections;
 import java.util.Map;
 
-public class StrategyInsertLatestStreams1937 extends AbsStrategyInsertStreamsVerticalLatest {
+public class StrategyInsertLatestStreams1937 extends AbsStrategyInsertLatestStreams {
     private StrategyInsertLatestStreams1937(String[] args) {
         super(args);
     }
