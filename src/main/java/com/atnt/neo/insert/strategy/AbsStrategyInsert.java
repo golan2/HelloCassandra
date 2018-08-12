@@ -21,6 +21,19 @@ public abstract class AbsStrategyInsert implements StrategyInsert {
     }
 
     @Override
+    public final int getYear() {
+        final Integer year = getConfig().getYear();
+        if (year !=-1) {
+            return year;
+        }
+        else {
+            return getDefaultYear();
+        }
+    }
+
+    protected abstract int getDefaultYear();
+
+    @Override
     public String getDeviceId(int year, int month, int day, int deviceIndex) {
         return DEVICE_PREFIX + deviceIndex;
     }

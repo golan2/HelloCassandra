@@ -32,7 +32,7 @@ public class StrategyInsertStreamsMapRawData1925 extends AbsStrategyInsertStream
     }
 
     @Override
-    public int getYear() {
+    public int getDefaultYear() {
         return 1925;
     }
 

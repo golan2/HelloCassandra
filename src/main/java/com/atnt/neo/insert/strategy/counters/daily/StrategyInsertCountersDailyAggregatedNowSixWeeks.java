@@ -31,7 +31,7 @@ public class StrategyInsertCountersDailyAggregatedNowSixWeeks extends AbsStrateg
     }
 
     @Override
-    public int getYear() {
+    public int getDefaultYear() {
         return YEAR;
     }
 

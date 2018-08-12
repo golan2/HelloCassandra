@@ -30,7 +30,7 @@ public class StrategyInsertCountersHourlyAggregated1955 extends AbsStrategyInser
     }
 
     @Override
-    public int getYear() {
+    public int getDefaultYear() {
         return 1955;
     }
 }

@@ -22,7 +22,7 @@ public class StrategyInsertCountersRawDataLastDay extends AbsStrategyInsertCount
     }
 
     @Override
-    public int getYear() {
+    public int getDefaultYear() {
         return THIS_YEAR;
     }
 

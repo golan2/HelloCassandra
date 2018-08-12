@@ -16,7 +16,7 @@ public class StrategyInsertLatestGeo1936 extends AbsStrategyInsertLatestStreams 
     }
 
     @Override
-    public int getYear() {
+    public int getDefaultYear() {
         return 1936;
     }
 

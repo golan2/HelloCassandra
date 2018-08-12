@@ -41,7 +41,7 @@ public class StrategyInsertGeo1935 extends AbsStrategyInsertStreams {
     }
 
     @Override
-    public int getYear() {
+    public int getDefaultYear() {
         return 1935;
     }
 

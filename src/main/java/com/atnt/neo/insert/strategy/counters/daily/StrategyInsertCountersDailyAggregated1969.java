@@ -29,7 +29,7 @@ public class StrategyInsertCountersDailyAggregated1969 extends AbsStrategyInsert
     }
 
     @Override
-    public int getYear() {
+    public int getDefaultYear() {
         return 1969;
     }
 

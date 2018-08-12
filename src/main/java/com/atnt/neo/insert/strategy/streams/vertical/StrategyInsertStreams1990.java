@@ -30,7 +30,7 @@ public class StrategyInsertStreams1990 extends AbsStrategyInsertStreams {
     }
 
     @Override
-    public int getYear() {
+    public int getDefaultYear() {
         return 1990;
     }
 

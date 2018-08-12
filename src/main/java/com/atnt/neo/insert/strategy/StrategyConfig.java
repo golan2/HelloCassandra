@@ -13,6 +13,7 @@ public class StrategyConfig {
     private final String  hosts;
     private final Boolean truncate;
     private final Integer deviceCount;
+    private final Integer year;
     private final Integer streamCount;
     private final String  orgId;
     private final String  projectId;
@@ -25,6 +26,7 @@ public class StrategyConfig {
         options.addOption("h", "hosts", true, "Comma separated list of cassandra hosts");
         options.addOption("t", "truncate", true, "If to truncate table before start");
         options.addOption("d", "devices", true, "How many devices to insert");
+        options.addOption("y", "year", true, "Which year to insert the date to");
         options.addOption("s", "streams", true, "How many streams to insert");
         options.addOption("o", "org_id", true, "Organization id");
         options.addOption("p", "project_id", true, "Project id");
@@ -38,6 +40,7 @@ public class StrategyConfig {
         this.hosts = commandLine.getOptionValue("hosts", CassandraShared.CASSANDRA_HOST_NAME_);
         this.truncate = Boolean.valueOf(commandLine.getOptionValue("truncate", Boolean.FALSE.toString()));
         this.deviceCount = Integer.valueOf(commandLine.getOptionValue("devices", "1"));
+        this.year = Integer.valueOf(commandLine.getOptionValue("year", "-1"));
         this.streamCount = Integer.valueOf(commandLine.getOptionValue("streams", "1"));
         this.orgId = commandLine.getOptionValue("org_id", "org_id");
         this.projectId = commandLine.getOptionValue("project_id", "project_id");
@@ -61,6 +64,10 @@ public class StrategyConfig {
 
     public Integer getDeviceCount() {
         return deviceCount;
+    }
+
+    public Integer getYear() {
+        return year;
     }
 
     public Integer getStreamCount() {
@@ -90,6 +97,7 @@ public class StrategyConfig {
                 ", hosts='" + hosts + '\'' +
                 ", truncate=" + truncate +
                 ", deviceCount=" + deviceCount +
+                ", year=" + year +
                 ", streamCount=" + streamCount +
                 ", orgId='" + orgId + '\'' +
                 ", projectId='" + projectId + '\'' +

@@ -26,7 +26,7 @@ public class StrategyInsertLatestStreams1937 extends AbsStrategyInsertLatestStre
     }
 
     @Override
-    public int getYear() {
+    public int getDefaultYear() {
         return 1937;
     }
 }

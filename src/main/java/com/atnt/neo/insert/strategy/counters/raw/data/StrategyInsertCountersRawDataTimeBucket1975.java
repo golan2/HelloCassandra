@@ -33,7 +33,7 @@ public class StrategyInsertCountersRawDataTimeBucket1975 extends AbsStrategyInse
     }
 
     @Override
-    public int getYear() {
+    public int getDefaultYear() {
         return 1975;
     }
 

@@ -34,7 +34,7 @@ public class StrategyInsertCountersRawDataTimeBucketDiverse1976 extends AbsStrat
     }
 
     @Override
-    public int getYear() {
+    public int getDefaultYear() {
         return 1976;
     }
 

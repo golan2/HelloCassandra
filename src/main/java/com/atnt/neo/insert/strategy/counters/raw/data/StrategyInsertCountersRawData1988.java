@@ -28,7 +28,7 @@ public class StrategyInsertCountersRawData1988 extends AbsStrategyInsertCounters
     }
 
     @Override
-    public int getYear() {
+    public int getDefaultYear() {
         return 1988;
     }
 
