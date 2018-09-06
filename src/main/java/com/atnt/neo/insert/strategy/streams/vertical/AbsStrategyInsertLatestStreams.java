@@ -6,7 +6,7 @@ import com.atnt.neo.insert.strategy.time.SingleTxn;
 import com.atnt.neo.insert.strategy.time.TimePeriod;
 import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
-public abstract class AbsStrategyInsertLatestStreams extends AbsStrategyInsertStreams {
+public abstract class AbsStrategyInsertLatestStreams extends AbsStrategyInsertVerticalStreams {
     AbsStrategyInsertLatestStreams(String[] args) {
         super(args);
     }

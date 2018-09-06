@@ -60,7 +60,7 @@ class RecentlyInactive {
 
 
             Set<String> recentlyActive = debugMap.keySet();
-            System.out.println("recentlyActive="+recentlyActive.stream().collect(Collectors.joining(", ")));
+            System.out.println("recentlyActive="+ String.join(", ", recentlyActive));
 
             System.out.println("Find devices that were active before 72 hrs and until 30 days back");
             final HashSet<String> active = new HashSet<>();
@@ -78,12 +78,12 @@ class RecentlyInactive {
                 System.err.println("CQL: " + cql);
                 throw e;
             }
-            System.out.println("active="+active.stream().collect(Collectors.joining(", ")));
+            System.out.println("active="+ String.join(", ", active));
 
             //what we want is the list of devices that were active but without those that reported in the last 72 hrs
             active.removeAll(recentlyActive);
 
-            System.out.println("recently inactive="+active.stream().collect(Collectors.joining(", ")));
+            System.out.println("recently inactive="+ String.join(", ", active));
 
 
         }

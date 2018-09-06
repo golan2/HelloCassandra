@@ -1,6 +1,6 @@
 package com.atnt.neo.insert.generator;
 
-import com.atnt.neo.insert.strategy.streams.vertical.AbsStrategyInsertStreams;
+import com.atnt.neo.insert.strategy.streams.vertical.AbsStrategyInsertVerticalStreams;
 import com.datastax.driver.core.querybuilder.Insert;
 
 import java.util.Calendar;
@@ -8,7 +8,7 @@ import java.util.Calendar;
 public class InsertVerticalStreamsOverTime extends AbsInsertVerticalStreams {
 
 
-    public InsertVerticalStreamsOverTime(AbsStrategyInsertStreams strategy) {
+    public InsertVerticalStreamsOverTime(AbsStrategyInsertVerticalStreams strategy) {
         super(strategy);
     }
 

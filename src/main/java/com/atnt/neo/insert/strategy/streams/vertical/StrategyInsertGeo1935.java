@@ -7,23 +7,10 @@ import com.atnt.neo.insert.strategy.time.EveryTwoMinutesEveryHour;
 import com.atnt.neo.insert.strategy.time.TimePeriod;
 import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
-import java.util.Collections;
-import java.util.Map;
-
-public class StrategyInsertGeo1935 extends AbsStrategyInsertStreams {
+public class StrategyInsertGeo1935 extends AbsStrategyInsertVerticalStreams {
 
     private StrategyInsertGeo1935(String[] args) {
         super(args);
-    }
-
-    @Override
-    public Map<String, Double> createDoubleStreamMap(int deviceIndex, int year, int month, int day, int hour) {
-        return Collections.emptyMap();
-    }
-
-    @Override
-    public Map<String, String> createGeoLocationStreamMap(int deviceIndex, int year, int month, int day, int hour) {
-        return generateGeoStreamMap(deviceIndex, year, month, day, hour);
     }
 
     public static void main(String[] args) throws InterruptedException {

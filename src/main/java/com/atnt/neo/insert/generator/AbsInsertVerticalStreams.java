@@ -1,12 +1,13 @@
 package com.atnt.neo.insert.generator;
 
 import com.atnt.neo.insert.strategy.StrategyInsert;
-import com.atnt.neo.insert.strategy.streams.AbStrategyInsertStreams;
+import com.atnt.neo.insert.strategy.streams.vertical.AbsStrategyInsertVerticalStreams;
 import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,14 +25,24 @@ public abstract class AbsInsertVerticalStreams extends AbsInsertToCassandra {
         final Set<Integer> seconds = getStrategy().getTxnPerDay().getSecondsArray();
 
         final Map<String, Double> doubleStreamMap = getStrategy().createDoubleStreamMap(deviceIndex, year, month, day, hour);
-        final ArrayList<Insert> result1 = createInsertStreamsQuery(deviceIndex, year, month, day, hour, cal, minutes, seconds, doubleStreamMap);
+        final ArrayList<Insert> insertDoubles = createInsertStreamsQuery(deviceIndex, year, month, day, hour, cal, minutes, seconds, doubleStreamMap);
 
         final Map<String, String> geoStreamMap = getStrategy().createGeoLocationStreamMap(deviceIndex, year, month, day, hour);
-        final ArrayList<Insert> result2 = createInsertStreamsQuery(deviceIndex, year, month, day, hour, cal, minutes, seconds, geoStreamMap);
+        final ArrayList<Insert> insertGeo = createInsertStreamsQuery(deviceIndex, year, month, day, hour, cal, minutes, seconds, geoStreamMap);
 
-        return Stream.concat(result1.stream(), result2.stream()).collect(Collectors.toList());
+        final Map<String, Double> randomStreamMap = getStrategy().createRandomStreamMap();
+        final ArrayList<Insert> insertRandoms = createInsertStreamsQuery(deviceIndex, year, month, day, hour, cal, minutes, seconds, randomStreamMap);
 
+        return concat(insertDoubles, insertGeo, insertRandoms);
     }
+
+    private Iterable<Insert> concat(ArrayList<Insert> result1, ArrayList<Insert> result2, ArrayList<Insert> result3) {
+        return Stream
+                .of(result1, result2, result3)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+    }
+
 
     private <T> ArrayList<Insert> createInsertStreamsQuery(int deviceIndex, int year, int month, int day, int hour, Calendar cal, Set<Integer> minutes, Set<Integer> seconds, Map<String, T> doubleStreamMap) {
         final ArrayList<Insert> result  = new ArrayList<>(minutes.size() * seconds.size());
@@ -76,8 +87,8 @@ public abstract class AbsInsertVerticalStreams extends AbsInsertToCassandra {
     @Override
     protected void appendAdditionalFields(Insert insert, int year, int month, int day, int hour, int minute, int second, int deviceIndex) {}
 
-    AbStrategyInsertStreams getStrategy() {
+    AbsStrategyInsertVerticalStreams getStrategy() {
         //noinspection unchecked
-        return (AbStrategyInsertStreams) super.getStrategy();
+        return (AbsStrategyInsertVerticalStreams) super.getStrategy();
     }
 }

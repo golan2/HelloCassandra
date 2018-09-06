@@ -2,15 +2,13 @@ package com.atnt.neo.insert.strategy.streams.vertical;
 
 import com.atnt.neo.insert.generator.CassandraShared;
 import com.atnt.neo.insert.generator.InsertVerticalStreamsOverTime;
-import com.atnt.neo.insert.strategy.time.EveryDaySeveralDaysEndOfYear;
 import com.atnt.neo.insert.strategy.time.EveryTwoMinutesEveryHour;
 import com.atnt.neo.insert.strategy.time.TimePeriod;
 import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
-import java.util.Collections;
 import java.util.Map;
 
-public class StrategyInsertStreams1990 extends AbsStrategyInsertStreams {
+public class StrategyInsertStreams1990 extends AbsStrategyInsertVerticalStreams {
     private StrategyInsertStreams1990(String[] args) {
         super(args);
     }
@@ -25,8 +23,8 @@ public class StrategyInsertStreams1990 extends AbsStrategyInsertStreams {
     }
 
     @Override
-    public Map<String, String> createGeoLocationStreamMap(int deviceIndex, int year, int month, int day, int hour) {
-        return Collections.emptyMap();
+    public Map<String, Double> createRandomStreamMap() {
+        return generateRandomStreamMap();
     }
 
     @Override
@@ -41,7 +39,7 @@ public class StrategyInsertStreams1990 extends AbsStrategyInsertStreams {
 
     @Override
     public TimePeriod getTimePeriod() {
-        return new EveryDaySeveralDaysEndOfYear(getYear(), 10);
+        return getTimePeriodFromConfig();
     }
 
     @Override

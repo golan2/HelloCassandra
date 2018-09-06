@@ -21,9 +21,9 @@ import java.util.stream.Collectors;
 
 public abstract class AbsInsertToCassandra {
     @SuppressWarnings("SpellCheckingInspection")
-    private static final SimpleDateFormat DF_DATE = new SimpleDateFormat("YYYY-MM-dd");
+    private static final SimpleDateFormat DF_DATE = new SimpleDateFormat("yyyy-MM-dd");
     @SuppressWarnings("SpellCheckingInspection")
-    private static final SimpleDateFormat DF_LOG  = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss,sss");
+    private static final SimpleDateFormat DF_LOG  = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss,sss");
     private final StrategyInsert strategy;
 
     AbsInsertToCassandra(StrategyInsert strategyInsert) {
@@ -57,6 +57,8 @@ public abstract class AbsInsertToCassandra {
                 final int               deviceCount = getStrategy().getDeviceCountPerDay(cal);
                 final AtomicLong        doneCount   = new AtomicLong();
 
+                System.out.println(logTimestamp() + " Inserting data for day ["+DF_DATE.format(cal.getTime())+"]...");
+
                 for (Integer hour : getStrategy().getTxnPerDay().getHoursArray()) {
 
                     int records = 0;
@@ -83,7 +85,7 @@ public abstract class AbsInsertToCassandra {
                     }
 
 
-                    System.out.println(logTimestamp() + " Inserted ["+deviceCount+"] devices ("+records+" records) to day ["+DF_DATE.format(cal.getTime())+"] "+(hour!= StrategyUtil.NO_VALUE?"hour ["+hour+"]":""));
+                    System.out.println(logTimestamp() + "\t Inserted ["+deviceCount+"] devices ("+records+" records) to day ["+DF_DATE.format(cal.getTime())+"] "+(hour!= StrategyUtil.NO_VALUE?"hour ["+hour+"]":""));
                 }
 
                 //commit the last batch which is probably partially full

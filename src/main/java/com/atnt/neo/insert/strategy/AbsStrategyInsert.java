@@ -1,5 +1,8 @@
 package com.atnt.neo.insert.strategy;
 
+import com.atnt.neo.insert.strategy.time.EveryDaySeveralDaysEndOfYear;
+import com.atnt.neo.insert.strategy.time.EveryDaySingleMonth;
+import com.atnt.neo.insert.strategy.time.TimePeriod;
 import org.apache.commons.cli.ParseException;
 
 import java.util.Calendar;
@@ -40,7 +43,7 @@ public abstract class AbsStrategyInsert implements StrategyInsert {
 
     @Override
     public String getDeviceType(int year, int month, int day, int deviceIndex) {
-        return String.format("device_type_%2d", day % 10);
+        return String.format("device_type_%02d", day % 10);
     }
 
     @Override
@@ -85,5 +88,15 @@ public abstract class AbsStrategyInsert implements StrategyInsert {
     @Override
     public StrategyConfig getConfig() {
         return this.config;
+    }
+
+    protected TimePeriod getTimePeriodFromConfig() {
+        final Integer month = getConfig().getMonth();
+        if (month>-1) {
+            return new EveryDaySingleMonth(getYear(), month);
+        }
+        else {
+            return new EveryDaySeveralDaysEndOfYear(getYear(), 1);
+        }
     }
 }

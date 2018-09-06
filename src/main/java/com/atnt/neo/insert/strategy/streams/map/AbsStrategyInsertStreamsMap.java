@@ -1,9 +1,9 @@
 package com.atnt.neo.insert.strategy.streams.map;
 
-import com.atnt.neo.insert.strategy.streams.AbStrategyInsertStreams;
+import com.atnt.neo.insert.strategy.streams.AbsStrategyInsertStreams;
 
 @Deprecated
-public abstract class AbsStrategyInsertStreamsMap extends AbStrategyInsertStreams {
+public abstract class AbsStrategyInsertStreamsMap extends AbsStrategyInsertStreams {
     protected AbsStrategyInsertStreamsMap(String[] args) {
         super(args);
     }

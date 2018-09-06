@@ -1,10 +1,10 @@
 package com.atnt.neo.insert.strategy.streams.vertical;
 
-import com.atnt.neo.insert.strategy.streams.AbStrategyInsertStreams;
+import com.atnt.neo.insert.strategy.streams.AbsStrategyInsertStreams;
 
-public abstract class AbsStrategyInsertStreams extends AbStrategyInsertStreams {
+public abstract class AbsStrategyInsertVerticalStreams extends AbsStrategyInsertStreams {
 
-    AbsStrategyInsertStreams(String[] args) {
+    AbsStrategyInsertVerticalStreams(String[] args) {
         super(args);
     }
 
@@ -17,4 +17,5 @@ public abstract class AbsStrategyInsertStreams extends AbStrategyInsertStreams {
     public boolean includeTxnId() {
         return false;
     }
+
 }

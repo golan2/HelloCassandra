@@ -9,7 +9,7 @@ import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 import org.apache.commons.cli.ParseException;
 
-public class InvokeCql {
+class InvokeCql {
 
     public static void main(String[] args) throws ParseException {
         Cluster cluster = null;
