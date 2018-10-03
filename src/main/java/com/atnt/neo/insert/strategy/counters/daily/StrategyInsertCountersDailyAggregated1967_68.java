@@ -1,6 +1,7 @@
 package com.atnt.neo.insert.strategy.counters.daily;
 
 import com.atnt.neo.insert.generator.InsertToCountersTable;
+import com.atnt.neo.insert.strategy.StrategyConfig;
 import com.atnt.neo.insert.strategy.time.TimePeriod;
 import com.atnt.neo.insert.strategy.time.EveryDayDecJanFeb;
 import com.atnt.neo.insert.strategy.time.SingleTxn;
@@ -37,7 +38,7 @@ public class StrategyInsertCountersDailyAggregated1967_68 extends AbsStrategyIns
 
     @Override
     public int getDeviceCountPerDay(Calendar cal) {
-        return (super.getDeviceCountPerDay() == -1 ? 50_000 + cal.get(Calendar.MONTH) * 100 : super.getDeviceCountPerDay());
+        return (super.getDeviceCountPerDay() == StrategyConfig.NOT_PROVIDED ? 50_000 + cal.get(Calendar.MONTH) * 100 : super.getDeviceCountPerDay());
     }
 
     @Override

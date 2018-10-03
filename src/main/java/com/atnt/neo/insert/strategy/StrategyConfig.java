@@ -9,12 +9,15 @@ import org.apache.commons.cli.ParseException;
 
 public class StrategyConfig {
 
+    public static final int NOT_PROVIDED = -1;
+
     private final String  keyspace;
     private final String  hosts;
     private final Boolean truncate;
     private final Integer deviceCount;
     private final Integer year;
     private final Integer month;
+    private final Integer days;
     private final Integer streamCount;
     private final String  orgId;
     private final String  projectId;
@@ -49,8 +52,9 @@ public class StrategyConfig {
         this.hosts = commandLine.getOptionValue("hosts", CassandraShared.CASSANDRA_HOST_NAME_);
         this.truncate = Boolean.valueOf(commandLine.getOptionValue("truncate", Boolean.FALSE.toString()));
         this.deviceCount = Integer.valueOf(commandLine.getOptionValue("devices", "1"));
-        this.year = Integer.valueOf(commandLine.getOptionValue("year", "-1"));
-        this.month = Integer.valueOf(commandLine.getOptionValue("month", "-1"));
+        this.year = Integer.valueOf(commandLine.getOptionValue("year", ""+NOT_PROVIDED));
+        this.month = Integer.valueOf(commandLine.getOptionValue("month", ""+NOT_PROVIDED));
+        this.days = Integer.valueOf(commandLine.getOptionValue("days", ""+NOT_PROVIDED));
         this.streamCount = Integer.valueOf(commandLine.getOptionValue("streams", "1"));
         this.orgId = commandLine.getOptionValue("org_id", "org_id");
         this.projectId = commandLine.getOptionValue("project_id", "project_id");
@@ -85,6 +89,10 @@ public class StrategyConfig {
 
     public Integer getMonth() {
         return month;
+    }
+
+    public Integer getDays() {
+        return days;
     }
 
     public Integer getStreamCount() {

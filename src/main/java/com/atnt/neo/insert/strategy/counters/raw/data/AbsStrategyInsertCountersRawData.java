@@ -17,8 +17,8 @@ public abstract class AbsStrategyInsertCountersRawData extends AbsStrategyInsert
     }
 
     @Override
-    public long getVolumeSize(int month, int day, int hour) {
-        return super.getVolumeSize(0, 0, 0);
+    public long getDataSize(int month, int day, int hour) {
+        return super.getDataSize(0, 0, 0);
     }
 
 }

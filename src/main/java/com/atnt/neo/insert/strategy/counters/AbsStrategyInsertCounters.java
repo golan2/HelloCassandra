@@ -19,7 +19,7 @@ public abstract class AbsStrategyInsertCounters extends AbsStrategyInsert {
     }
 
     @SuppressWarnings("unused")
-    public long getVolumeSize(int month, int day, int hour) {
+    public long getDataSize(int month, int day, int hour) {
         return 40;
     }
 }

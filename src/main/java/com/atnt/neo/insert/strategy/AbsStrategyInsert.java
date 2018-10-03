@@ -26,7 +26,7 @@ public abstract class AbsStrategyInsert implements StrategyInsert {
     @Override
     public final int getYear() {
         final Integer year = getConfig().getYear();
-        if (year !=-1) {
+        if (year != StrategyConfig.NOT_PROVIDED) {
             return year;
         }
         else {

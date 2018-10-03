@@ -30,7 +30,7 @@ public class InsertToCountersTable extends AbsInsertToCassandra {
     protected void appendAdditionalFields(Insert insert, int year, int month, int day, int hour, int minute, int second, int deviceIndex) {
         insert.value("billing_points", getStrategy().getBillingPoints(month, day, hour));
         insert.value("data_points", getStrategy().getDataPoints(month, day, hour));
-        insert.value("volume_size", getStrategy().getVolumeSize(month, day, hour));
+        insert.value("volume_size", getStrategy().getDataSize(month, day, hour));
         if (getStrategy().includeTxnId()) insert.value("transaction_id", "transaction_id");
     }
 

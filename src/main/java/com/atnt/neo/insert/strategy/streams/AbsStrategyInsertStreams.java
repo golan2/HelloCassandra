@@ -21,7 +21,7 @@ public abstract class AbsStrategyInsertStreams extends AbsStrategyInsert {
     protected static Map<String, Double> generateDoubleStreamMap(int howManyStreams, int deviceIndex, int year, int month, int day) {
         final HashMap<String, Double> result = new HashMap<>();
         for (int i = 0; i < howManyStreams ; i++) {
-            if (deviceIndex%10==0) {
+            if (deviceIndex%10==5) {    //we need some nulls here and  there because I noticed we have them in real data as well every now and than
                 result.put("stream_" + i, null);
             }
             else {
