@@ -2,6 +2,7 @@ package com.atnt.neo.insert.strategy.counters.raw.data;
 
 import com.atnt.neo.insert.generator.CassandraShared;
 import com.atnt.neo.insert.generator.InsertToCountersTable;
+import com.atnt.neo.insert.strategy.time.EveryDaySeveralDaysEndOfYear;
 import com.atnt.neo.insert.strategy.time.EveryTwoMinutesEveryHour;
 import com.atnt.neo.insert.strategy.time.EveryWeekSeveralMonthsBeginOfYear;
 import com.atnt.neo.insert.strategy.time.TimePeriod;
@@ -19,7 +20,7 @@ public class StrategyInsertCountersRawData1988 extends AbsStrategyInsertCounters
 
     @Override
     public TimePeriod getTimePeriod() {
-        return new EveryWeekSeveralMonthsBeginOfYear(getYear(), 12);
+        return new EveryDaySeveralDaysEndOfYear(getYear(), 7);
     }
 
     @Override

@@ -136,6 +136,7 @@ public class StrategyConfig {
                 ", deviceCount=" + deviceCount +
                 ", year=" + year +
                 ", month=" + month +
+                ", days=" + days +
                 ", streamCount=" + streamCount +
                 ", orgId='" + orgId + '\'' +
                 ", projectId='" + projectId + '\'' +
