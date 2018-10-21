@@ -4,10 +4,7 @@ import com.atnt.neo.insert.strategy.counters.AbsStrategyInsertCounters;
 import com.atnt.neo.insert.strategy.counters.clazz.AbsStrategyInsertCountersByClass;
 import com.datastax.driver.core.querybuilder.Insert;
 
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAdjusters;
 import java.util.Calendar;
-import java.util.Date;
 
 public class InsertToCountersByClassTable extends InsertToCountersTable {
     public InsertToCountersByClassTable(AbsStrategyInsertCounters strategyInsert) {
@@ -21,6 +18,7 @@ public class InsertToCountersByClassTable extends InsertToCountersTable {
         insert.value("environment", getStrategy().getEnvironment());
     }
 
+    @SuppressWarnings("MagicConstant")
     protected void appendInsertTimeFields(Insert insert, int year, int month, int day, int hour, Calendar cal, Integer minute, Integer second) {
 
         cal.set(year, month-1, day, hour, minute);
@@ -34,6 +32,7 @@ public class InsertToCountersByClassTable extends InsertToCountersTable {
         cal.set(Calendar.HOUR_OF_DAY, 0);
         insert.value("day", cal.getTime());
 
+        //noinspection SpellCheckingInspection
         final Calendar cweek = (Calendar) cal.clone();
         cweek.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
         insert.value("week", cweek.getTime());

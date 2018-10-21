@@ -11,6 +11,7 @@ public class SingleDay implements TimePeriod {
         this(year, Calendar.DECEMBER, 1);
     }
 
+    @SuppressWarnings("SameParameterValue")
     private SingleDay(int year, int month, int day) {
         this.year = year;
         this.month = month-1;

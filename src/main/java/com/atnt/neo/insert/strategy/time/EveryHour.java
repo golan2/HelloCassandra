@@ -4,6 +4,7 @@ import com.atnt.neo.insert.strategy.StrategyUtil;
 
 import java.util.Set;
 
+@SuppressWarnings("unused")
 public class EveryHour implements TxnPerDay {
     @Override
     public Set<Integer> getHoursArray() {

@@ -3,13 +3,11 @@ package com.atnt.neo.insert.generator;
 import com.atnt.neo.insert.strategy.StrategyInsert;
 import com.atnt.neo.insert.strategy.StrategyUtil;
 import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.ResultSetFuture;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 
 import java.text.SimpleDateFormat;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;

@@ -10,7 +10,7 @@ public abstract class AbsStrategyInsertStreamsMapRawData extends AbsStrategyInse
 
     @Override
     public int getPartSelector(int year, int month, int day, int hour, Integer minute, Integer second) {
-        return (int) Math.floor(minute/3);
+        return (int) Math.floor(minute/3.0);
     }
 
     @Override
