@@ -4,9 +4,17 @@ import java.util.Calendar;
 
 public class SingleDay implements TimePeriod {
     private final int year;
+    private final int month;
+    private final int day;
 
     public SingleDay(int year) {
+        this(year, Calendar.DECEMBER, 1);
+    }
+
+    private SingleDay(int year, int month, int day) {
         this.year = year;
+        this.month = month-1;
+        this.day = day;
     }
 
     @Override
@@ -17,7 +25,7 @@ public class SingleDay implements TimePeriod {
     @Override
     public Calendar getLastDay() {
         Calendar cal = Calendar.getInstance();
-        cal.set(this.year, Calendar.DECEMBER, 31, 0, 0, 0);
+        cal.set(this.year, month, day, 0, 0, 0);
         cal.set(Calendar.MILLISECOND, 0);
         return cal;
     }

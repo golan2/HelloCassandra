@@ -9,6 +9,7 @@ import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 
 import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -180,7 +181,8 @@ public abstract class AbsInsertToCassandra {
     protected abstract void appendInsertTimeFields(Insert insert, int year, int month, int day, int hour, Calendar cal, Integer minute, Integer second);
 
     @SuppressWarnings("WeakerAccess")
-    protected Date getTimestamp(Calendar cal, int month, int day, int hour, int minute, int second) {
+    protected Date getTimestamp(Calendar c, int month, int day, int hour, int minute, int second) {
+        Calendar cal = (Calendar) c.clone();
         //noinspection MagicConstant
         cal.set(getStrategy().getYear(), month-1, day, hour, minute, second);
         cal.set(Calendar.MILLISECOND, 0);

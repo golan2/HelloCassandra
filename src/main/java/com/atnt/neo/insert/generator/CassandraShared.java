@@ -15,6 +15,7 @@ public class CassandraShared {
     public static final String T_STREAMS_MAP_RAW_DATA   = "data_collector";
     public static final String T_COUNTERS_RAW_DATA      = "message_info_by_type";
     public static final String T_COUNTERS_MINUTE        = "message_info_per_class_every_minute";
+    public static final String T_COUNTERS_BY_CLASS      = "message_info_by_class";
     public static final String T_COUNTERS_HOURLY        = "hourly_aggregator";
     public static final String T_COUNTERS_DAILY         = "daily_aggregator";
     public static final String F_VERTICAL_STREAM_NAME   = "stream_name";

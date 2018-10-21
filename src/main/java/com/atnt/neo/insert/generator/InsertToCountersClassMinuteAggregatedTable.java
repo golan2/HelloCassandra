@@ -1,6 +1,6 @@
 package com.atnt.neo.insert.generator;
 
-import com.atnt.neo.insert.strategy.AbsStrategyInsertClassMinuteAggregated;
+import com.atnt.neo.insert.strategy.counters.clazz.AbsStrategyInsertClassMinuteAggregated;
 import com.datastax.driver.core.querybuilder.Insert;
 
 import java.util.Calendar;

@@ -1,23 +1,24 @@
-package com.atnt.neo.insert.strategy;
+package com.atnt.neo.insert.strategy.counters.clazz;
 
-import com.atnt.neo.insert.generator.InsertToCountersClassMinuteAggregatedTable;
+import com.atnt.neo.insert.generator.InsertToCountersByClassTable;
+import com.atnt.neo.insert.strategy.StrategyConfig;
 import com.atnt.neo.insert.strategy.time.EveryDaySeveralDaysEndOfYear;
 import com.atnt.neo.insert.strategy.time.EveryTwoMinutesEveryHour;
 import com.atnt.neo.insert.strategy.time.TimePeriod;
 import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
-public class StrategyInsertClassMinuteAggregated1945 extends AbsStrategyInsertClassMinuteAggregated {
-    private StrategyInsertClassMinuteAggregated1945(String[] args) {
+public class StrategyInsertCountersByClass1946 extends AbsStrategyInsertCountersByClass {
+    private StrategyInsertCountersByClass1946(String[] args) {
         super(args);
     }
 
     public static void main(String[] args) throws InterruptedException {
-        new InsertToCountersClassMinuteAggregatedTable(new StrategyInsertClassMinuteAggregated1945(args)).insert();
+        new InsertToCountersByClassTable(new StrategyInsertCountersByClass1946(args)).insert();
     }
 
     @Override
     protected int getDefaultYear() {
-        return 1945;
+        return 1946;
     }
 
     @Override
@@ -31,7 +32,7 @@ public class StrategyInsertClassMinuteAggregated1945 extends AbsStrategyInsertCl
             return days;
         }
         else {
-            return 7;
+            return 45;
         }
     }
 

@@ -1,7 +1,7 @@
 package com.atnt.neo.insert.strategy.counters.daily;
 
 import com.atnt.neo.insert.generator.CassandraShared;
-import com.atnt.neo.insert.strategy.AbsStrategyInsertCountersAggregated;
+import com.atnt.neo.insert.strategy.counters.AbsStrategyInsertCountersAggregated;
 
 public abstract class AbsStrategyInsertCountersDailyAggregated extends AbsStrategyInsertCountersAggregated {
 
