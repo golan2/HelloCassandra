@@ -34,7 +34,7 @@ public class InsertToCountersClassMinuteAggregatedTable extends InsertToCounters
     }
 
     @Override
-    AbsStrategyInsertClassMinuteAggregated getStrategy() {
+    protected AbsStrategyInsertClassMinuteAggregated getStrategy() {
         return (AbsStrategyInsertClassMinuteAggregated) super.getStrategy();
     }
 }

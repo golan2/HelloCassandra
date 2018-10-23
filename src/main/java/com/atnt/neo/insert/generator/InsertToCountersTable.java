@@ -35,7 +35,7 @@ public class InsertToCountersTable extends AbsInsertToCassandra {
     }
 
     @Override
-    AbsStrategyInsertCounters getStrategy() {
+    protected AbsStrategyInsertCounters getStrategy() {
         return (AbsStrategyInsertCounters) super.getStrategy();
     }
 }

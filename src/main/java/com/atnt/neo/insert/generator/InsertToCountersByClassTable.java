@@ -69,7 +69,7 @@ public class InsertToCountersByClassTable extends InsertToCountersTable {
     }
 
     @Override
-    AbsStrategyInsertCountersByClass getStrategy() {
+    protected AbsStrategyInsertCountersByClass getStrategy() {
         return (AbsStrategyInsertCountersByClass) super.getStrategy();
     }
 }

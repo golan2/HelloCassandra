@@ -26,7 +26,7 @@ public abstract class AbsInsertToCassandra {
     private static final SimpleDateFormat DF_LOG  = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss,sss");
     private final StrategyInsert strategy;
 
-    AbsInsertToCassandra(StrategyInsert strategyInsert) {
+    protected AbsInsertToCassandra(StrategyInsert strategyInsert) {
         this.strategy = strategyInsert;
     }
 
@@ -196,7 +196,7 @@ public abstract class AbsInsertToCassandra {
     protected abstract void appendAdditionalFields(Insert insert, int year, int month, int day, int hour, int minute, int second, int deviceIndex);
 
 
-    StrategyInsert getStrategy() {
+    protected StrategyInsert getStrategy() {
         return strategy;
     }
 
