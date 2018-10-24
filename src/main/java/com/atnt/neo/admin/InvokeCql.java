@@ -8,20 +8,26 @@ import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 import org.apache.commons.cli.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class InvokeCql {
 
+    private final static Logger logger = LoggerFactory.getLogger(InvokeCql.class);
+
+
     public static void main(String[] args) throws ParseException {
+
         Cluster cluster = null;
         Session session = null;
         try {
             final long before = System.nanoTime();
             final StrategyConfig config = new StrategyConfig(args);
-            System.out.println(config);
+            logger.info("Configuration: {}", config);
             cluster = CassandraShared.initCluster(config.getHosts());
             session = cluster.connect(config.getKeyspace());
 
-            System.out.println("CQL =====>   \n" + config.getCql());
+            logger.debug("CQL =====>   \n" + config.getCql());
 
             final ResultSet resultSet = session.execute(config.getCql());
             final long middle = System.nanoTime();
@@ -41,7 +47,7 @@ class InvokeCql {
             }
             System.out.println("======");
             final long after = System.nanoTime();
-            System.out.println("executeTime=["+((middle-before)/1_000_000_000)+"] fetchTime=["+((after-middle)/1_000_000_000)+"] ");
+            logger.info("executeTime=[{}] fetchTime=[{}] ", (middle-before)/1_000_000_000, (after-middle)/1_000_000_000);
         } finally {
             if (cluster!=null) cluster.close();
             if (session!=null) session.close();

@@ -6,6 +6,8 @@ import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,25 +22,21 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 public abstract class AbsInsertToCassandra {
+    private final static Logger logger = LoggerFactory.getLogger(AbsInsertToCassandra.class);
+
     @SuppressWarnings("SpellCheckingInspection")
     private static final SimpleDateFormat DF_DATE = new SimpleDateFormat("yyyy-MM-dd");
-    @SuppressWarnings("SpellCheckingInspection")
-    private static final SimpleDateFormat DF_LOG  = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss,sss");
     private final StrategyInsert strategy;
 
     protected AbsInsertToCassandra(StrategyInsert strategyInsert) {
         this.strategy = strategyInsert;
     }
 
-    private static String logTimestamp() {
-        return DF_LOG.format(System.currentTimeMillis());
-    }
-
     public void insert() throws InterruptedException {
         List<FutureWrapper> futures = new ArrayList<>();
 
         try (Cluster cluster = CassandraShared.initCluster(getStrategy().getConfig().getHosts())) {
-            System.out.println(logTimestamp() + " Working on ["+getStrategy().getConfig().getKeyspace()+"] ["+ getStrategy().getTableName()+"]");
+            logger.info("Working on [{}] [{}]", getStrategy().getConfig().getKeyspace(), getStrategy().getTableName());
             Session session = cluster.connect(getStrategy().getConfig().getKeyspace());
 
             if (getStrategy().shouldTruncateTableBeforeStart()) {
@@ -51,13 +49,13 @@ public abstract class AbsInsertToCassandra {
 
                 final ArrayList<Insert> statements  = new ArrayList<>(CassandraShared.MAX_BATCH_SIZE);
                 final long              begin       = System.nanoTime();
-                final int               year        = cal.get(Calendar.YEAR        );
+                final int               year        = cal.get(Calendar.YEAR);
                 final int               month       = cal.get(Calendar.MONTH) + 1;
                 final int               day         = cal.get(Calendar.DAY_OF_MONTH);
                 final int               deviceCount = getStrategy().getDeviceCountPerDay(cal);
                 final AtomicLong        doneCount   = new AtomicLong();
 
-                System.out.println(logTimestamp() + " Inserting data for day ["+DF_DATE.format(cal.getTime())+"]...");
+                logger.info("Inserting data for day [{}]...", DF_DATE.format(cal.getTime()));
 
                 for (Integer hour : getStrategy().getTxnPerDay().getHoursArray()) {
 
@@ -84,8 +82,7 @@ public abstract class AbsInsertToCassandra {
                         }
                     }
 
-
-                    System.out.println(logTimestamp() + "\t Inserted ["+deviceCount+"] devices ("+records+" records) to day ["+DF_DATE.format(cal.getTime())+"] "+(hour!= StrategyUtil.NO_VALUE?"hour ["+hour+"]":""));
+                    logger.debug("Inserted [{}] devices ({} records) to day [{}] {}", deviceCount, records, DF_DATE.format(cal.getTime()), (hour!= StrategyUtil.NO_VALUE?"hour ["+hour+"]":""));
                 }
 
                 //commit the last batch which is probably partially full
@@ -98,13 +95,13 @@ public abstract class AbsInsertToCassandra {
                 futures.removeIf(FutureWrapper::isDone);
                 final long pending = futures.stream().filter(f -> !f.isDone()).count();
                 final long end = System.nanoTime();
-                System.out.println(logTimestamp() + " - date=["+day+"/"+month+"] deviceCount=["+deviceCount+"] time=["+(end-begin)/1000000+"] pending=["+ pending +"]");
+                logger.info("date=["+day+"/"+month+"] deviceCount=["+deviceCount+"] time=["+(end-begin)/1000000+"] pending=["+ pending +"]");
                 getStrategy().getTimePeriod().incrementCalendar(cal);
             }
 
         }
 
-        System.out.println(logTimestamp() + " - Done=["+futures.stream().filter(FutureWrapper::isDone).count()+"] Cancelled=["+futures.stream().filter(FutureWrapper::isCancelled).count()+"]");
+        logger.info("Done=[{}] Cancelled=[{}]", futures.stream().filter(FutureWrapper::isDone).count(), futures.stream().filter(FutureWrapper::isCancelled).count());
     }
 
     private static void checkFailures(List<FutureWrapper> futures) throws InterruptedException {
@@ -121,12 +118,12 @@ public abstract class AbsInsertToCassandra {
     private static void executeBatchAsync(List<FutureWrapper> futures, Session session, ArrayList<Insert> statements, AtomicLong doneCount) {
         statements.forEach( q -> futures.add(new FutureWrapper(session.executeAsync(q), q.getQueryString())) );
         final long pending  = futures.stream().filter(f -> !f.isDone()).count();
-        final long canceled = futures.stream().filter(FutureWrapper::isCancelled).count         ();
+        final long canceled = futures.stream().filter(FutureWrapper::isCancelled).count();
         final long failed   = futures.stream().filter(AbsInsertToCassandra::failed).count();
         final List<FutureWrapper> doneList = futures.stream().filter(FutureWrapper::isDone).collect(Collectors.toList());
         final long done     = doneCount.addAndGet(doneList.size());
         futures.removeAll(doneList);
-        System.out.printf("\texecuteBatchAsync: pending=[%d] canceled=[%d] failed=[%d] done=[%d] \n", pending, canceled, failed, done);
+        logger.debug("executeBatchAsync: pending=[{}] canceled=[{}] failed=[{}] done=[{}]", pending, canceled, failed, done);
         statements.clear();
     }
 

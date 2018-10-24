@@ -1,14 +1,19 @@
 package com.atnt.neo.insert.strategy;
 
+import com.atnt.neo.insert.generator.AbsInsertToCassandra;
 import com.atnt.neo.insert.strategy.time.EveryDaySeveralDaysEndOfYear;
 import com.atnt.neo.insert.strategy.time.EveryDaySingleMonth;
 import com.atnt.neo.insert.strategy.time.TimePeriod;
 import org.apache.commons.cli.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Calendar;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class AbsStrategyInsert implements StrategyInsert {
+
+    private final static Logger logger = LoggerFactory.getLogger(AbsInsertToCassandra.class);
 
     private static final String DEVICE_PREFIX = "device_"+ ThreadLocalRandom.current().nextInt(0, 99999) + "_";
 
@@ -17,7 +22,7 @@ public abstract class AbsStrategyInsert implements StrategyInsert {
     protected AbsStrategyInsert(String[] args) {
         try {
             this.config = new StrategyConfig(args);
-            System.out.println(config);
+            logger.info("Configuration: ", config);
         } catch (ParseException e) {
             throw new RuntimeException("Error " + e.getMessage(), e);
         }

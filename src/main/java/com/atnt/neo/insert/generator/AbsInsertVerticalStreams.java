@@ -1,6 +1,5 @@
 package com.atnt.neo.insert.generator;
 
-import com.atnt.neo.insert.strategy.StrategyInsert;
 import com.atnt.neo.insert.strategy.streams.vertical.AbsStrategyInsertVerticalStreams;
 import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
@@ -14,7 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class AbsInsertVerticalStreams extends AbsInsertToCassandra {
-    AbsInsertVerticalStreams(StrategyInsert strategyInsert) {
+    AbsInsertVerticalStreams(AbsStrategyInsertVerticalStreams strategyInsert) {
         super(strategyInsert);
     }
 
