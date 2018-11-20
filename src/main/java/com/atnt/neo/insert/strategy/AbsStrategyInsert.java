@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Calendar;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class AbsStrategyInsert implements StrategyInsert {
@@ -22,7 +23,7 @@ public abstract class AbsStrategyInsert implements StrategyInsert {
     protected AbsStrategyInsert(String[] args) {
         try {
             this.config = new StrategyConfig(args);
-            logger.info("Configuration: ", config);
+            logger.info("Configuration: {}", config);
         } catch (ParseException e) {
             throw new RuntimeException("Error " + e.getMessage(), e);
         }
@@ -88,6 +89,11 @@ public abstract class AbsStrategyInsert implements StrategyInsert {
     @Override
     public final String getEnvironment() {
         return this.config.getEnvironment();
+    }
+
+    @Override
+    public final UUID getEnvUuid() {
+        return this.config.getEnvUuid();
     }
 
     @Override

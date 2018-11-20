@@ -19,9 +19,9 @@ public class InsertVerticalStreamsOverTime extends AbsInsertVerticalStreams {
         insert.value("year", year);
         insert.value("month", month);
         insert.value("day", day);
-        insert.value("hour", hour);
-        insert.value("minutes", minute);
-        insert.value("seconds", second);
+        insert.value(CassandraShared.F_HOUR, hour);
+        insert.value(CassandraShared.F_MINUTES, minute);
+        insert.value(CassandraShared.F_SECONDS, second);
     }
 
 }

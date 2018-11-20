@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
@@ -62,9 +63,9 @@ public abstract class AbsInsertToCassandra {
                     int records = 0;
 
                     for (int deviceIndex=0 ; deviceIndex<deviceCount ; deviceIndex++) {
-
+                        final String txnId = UUID.randomUUID().toString();
                         //todo: adapt bulk insert to fit streams raw data with partition less than an hour  (return List<List<Insert>> or something)
-                        final Iterable<Insert> queries = createInsertQueries(deviceIndex, year , month, day, hour);
+                        final Iterable<Insert> queries = createInsertQueries(txnId, deviceIndex, year , month, day, hour);
 
                         for (Insert query : queries) {
                             records++;
@@ -139,7 +140,7 @@ public abstract class AbsInsertToCassandra {
     }
 
 
-    Iterable<Insert> createInsertQueries(int deviceIndex, int year, int month, int day, int hour){
+    Iterable<Insert> createInsertQueries(String txnId, int deviceIndex, int year, int month, int day, int hour){
         final Calendar          cal     = Calendar.getInstance();
         final Set<Integer>      minutes = getStrategy().getTxnPerDay().getMinutesArray();
         final Set<Integer>      seconds = getStrategy().getTxnPerDay().getSecondsArray();
@@ -155,7 +156,7 @@ public abstract class AbsInsertToCassandra {
 
                 appendInsertDeviceInfo(insert, deviceIndex, year, month, day);
 
-                appendAdditionalFields(insert, year, month, day, hour, minute, second, deviceIndex);
+                appendAdditionalFields(txnId, insert, year, month, day, hour, minute, second, deviceIndex);
 
                 result.add(insert);
             }
@@ -166,11 +167,11 @@ public abstract class AbsInsertToCassandra {
 
     @SuppressWarnings("WeakerAccess")
     protected void appendInsertContextFields(Insert insert, int year, int month, int day, int hour, int minute, int deviceIndex) {
-        insert.value("org_bucket", getStrategy().getOrgBucket());
-        insert.value("project_bucket", getStrategy().getProjectBucket());
-        insert.value("org_id", getStrategy().getOrgId(year, month, day, hour, minute, deviceIndex));
-        insert.value("project_id", getStrategy().getProjectId());
-        insert.value("environment", getStrategy().getEnvironment());
+        insert.value(CassandraShared.F_ORG_BUCKET, getStrategy().getOrgBucket());
+        insert.value(CassandraShared.F_PROJECT_BUCKET, getStrategy().getProjectBucket());
+        insert.value(CassandraShared.F_ORG_ID, getStrategy().getOrgId(year, month, day, hour, minute, deviceIndex));
+        insert.value(CassandraShared.F_PROJECT_ID, getStrategy().getProjectId());
+        insert.value(CassandraShared.F_ENVIRONMENT, getStrategy().getEnvironment());
     }
 
     protected abstract void appendInsertTimeFields(Insert insert, int year, int month, int day, int hour, Calendar cal, Integer minute, Integer second);
@@ -190,7 +191,7 @@ public abstract class AbsInsertToCassandra {
         insert.value("device_type", getStrategy().getDeviceType(year, month, day, deviceIndex));
     }
 
-    protected abstract void appendAdditionalFields(Insert insert, int year, int month, int day, int hour, int minute, int second, int deviceIndex);
+    protected abstract void appendAdditionalFields(String txnId, Insert insert, int year, int month, int day, int hour, int minute, int second, int deviceIndex);
 
 
     protected StrategyInsert getStrategy() {

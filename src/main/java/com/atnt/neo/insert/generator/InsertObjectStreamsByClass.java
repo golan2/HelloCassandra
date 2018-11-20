@@ -31,8 +31,8 @@ public class InsertObjectStreamsByClass extends AbsInsertVerticalStreams {
     }
 
     @Override
-    protected void appendAdditionalFields(Insert insert, int year, int month, int day, int hour, int minute, int second, int deviceIndex) {
-        insert.value("txn_id", UUID.randomUUID().toString());
+    protected void appendAdditionalFields(String txnId, Insert insert, int year, int month, int day, int hour, int minute, int second, int deviceIndex) {
+        insert.value("txn_id", txnId);
     }
 
 

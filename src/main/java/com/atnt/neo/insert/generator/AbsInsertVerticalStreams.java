@@ -18,19 +18,19 @@ public abstract class AbsInsertVerticalStreams extends AbsInsertToCassandra {
     }
 
     @Override
-    protected Iterable<Insert> createInsertQueries(int deviceIndex, int year, int month, int day, int hour) {
+    protected Iterable<Insert> createInsertQueries(String txnId, int deviceIndex, int year, int month, int day, int hour) {
         final Calendar     cal     = Calendar.getInstance();
         final Set<Integer> minutes = getStrategy().getTxnPerDay().getMinutesArray();
         final Set<Integer> seconds = getStrategy().getTxnPerDay().getSecondsArray();
 
         final Map<String, Double> doubleStreamMap = getStrategy().createDoubleStreamMap(deviceIndex, year, month, day, hour);
-        final ArrayList<Insert> insertDoubles = createInsertStreamsQuery(deviceIndex, year, month, day, hour, cal, minutes, seconds, doubleStreamMap);
+        final ArrayList<Insert> insertDoubles = createInsertStreamsQuery(txnId, deviceIndex, year, month, day, hour, cal, minutes, seconds, doubleStreamMap);
 
         final Map<String, String> geoStreamMap = getStrategy().createGeoLocationStreamMap(deviceIndex, year, month, day, hour);
-        final ArrayList<Insert> insertGeo = createInsertStreamsQuery(deviceIndex, year, month, day, hour, cal, minutes, seconds, geoStreamMap);
+        final ArrayList<Insert> insertGeo = createInsertStreamsQuery(txnId, deviceIndex, year, month, day, hour, cal, minutes, seconds, geoStreamMap);
 
         final Map<String, Double> randomStreamMap = getStrategy().createRandomStreamMap();
-        final ArrayList<Insert> insertRandoms = createInsertStreamsQuery(deviceIndex, year, month, day, hour, cal, minutes, seconds, randomStreamMap);
+        final ArrayList<Insert> insertRandoms = createInsertStreamsQuery(txnId, deviceIndex, year, month, day, hour, cal, minutes, seconds, randomStreamMap);
 
         return concat(insertDoubles, insertGeo, insertRandoms);
     }
@@ -43,7 +43,7 @@ public abstract class AbsInsertVerticalStreams extends AbsInsertToCassandra {
     }
 
 
-    private <T> ArrayList<Insert> createInsertStreamsQuery(int deviceIndex, int year, int month, int day, int hour, Calendar cal, Set<Integer> minutes, Set<Integer> seconds, Map<String, T> doubleStreamMap) {
+    private <T> ArrayList<Insert> createInsertStreamsQuery(String txnId, int deviceIndex, int year, int month, int day, int hour, Calendar cal, Set<Integer> minutes, Set<Integer> seconds, Map<String, T> doubleStreamMap) {
         final ArrayList<Insert> result  = new ArrayList<>(minutes.size() * seconds.size());
         for (Map.Entry<String, T> entry : doubleStreamMap.entrySet()) {
             for (Integer minute : minutes) {
@@ -59,6 +59,8 @@ public abstract class AbsInsertVerticalStreams extends AbsInsertToCassandra {
 
                     appendInsertStreamFields(insert, entry.getKey(), entry.getValue());
 
+                    appendAdditionalFields(txnId, insert, year, month, day, hour, minute, second, deviceIndex);
+
                     result.add(insert);
 
                 }
@@ -68,23 +70,35 @@ public abstract class AbsInsertVerticalStreams extends AbsInsertToCassandra {
     }
 
     private <T> void appendInsertStreamFields(Insert insert, String streamName, T streamValue) {
-        insert.value(CassandraShared.F_VERTICAL_STREAM_NAME, streamName);
+        insert.value(getStreamNameField(), streamName);
 
         if (streamValue==null) return;  //in Cassandra we don't insert null; we simply don't set value to this column
 
         if (streamValue instanceof Double) {
-            insert.value(CassandraShared.F_VERTICAL_STREAM_DOUBLE, streamValue);
+            insert.value(getDoubleStreamField(), streamValue);
         }
         else if (streamValue instanceof String) {
-            insert.value(CassandraShared.F_VERTICAL_STREAM_TEXT, streamValue);
+            insert.value(getTextStreamField(), streamValue);
         }
+    }
+
+    String getTextStreamField() {
+        return CassandraShared.F_VERTICAL_STREAM_TEXT;
+    }
+
+    String getDoubleStreamField() {
+        return CassandraShared.F_VERTICAL_STREAM_DOUBLE;
+    }
+
+    String getStreamNameField() {
+        return CassandraShared.F_VERTICAL_STREAM_NAME;
     }
 
     @Override
     protected abstract void appendInsertTimeFields(Insert insert, int year, int month, int day, int hour, Calendar cal, Integer minute, Integer second);
 
     @Override
-    protected void appendAdditionalFields(Insert insert, int year, int month, int day, int hour, int minute, int second, int deviceIndex) {}
+    protected void appendAdditionalFields(String txnId, Insert insert, int year, int month, int day, int hour, int minute, int second, int deviceIndex) {}
 
     protected AbsStrategyInsertVerticalStreams getStrategy() {
         //noinspection unchecked

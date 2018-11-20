@@ -20,7 +20,7 @@ public class InsertToCountersClassMinuteAggregatedTable extends InsertToCounters
     }
 
     @Override
-    protected void appendAdditionalFields(Insert insert, int year, int month, int day, int hour, int minute, int second, int deviceIndex) {
+    protected void appendAdditionalFields(String txnId, Insert insert, int year, int month, int day, int hour, int minute, int second, int deviceIndex) {
         insert.value("device_count", getStrategy().getBillingPoints(month, day, hour));
         insert.value("message_count", getStrategy().getBillingPoints(month, day, hour));
         insert.value("billing_points_sum", getStrategy().getBillingPoints(month, day, hour));

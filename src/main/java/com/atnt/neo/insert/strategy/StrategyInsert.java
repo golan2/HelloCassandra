@@ -4,6 +4,7 @@ import com.atnt.neo.insert.strategy.time.TimePeriod;
 import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
 import java.util.Calendar;
+import java.util.UUID;
 
 public interface StrategyInsert {
     boolean shouldTruncateTableBeforeStart();
@@ -38,6 +39,8 @@ public interface StrategyInsert {
     String getProjectId();
 
     String getEnvironment();
+
+    UUID getEnvUuid();
 
     StrategyConfig getConfig();
 }

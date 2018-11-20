@@ -8,17 +8,18 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class InsertCountersWithTimeBucketToTable extends AbsInsertToCassandra {
+
     public InsertCountersWithTimeBucketToTable(AbsStrategyInsertCountersRawData strategyInsert) {
         super(strategyInsert);
     }
 
     protected void appendInsertTimeFields(Insert insert, int year, int month, int day, int hour, Calendar cal, Integer minute, Integer second) {
-        insert.value("time_bucket", getHourTimeBucket(cal, month, day, hour));
-        insert.value("timestamp", getTimestamp(cal, month, day, hour, minute, second));
+        insert.value(CassandraShared.F_TIME_BUCKET, getHourTimeBucket(cal, month, day, hour));
+        insert.value(CassandraShared.F_TIMESTAMP, getTimestamp(cal, month, day, hour, minute, second));
     }
 
     @Override
-    protected void appendAdditionalFields(Insert insert, int year, int month, int day, int hour, int minute, int second, int deviceIndex) { }
+    protected void appendAdditionalFields(String txnId, Insert insert, int year, int month, int day, int hour, int minute, int second, int deviceIndex) { }
 
     private Date getHourTimeBucket(Calendar cal, int month, int day, int hour) {
         //noinspection MagicConstant

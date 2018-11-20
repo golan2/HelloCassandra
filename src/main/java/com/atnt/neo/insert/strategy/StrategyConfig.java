@@ -1,12 +1,16 @@
 package com.atnt.neo.insert.strategy;
 
 import com.atnt.neo.insert.generator.CassandraShared;
+import lombok.Data;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+import java.util.UUID;
+
+@Data
 public class StrategyConfig {
 
     public static final int NOT_PROVIDED = -1;
@@ -22,6 +26,7 @@ public class StrategyConfig {
     private final String  orgId;
     private final String  projectId;
     private final String  environment;
+    private final UUID    envUuid;
     private final String  cql;
     private final Double  streamLowerBound;
     private final Double  streamUpperBound;
@@ -59,6 +64,7 @@ public class StrategyConfig {
         this.orgId = commandLine.getOptionValue("org_id", "org_id");
         this.projectId = commandLine.getOptionValue("project_id", "project_id");
         this.environment = commandLine.getOptionValue("environment", "environment");
+        this.envUuid = UUID.fromString(commandLine.getOptionValue("env_uuid", UUID.randomUUID().toString()));
         this.cql  = commandLine.getOptionValue("cql", "N/A");
         this.streamLowerBound = Double.valueOf(commandLine.getOptionValue("slb", "0"));
         this.streamUpperBound = Double.valueOf(commandLine.getOptionValue("sub", "100"));
@@ -66,85 +72,4 @@ public class StrategyConfig {
 
     }
 
-
-    public String getKeyspace() {
-        return keyspace;
-    }
-
-    public String getHosts() {
-        return hosts;
-    }
-
-    public Boolean getTruncate() {
-        return truncate;
-    }
-
-    public Integer getDeviceCount() {
-        return deviceCount;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public Integer getMonth() {
-        return month;
-    }
-
-    public Integer getDays() {
-        return days;
-    }
-
-    public Integer getStreamCount() {
-        return streamCount;
-    }
-
-    public String getOrgId() {
-        return orgId;
-    }
-
-    public String getProjectId() {
-        return projectId;
-    }
-
-    public String getEnvironment() {
-        return environment;
-    }
-
-    public String getCql() {
-        return cql;
-    }
-
-    public Double getStreamLowerBound() {
-        return streamLowerBound;
-    }
-
-    public Double getStreamUpperBound() {
-        return streamUpperBound;
-    }
-
-    public Integer getStreamOutlierPercent() {
-        return streamOutlierPercent;
-    }
-
-    @Override
-    public String toString() {
-        return "StrategyConfig{" +
-                "keyspace='" + keyspace + '\'' +
-                ", hosts='" + hosts + '\'' +
-                ", truncate=" + truncate +
-                ", deviceCount=" + deviceCount +
-                ", year=" + year +
-                ", month=" + month +
-                ", days=" + days +
-                ", streamCount=" + streamCount +
-                ", orgId='" + orgId + '\'' +
-                ", projectId='" + projectId + '\'' +
-                ", environment='" + environment + '\'' +
-                ", cql='" + cql + '\'' +
-                ", streamLowerBound=" + streamLowerBound +
-                ", streamUpperBound=" + streamUpperBound +
-                ", streamOutlierPercent=" + streamOutlierPercent +
-                '}';
-    }
 }

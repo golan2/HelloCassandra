@@ -26,8 +26,8 @@ public class StrategyUtil {
         return IntStream.range(0,x).boxed().collect(Collectors.toSet());       // //[0,1,2]
     }
 
-    public static  Set<Integer> generateEveryTwoMinutes() {
-        return IntStream.range(0,60).filter(x->x%2==0).boxed().collect(Collectors.toSet());     //every 2 minutes
+    public static  Set<Integer> generateEveryXMinutes(int minutes) {
+        return IntStream.range(0,60).filter(x->x%minutes==0).boxed().collect(Collectors.toSet());     //every 2 minutes
     }
 
     public static Set<Integer> generateEveryMinute() {
