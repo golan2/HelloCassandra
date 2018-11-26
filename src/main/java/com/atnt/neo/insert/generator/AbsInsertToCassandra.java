@@ -46,6 +46,9 @@ public abstract class AbsInsertToCassandra {
 
             final Calendar cal = getStrategy().getTimePeriod().getFirstDay();
             final Calendar lastDay = getStrategy().getTimePeriod().getLastDay();
+
+            logger.info("Insert date for days: {} - {}", DF_DATE.format(cal.getTime()), DF_DATE.format(lastDay.getTime()));
+
             while ( cal.compareTo(lastDay) <= 0 ) {
 
                 final ArrayList<Insert> statements  = new ArrayList<>(CassandraShared.MAX_BATCH_SIZE);

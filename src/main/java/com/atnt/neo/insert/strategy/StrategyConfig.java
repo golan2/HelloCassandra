@@ -45,6 +45,7 @@ public class StrategyConfig {
         options.addOption("o", "org_id", true, "Organization id");
         options.addOption("p", "project_id", true, "Project id");
         options.addOption("e", "environment", true, "Environment name");
+        options.addOption("u", "env_uuid", true, "Environment UUID");
         options.addOption("c", "cql", true, "CQL statement to invoke");
         options.addOption("slb", "stream-lower-bound", true, "Lower bound for the stream value (inclusive)");
         options.addOption("sub", "stream-upper-bound", true, "Upper bound for the stream value (inclusive)");

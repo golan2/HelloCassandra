@@ -16,7 +16,7 @@ public abstract class AbsStrategyInsert implements StrategyInsert {
 
     private final static Logger logger = LoggerFactory.getLogger(AbsInsertToCassandra.class);
 
-    private static final String DEVICE_PREFIX = "device_"+ ThreadLocalRandom.current().nextInt(0, 99999) + "_";
+    private static final String DEVICE_PREFIX = "device_"+ ThreadLocalRandom.current().nextInt(0, 99999);
 
     private final StrategyConfig config;
 
@@ -44,12 +44,12 @@ public abstract class AbsStrategyInsert implements StrategyInsert {
 
     @Override
     public String getDeviceId(int year, int month, int day, int deviceIndex) {
-        return DEVICE_PREFIX + deviceIndex;
+        return String.format("%s_%02d", DEVICE_PREFIX, deviceIndex);
     }
 
     @Override
     public String getDeviceType(int year, int month, int day, int deviceIndex) {
-        return String.format("device_type_%02d", day % 10);
+        return String.format("device_type_%02d", deviceIndex % 3);
     }
 
     @Override
@@ -107,7 +107,7 @@ public abstract class AbsStrategyInsert implements StrategyInsert {
             return new EveryDaySingleMonth(getYear(), month);
         }
         else {
-            return new EveryDaySeveralDaysEndOfYear(getYear(), 1);
+            return new EveryDaySeveralDaysEndOfYear(getYear(), getConfig().getDays());
         }
     }
 }

@@ -24,6 +24,10 @@ public class StrategyInsertStreamsByObject1926 extends AbsStrategyInsertVertical
         return generateDoubleStreamMap(getConfig().getStreamCount(), deviceIndex, year, month, day);
     }
 
+    @Override
+    public Map<String, String> createGeoLocationStreamMap(int deviceIndex, int year, int month, int day, int hour) {
+        return generateGeoStreamMap(deviceIndex, year, month, day, hour);
+    }
 
     @Override
     protected int getDefaultYear() {
