@@ -1,7 +1,14 @@
 package com.atnt.neo.insert.generator;
 
+import com.atnt.neo.insert.strategy.streams.AbsStrategyInsertStreams.GeoLocation;
 import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.KeyspaceMetadata;
 import com.datastax.driver.core.SocketOptions;
+import com.datastax.driver.core.UDTValue;
+import com.datastax.driver.core.UserType;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
 public class CassandraShared {
@@ -47,7 +54,9 @@ public class CassandraShared {
     public static final String F_VERTICAL_STREAM_NAME   = "stream_name";
     public static final String F_VERTICAL_STREAM_ID     = "stream_id";
     public static final String F_VERTICAL_STREAM_DOUBLE = "double_value";
+    public static final String F_VERTICAL_BOOL_STREAM   = "value_boolean";
     public static final String F_VERTICAL_DOUBLE_STREAM = "value_double";
+    public static final String F_VERTICAL_GEO_STREAM    = "value_geopoint";
     public static final String F_VERTICAL_STREAM_TEXT   = "string_value";
     public static final String F_VERTICAL_TEXT_STREAM   = "value_text";
     public static final String F_USER_PARAM             = "user_param";
@@ -56,19 +65,41 @@ public class CassandraShared {
     public static final String F_DATA_POINTS    = "data_points";
     public static final String F_VOLUME_SIZE    = "volume_size";
 
+    public static final String TYPE_GEOPOINT    = "geopoint";
 
     public  static final int MAX_BATCH_SIZE            =   1_000;
     public  static final int MAX_PARALLELISM_CASSANDRA =      10;
     private static final int CLIENT_TIMEOUT            = 300_000;
 
+    private static final Map<String, UserType> userDefinedTypes = new HashMap<>();
 
+    public static Cluster initCluster(String hostName, String keyspace) {
+        final Cluster cluster = createCluster(hostName);
+        initUserDefinedTypes(keyspace, cluster);
+        return cluster;
+    }
 
-    public static Cluster initCluster(String hostName) {
+    private static Cluster createCluster(String hostName) {
         return Cluster.builder()
-                .withSocketOptions( new SocketOptions().setConnectTimeoutMillis(CLIENT_TIMEOUT) )
-                .withSocketOptions( new SocketOptions().setReadTimeoutMillis(CLIENT_TIMEOUT) )
-                .withSocketOptions( new SocketOptions().setTcpNoDelay(true) )
+                .withSocketOptions(new SocketOptions().setConnectTimeoutMillis(CLIENT_TIMEOUT))
+                .withSocketOptions(new SocketOptions().setReadTimeoutMillis(CLIENT_TIMEOUT))
+                .withSocketOptions(new SocketOptions().setTcpNoDelay(true))
                 .addContactPoint(hostName).build();
+    }
+
+    private static void initUserDefinedTypes(String keyspace, Cluster cluster) {
+        final KeyspaceMetadata ksmd = cluster.getMetadata().getKeyspace(keyspace);
+        final UserType geopoint = ksmd.getUserType(TYPE_GEOPOINT);
+        userDefinedTypes.put("geopoint", geopoint);
+    }
+
+
+    public static UDTValue createGeoPoint(GeoLocation geo) {
+        final UDTValue udt = userDefinedTypes.get(TYPE_GEOPOINT).newValue();
+        udt.setDouble("longitude", geo.getLongitude());
+        udt.setDouble("latitude", geo.getLatitude());
+        udt.setDouble("elevation", geo.getElevation());
+        return udt;
     }
 
 

@@ -6,12 +6,11 @@ import com.atnt.neo.insert.strategy.time.EveryHour;
 import com.atnt.neo.insert.strategy.time.TimePeriod;
 import com.atnt.neo.insert.strategy.time.TxnPerDay;
 
-import java.util.Collections;
 import java.util.Map;
 
 public class StrategyInsertObjectStreams1924 extends AbsStrategyInsertVerticalStreams {
 
-    StrategyInsertObjectStreams1924(String[] args) {
+    private StrategyInsertObjectStreams1924(String[] args) {
         super(args);
     }
 
@@ -22,11 +21,6 @@ public class StrategyInsertObjectStreams1924 extends AbsStrategyInsertVerticalSt
     @Override
     public Map<String, Double> createDoubleStreamMap(int deviceIndex, int year, int month, int day, int hour) {
         return generateDoubleStreamMap(getConfig().getStreamCount(), deviceIndex, year, month, day);
-    }
-
-    @Override
-    public Map<String, Double> createRandomStreamMap() {
-        return Collections.emptyMap();
     }
 
     @Override

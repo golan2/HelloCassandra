@@ -18,7 +18,7 @@ public class InsertStreamOverTimeByObject extends AbsInsertVerticalStreams {
 
     @Override
     protected void appendInsertTimeFields(Insert insert, int year, int month, int day, int hour, Calendar cal, Integer minute, Integer second) {
-        insert.value(CassandraShared.F_BUCKET_TIMESTAMP, getTimestamp(cal, Calendar.JANUARY, 1, 0, 0, 0));  //year bucket
+        insert.value(CassandraShared.F_BUCKET_TIMESTAMP, getTimestamp(cal, 1, 1, 0, 0, 0));  //year bucket
         insert.value(CassandraShared.F_TIMESTAMP, getTimestamp(cal, month, day, hour, minute, second));
     }
 

@@ -23,11 +23,6 @@ public class StrategyInsertStreams1990 extends AbsStrategyInsertVerticalStreams 
     }
 
     @Override
-    public Map<String, Double> createRandomStreamMap() {
-        return generateRandomStreamMap();
-    }
-
-    @Override
     public int getDefaultYear() {
         return 1990;
     }

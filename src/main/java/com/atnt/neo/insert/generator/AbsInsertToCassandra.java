@@ -3,7 +3,9 @@ package com.atnt.neo.insert.generator;
 import com.atnt.neo.insert.strategy.StrategyInsert;
 import com.atnt.neo.insert.strategy.StrategyUtil;
 import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.KeyspaceMetadata;
 import com.datastax.driver.core.Session;
+import com.datastax.driver.core.UserType;
 import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import org.slf4j.Logger;
@@ -12,8 +14,10 @@ import org.slf4j.LoggerFactory;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -36,7 +40,7 @@ public abstract class AbsInsertToCassandra {
     public void insert() throws InterruptedException {
         List<FutureWrapper> futures = new ArrayList<>();
 
-        try (Cluster cluster = CassandraShared.initCluster(getStrategy().getConfig().getHosts())) {
+        try (Cluster cluster = CassandraShared.initCluster(getStrategy().getConfig().getHosts(), getStrategy().getConfig().getKeyspace())) {
             logger.info("Working on [{}] [{}]", getStrategy().getConfig().getKeyspace(), getStrategy().getTableName());
             Session session = cluster.connect(getStrategy().getConfig().getKeyspace());
 

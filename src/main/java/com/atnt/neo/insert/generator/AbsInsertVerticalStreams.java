@@ -1,51 +1,50 @@
 package com.atnt.neo.insert.generator;
 
+import com.atnt.neo.insert.strategy.streams.AbsStrategyInsertStreams.GeoLocation;
 import com.atnt.neo.insert.strategy.streams.vertical.AbsStrategyInsertVerticalStreams;
+import com.datastax.driver.core.UDTValue;
 import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public abstract class AbsInsertVerticalStreams extends AbsInsertToCassandra {
     AbsInsertVerticalStreams(AbsStrategyInsertVerticalStreams strategyInsert) {
         super(strategyInsert);
     }
 
+    @SuppressWarnings("CollectionAddAllCanBeReplacedWithConstructor")
     @Override
     protected Iterable<Insert> createInsertQueries(String txnId, int deviceIndex, int year, int month, int day, int hour) {
         final Calendar     cal     = Calendar.getInstance();
         final Set<Integer> minutes = getStrategy().getTxnPerDay().getMinutesArray();
         final Set<Integer> seconds = getStrategy().getTxnPerDay().getSecondsArray();
 
+        List<Insert> result = new ArrayList<>();
+
         final Map<String, Double> doubleStreamMap = getStrategy().createDoubleStreamMap(deviceIndex, year, month, day, hour);
-        final ArrayList<Insert> insertDoubles = createInsertStreamsQuery(txnId, deviceIndex, year, month, day, hour, cal, minutes, seconds, doubleStreamMap);
+        result.addAll(createInsertStreamsQuery(txnId, deviceIndex, year, month, day, hour, cal, minutes, seconds, doubleStreamMap));
 
-        final Map<String, String> geoStreamMap = getStrategy().createGeoLocationStreamMap(deviceIndex, year, month, day, hour);
-        final ArrayList<Insert> insertGeo = createInsertStreamsQuery(txnId, deviceIndex, year, month, day, hour, cal, minutes, seconds, geoStreamMap);
+        final Map<String, GeoLocation> geoStreamMap = getStrategy().createGeoStreamMap(deviceIndex, year, month, day, hour);
+        result.addAll(createInsertStreamsQuery(txnId, deviceIndex, year, month, day, hour, cal, minutes, seconds, geoStreamMap));
 
-        final Map<String, Double> randomStreamMap = getStrategy().createRandomStreamMap();
-        final ArrayList<Insert> insertRandoms = createInsertStreamsQuery(txnId, deviceIndex, year, month, day, hour, cal, minutes, seconds, randomStreamMap);
+        final Map<String, String> stringStreamMap = getStrategy().createStringStreamMap(deviceIndex, year, month, day, hour);
+        result.addAll(createInsertStreamsQuery(txnId, deviceIndex, year, month, day, hour, cal, minutes, seconds, stringStreamMap));
 
-        return concat(insertDoubles, insertGeo, insertRandoms);
-    }
+        final Map<String, Boolean> booleanStreamMap = getStrategy().createBooleanStreamMap(deviceIndex, year, month, day, hour);
+        result.addAll(createInsertStreamsQuery(txnId, deviceIndex, year, month, day, hour, cal, minutes, seconds, booleanStreamMap));
 
-    private Iterable<Insert> concat(ArrayList<Insert> result1, ArrayList<Insert> result2, ArrayList<Insert> result3) {
-        return Stream
-                .of(result1, result2, result3)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+        return result;
     }
 
 
-    private <T> ArrayList<Insert> createInsertStreamsQuery(String txnId, int deviceIndex, int year, int month, int day, int hour, Calendar cal, Set<Integer> minutes, Set<Integer> seconds, Map<String, T> doubleStreamMap) {
+    private <T> ArrayList<Insert> createInsertStreamsQuery(String txnId, int deviceIndex, int year, int month, int day, int hour, Calendar cal, Set<Integer> minutes, Set<Integer> seconds, Map<String, T> streams) {
         final ArrayList<Insert> result  = new ArrayList<>(minutes.size() * seconds.size());
-        for (Map.Entry<String, T> entry : doubleStreamMap.entrySet()) {
+        for (Map.Entry<String, T> entry : streams.entrySet()) {
             for (Integer minute : minutes) {
                 for (Integer second : seconds) {
 
@@ -63,6 +62,8 @@ public abstract class AbsInsertVerticalStreams extends AbsInsertToCassandra {
 
                     result.add(insert);
 
+                    System.out.println(insert.toString());
+
                 }
             }
         }
@@ -74,12 +75,23 @@ public abstract class AbsInsertVerticalStreams extends AbsInsertToCassandra {
 
         if (streamValue==null) return;  //in Cassandra we don't insert null; we simply don't set value to this column
 
-        if (streamValue instanceof Double) {
+        if (streamValue instanceof Boolean) {
+            insert.value(getBooleanStreamField(), streamValue);
+        }
+        else if (streamValue instanceof Double) {
             insert.value(getDoubleStreamField(), streamValue);
         }
         else if (streamValue instanceof String) {
             insert.value(getTextStreamField(), streamValue);
         }
+        else if (streamValue instanceof GeoLocation) {
+            final UDTValue geo = CassandraShared.createGeoPoint((GeoLocation) streamValue);
+            insert.value(getGeoStreamField(), geo);
+        }
+    }
+
+    private String getBooleanStreamField() {
+        return CassandraShared.F_VERTICAL_BOOL_STREAM;
     }
 
     String getTextStreamField() {
@@ -88,6 +100,10 @@ public abstract class AbsInsertVerticalStreams extends AbsInsertToCassandra {
 
     String getDoubleStreamField() {
         return CassandraShared.F_VERTICAL_STREAM_DOUBLE;
+    }
+
+    private String getGeoStreamField() {
+        return CassandraShared.F_VERTICAL_GEO_STREAM;
     }
 
     String getStreamNameField() {

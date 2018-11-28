@@ -60,7 +60,7 @@ public class StrategyInsertStreamsMapRawData1927 extends AbsStrategyInsertStream
     }
 
     @Override
-    public Map<String, String> createGeoLocationStreamMap(int deviceIndex, int year, int month, int day, int hour) {
+    public Map<String, String> createStringStreamMap(int deviceIndex, int year, int month, int day, int hour) {
         return Collections.emptyMap();
     }
 

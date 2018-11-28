@@ -24,7 +24,7 @@ class InvokeCql {
             final long before = System.nanoTime();
             final StrategyConfig config = new StrategyConfig(args);
             logger.info("Configuration: {}", config);
-            cluster = CassandraShared.initCluster(config.getHosts());
+            cluster = CassandraShared.initCluster(config.getHosts(), "activity");
             session = cluster.connect(config.getKeyspace());
 
             logger.debug("CQL =====>   \n" + config.getCql());
