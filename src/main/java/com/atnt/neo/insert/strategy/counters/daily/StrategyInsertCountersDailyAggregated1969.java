@@ -1,7 +1,7 @@
 package com.atnt.neo.insert.strategy.counters.daily;
 
 import com.atnt.neo.insert.generator.InsertToCountersTable;
-import com.atnt.neo.insert.strategy.time.EveryDaySingleMonth;
+import com.atnt.neo.insert.strategy.time.EveryDayWholeMonth;
 import com.atnt.neo.insert.strategy.time.SingleTxn;
 import com.atnt.neo.insert.strategy.time.TimePeriod;
 import com.atnt.neo.insert.strategy.time.TxnPerDay;
@@ -20,7 +20,7 @@ public class StrategyInsertCountersDailyAggregated1969 extends AbsStrategyInsert
 
     @Override
     public TimePeriod getTimePeriod() {
-        return new EveryDaySingleMonth(getYear(), Calendar.JANUARY);
+        return new EveryDayWholeMonth(getYear(), Calendar.JANUARY);
     }
 
     @Override

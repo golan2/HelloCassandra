@@ -20,7 +20,7 @@ public class StrategyInsertLatestGeo1936 extends AbsStrategyInsertLatestStreams 
     }
 
     @Override
-    public Map<String, String> createStringStreamMap(int deviceIndex, int year, int month, int day, int hour) {
-        return generateStringStreamMap(getConfig().getStreamCount(), deviceIndex, year, month, day, hour);
+    public Map<String, GeoLocation> createGeoStreamMap(int deviceIndex, int year, int month, int day, int hour) {
+        return generateGeoStreamMap(deviceIndex, year, month, day, hour);
     }
 }

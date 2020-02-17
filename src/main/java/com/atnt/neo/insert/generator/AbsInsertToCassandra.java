@@ -3,9 +3,8 @@ package com.atnt.neo.insert.generator;
 import com.atnt.neo.insert.strategy.StrategyInsert;
 import com.atnt.neo.insert.strategy.StrategyUtil;
 import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.KeyspaceMetadata;
 import com.datastax.driver.core.Session;
-import com.datastax.driver.core.UserType;
+import com.datastax.driver.core.querybuilder.BuiltStatement;
 import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import org.slf4j.Logger;
@@ -14,10 +13,8 @@ import org.slf4j.LoggerFactory;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -124,6 +121,7 @@ public abstract class AbsInsertToCassandra {
     }
 
     private static void executeBatchAsync(List<FutureWrapper> futures, Session session, ArrayList<Insert> statements, AtomicLong doneCount) {
+        if (logger.isTraceEnabled()) logger.trace("CQLs [{}]:\n\t {}", statements.size(), statements.stream().map(BuiltStatement::toString).collect(Collectors.joining("\n\t")));
         statements.forEach( q -> futures.add(new FutureWrapper(session.executeAsync(q), q.getQueryString())) );
         final long pending  = futures.stream().filter(f -> !f.isDone()).count();
         final long canceled = futures.stream().filter(FutureWrapper::isCancelled).count();

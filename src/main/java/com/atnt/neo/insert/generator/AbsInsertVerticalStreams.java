@@ -1,5 +1,6 @@
 package com.atnt.neo.insert.generator;
 
+import com.atnt.neo.insert.strategy.streams.AbsStrategyInsertStreams;
 import com.atnt.neo.insert.strategy.streams.AbsStrategyInsertStreams.GeoLocation;
 import com.atnt.neo.insert.strategy.streams.vertical.AbsStrategyInsertVerticalStreams;
 import com.datastax.driver.core.UDTValue;
@@ -62,8 +63,6 @@ public abstract class AbsInsertVerticalStreams extends AbsInsertToCassandra {
 
                     result.add(insert);
 
-                    System.out.println(insert.toString());
-
                 }
             }
         }
@@ -85,9 +84,13 @@ public abstract class AbsInsertVerticalStreams extends AbsInsertToCassandra {
             insert.value(getTextStreamField(), streamValue);
         }
         else if (streamValue instanceof GeoLocation) {
-            final UDTValue geo = CassandraShared.createGeoPoint((GeoLocation) streamValue);
-            insert.value(getGeoStreamField(), geo);
+            insertGeoValue(insert, (GeoLocation) streamValue);
         }
+    }
+
+    void insertGeoValue(Insert insert, GeoLocation streamValue) {
+        final UDTValue geo = CassandraShared.createGeoPoint(streamValue);
+        insert.value(getGeoStreamField(), geo);
     }
 
     private String getBooleanStreamField() {

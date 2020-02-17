@@ -35,7 +35,7 @@ public abstract class AbsStrategyInsertStreams extends AbsStrategyInsert {
     protected static Map<String, String> generateStringStreamMap(int howManyStreams, int deviceIndex, int year, int month, int day, int hour) {
         Map<String, String> result = new HashMap<>();
         for (int i = 0; i < howManyStreams; i++) {
-            result.put("stream_s_" + i, String.format("d=[%d] YMD=[%d.%d.%d] [%d] [%d]", deviceIndex, year, month, day, hour, i));
+            result.put("stream_s_" + i, String.format("%d_%d.%d.%d_%d_%d", deviceIndex, year, month, day, hour, i));
         }
         return result;
     }

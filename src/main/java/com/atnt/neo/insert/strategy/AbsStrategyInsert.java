@@ -1,14 +1,16 @@
 package com.atnt.neo.insert.strategy;
 
 import com.atnt.neo.insert.generator.AbsInsertToCassandra;
+import com.atnt.neo.insert.strategy.time.EveryDayForPeriod;
 import com.atnt.neo.insert.strategy.time.EveryDaySeveralDaysEndOfYear;
-import com.atnt.neo.insert.strategy.time.EveryDaySingleMonth;
+import com.atnt.neo.insert.strategy.time.EveryDayWholeMonth;
 import com.atnt.neo.insert.strategy.time.TimePeriod;
 import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -103,11 +105,29 @@ public abstract class AbsStrategyInsert implements StrategyInsert {
 
     protected TimePeriod getTimePeriodFromConfig() {
         final Integer month = getConfig().getMonth();
+        final Integer days = getConfig().getDays();
         if (month>-1) {
-            return new EveryDaySingleMonth(getYear(), month);
+            if (days>-1) {
+                final Calendar from = createTimestamp(getYear(), month, 1);
+                final Calendar to = (Calendar)from.clone();
+                to.add(Calendar.DAY_OF_YEAR, days);
+                return new EveryDayForPeriod(from, to);
+            }
+            else {
+                return new EveryDayWholeMonth(getYear(), month);
+            }
         }
         else {
             return new EveryDaySeveralDaysEndOfYear(getYear(), getConfig().getDays());
         }
+    }
+
+    static Calendar createTimestamp(int year, int month, int day) {
+        Calendar cal = Calendar.getInstance();
+        //noinspection MagicConstant
+        cal.set(year, month-1, day, 0, 0, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+        return cal;
     }
 }

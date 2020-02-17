@@ -79,7 +79,7 @@ public class CassandraShared {
         return cluster;
     }
 
-    private static Cluster createCluster(String hostName) {
+    public static Cluster createCluster(String hostName) {
         return Cluster.builder()
                 .withSocketOptions(new SocketOptions().setConnectTimeoutMillis(CLIENT_TIMEOUT))
                 .withSocketOptions(new SocketOptions().setReadTimeoutMillis(CLIENT_TIMEOUT))
